@@ -32,6 +32,7 @@ model Account {
 
 model Session {
     id           String   @id @default(auto()) @map("_id") @db.ObjectId
+    
     sessionToken String   @unique
     userId       String   @db.ObjectId
     expires      DateTime
@@ -41,21 +42,26 @@ model Session {
 
 model User {
     id            String    @id @default(auto()) @map("_id") @db.ObjectId
+
+    createdAt     DateTime  @default(now())
     name          String?
-    email         String?   @unique
+    email         String?   
     emailVerified DateTime?
-    username      String?   @unique
+    username      String?   
     birthdate     DateTime?
     image         String?
     recipeBooks   RecipeBook[]
     accounts      Account[]
     sessions      Session[]
+
+    @@unique([email, username])
 }
 
 model VerificationToken {
     id         String  @id @default(auto()) @map("_id") @db.ObjectId
+
     identifier String
-    token      String   @unique
+    token      String   
     expires    DateTime
 
     @@unique([identifier, token])
@@ -63,6 +69,7 @@ model VerificationToken {
 
 model RecipeBook {
     id          String  @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt   DateTime  @default(now())
 
     title       String
     description String?
@@ -75,6 +82,8 @@ model RecipeBook {
 
 model Recipe {
     id               String  @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt        DateTime  @default(now())
+
     title            String
     cookTime         CookTime
     numberOfServings Int
