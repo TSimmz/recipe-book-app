@@ -16,18 +16,19 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String?
-    access_token      String?
+    refresh_token     String? @db.String
+    access_token      String? @db.String
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String?
+    id_token          String? @db.String
     session_state     String?
 
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId            String  @db.ObjectId
 
     @@unique([provider, providerAccountId])
+    @@map("accounts")
 }
 
 model Session {
@@ -38,6 +39,8 @@ model Session {
     expires      DateTime
 
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@map("sessions")
 }
 
 model User {
@@ -55,6 +58,7 @@ model User {
     sessions      Session[]
 
     @@unique([email, username])
+    @@map("users")
 }
 
 model VerificationToken {
@@ -65,6 +69,7 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+    @@map("verificationTokens")
 }
 
 model RecipeBook {
@@ -78,6 +83,8 @@ model RecipeBook {
 
     user        User    @relation(fields: [userId], references: [id])
     userId      String  @db.ObjectId
+
+    @@map("recipeBooks")
 }
 
 model Recipe {
@@ -93,6 +100,7 @@ model Recipe {
     recipeBook       RecipeBook @relation(fields: [recipeBookId], references: [id])
     recipeBookId     String @db.ObjectId
 
+    @@map("recipes")
 }
 
 type CookTime {
