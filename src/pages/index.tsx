@@ -1,9 +1,13 @@
 import type { NextPage } from 'next'
+import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
+  const {data, status } = useSession();
+
+  console.log(data, status );
   return (
     <div className={styles.container}>
       <Head>

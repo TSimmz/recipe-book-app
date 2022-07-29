@@ -4,10 +4,12 @@
 datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 // Necessary for Next auth
@@ -24,8 +26,8 @@ model Account {
     id_token          String? @db.String
     session_state     String?
 
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId            String  @db.ObjectId
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
     @@map("accounts")
@@ -35,9 +37,9 @@ model Session {
     id           String   @id @default(auto()) @map("_id") @db.ObjectId
     
     sessionToken String   @unique
-    userId       String   @db.ObjectId
     expires      DateTime
 
+    userId       String   @db.ObjectId
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("sessions")
@@ -57,7 +59,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
 
-    @@unique([email, username])
+    @@unique([email])
     @@map("users")
 }
 
@@ -81,8 +83,8 @@ model RecipeBook {
     image       String? 
     recipes     Recipe[]
 
-    user        User    @relation(fields: [userId], references: [id])
     userId      String  @db.ObjectId
+    user        User    @relation(fields: [userId], references: [id])
 
     @@map("recipeBooks")
 }
@@ -97,8 +99,8 @@ model Recipe {
     ingredients      Ingredient[]
     steps            Step[]
 
-    recipeBook       RecipeBook @relation(fields: [recipeBookId], references: [id])
     recipeBookId     String @db.ObjectId
+    recipeBook       RecipeBook @relation(fields: [recipeBookId], references: [id])
 
     @@map("recipes")
 }
