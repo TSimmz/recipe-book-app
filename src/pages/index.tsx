@@ -1,13 +1,20 @@
-import type { NextPage } from 'next'
-import { useSession } from 'next-auth/react'
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from 'next';
+import { useSession } from 'next-auth/react';
+import Head from 'next/head';
+import Image from 'next/image';
+import { Title, Button } from '@mantine/core';
+import { signIn } from 'next-auth/react';
+import styles from '../styles/Home.module.css';
+import { redirect } from 'next/dist/server/api-utils';
+import Router from 'next/router';
 
 const Home: NextPage = () => {
-  const {data, status } = useSession();
+  const { data: session, status } = useSession();
 
-  console.log(data, status );
+  if (session) {
+    Router.push('/dashboard');
+  }
+
   return (
     <div className={styles.container}>
       <Head>
@@ -17,44 +24,20 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
-          >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
+        <Title order={1}>Recipe Book App</Title>
+        <Button
+          onClick={() => {
+            signIn(undefined, {
+              callbackUrl: 'http://localhost:3000/dashboard',
+            });
+          }}
+          color="yellow"
+          radius="md"
+          size="md"
+        >
+          {' '}
+          Sign In
+        </Button>
       </main>
 
       <footer className={styles.footer}>
@@ -70,7 +53,7 @@ const Home: NextPage = () => {
         </a>
       </footer>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
