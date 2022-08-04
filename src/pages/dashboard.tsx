@@ -2,18 +2,16 @@ import { useState } from 'react';
 import type { NextPage } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
-import Link from 'next';
 import { Button, TextInput, Textarea } from '@mantine/core';
+import { useForm, zodResolver } from '@mantine/form';
 import { signOut } from 'next-auth/react';
 import styles from '../styles/Home.module.css';
+import { z } from 'zod';
+import CreateRecipeBook from '@/components/CreateRecipeBook';
 
 const Dashboard: NextPage = () => {
   const { data: session, status } = useSession();
   const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
-  const [bookName, setBookName] = useState('');
-  const [bookDescription, setBookDescription] = useState('');
-
-  const saveRecipeBook = () => {};
 
   if (!session) {
     return (
@@ -54,25 +52,7 @@ const Dashboard: NextPage = () => {
           </div>
         )}
         {openCreateRecipeBook && (
-          <form>
-            <TextInput
-              placeholder="Recipe Book Name"
-              label="Recipe Book Name"
-              required
-              value={bookName}
-              onChange={(e) => setBookName(e.target.value)}
-            />
-            <Textarea
-              placeholder="Description"
-              label="Description"
-              required
-              value={bookDescription}
-              onChange={(e) => setBookDescription(e.target.value)}
-            />
-            <Button color="yellow" radius="md" size="md">
-              Save
-            </Button>
-          </form>
+          <CreateRecipeBook setOpenCreateRecipeBook={setOpenCreateRecipeBook} />
         )}
       </main>
     </div>
