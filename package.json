@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "dbgen": "prisma generate",
+    "dbpush": "prisma db push",
     "lint": "next lint"
   },
   "dependencies": {
