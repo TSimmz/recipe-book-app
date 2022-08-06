@@ -3,22 +3,41 @@ import { createRouter } from './context';
 import { z } from 'zod';
 
 export const recipeBooksRouter = createRouter()
-  .query('getRecipeBookByUserId', {
+  .query('getRecipeBookById', {
     input: z.object({
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
-      const user = await ctx.prisma.user.findUnique({
+      const recipeBook = await ctx.prisma.recipeBook.findUnique({
         where: { id: input.id },
       });
 
-      if (!user)
+      if (!recipeBook)
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Failed to find user',
         });
-      return user;
+
+      return recipeBook;
     },
+  })
+  .query('getAllRecipesInBook', {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({input, ctx}) {
+      const recipes = await ctx.prisma.recipeBook.findUnique({
+        where: { id: input.id }
+      }).recipes();
+
+      if (!recipes)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Failed to find any recipes',
+        });
+
+      return recipes;
+    }
   })
   .mutation('createRecipeBook', {
     input: z.object({
@@ -42,7 +61,7 @@ export const recipeBooksRouter = createRouter()
       if (!recipeBook)
         throw new TRPCError({
           code: 'NOT_FOUND',
-          message: 'Failed to find user',
+          message: 'Failed to find recipe book',
         });
 
       return recipeBook;
