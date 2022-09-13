@@ -2,6 +2,7 @@ import { trpc } from '@/utils/trpc';
 import { Button, TextInput, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
+import { useSession } from 'next-auth/react';
 
 const createRecipeBookSchema = z.object({
   title: z
@@ -22,8 +23,12 @@ const CreateRecipeBook: React.FC<CreateRecipeBookProps> = ({
     initialValues: { title: '', description: '' },
   });
 
+  const session = useSession()
+  const trpcSession = trpc.useQuery(['auth.getSession']);
   const recipeBookMutation = trpc.useMutation(['recipebook.createRecipeBook']);
 
+  console.log('Next Session', session);
+  console.log('TRPC Session', trpcSession);
   // const handleError = (errors: typeof form.errors) => {
   //   console.log('Errors', errors);
   // };
