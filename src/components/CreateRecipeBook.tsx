@@ -1,9 +1,7 @@
-import React from 'react';
+import { trpc } from '@/utils/trpc';
 import { Button, TextInput, Textarea } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { trpc } from '@/utils/trpc';
 import { z } from 'zod';
-import { useSession } from 'next-auth/react';
 
 const createRecipeBookSchema = z.object({
   title: z
@@ -19,15 +17,12 @@ interface CreateRecipeBookProps {
 const CreateRecipeBook: React.FC<CreateRecipeBookProps> = ({
   setOpenCreateRecipeBook,
 }) => {
-  const { data: session } = useSession();
   const form = useForm({
     validate: zodResolver(createRecipeBookSchema),
     initialValues: { title: '', description: '' },
   });
 
   const recipeBookMutation = trpc.useMutation(['recipebook.createRecipeBook']);
-
-  console.log(session);
 
   // const handleError = (errors: typeof form.errors) => {
   //   console.log('Errors', errors);
