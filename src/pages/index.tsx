@@ -1,18 +1,23 @@
 import type { NextPage } from 'next';
-import { useSession } from 'next-auth/react';
+import { trpc } from '@/utils/trpc';
 import Head from 'next/head';
 import Image from 'next/image';
 import { Title, Button } from '@mantine/core';
 import { signIn } from 'next-auth/react';
 import styles from '../styles/Home.module.css';
-import { redirect } from 'next/dist/server/api-utils';
 import Router from 'next/router';
 
 const Home: NextPage = () => {
-  const { data: session, status } = useSession();
+  const { data: session, status } =  trpc.useQuery(['auth.getSession']);
 
   if (session) {
     Router.push('/dashboard');
+  }
+
+  const handleSignInClick = () => {
+    signIn(undefined, {
+      callbackUrl: 'http://localhost:3000/dashboard',
+    });
   }
 
   return (
@@ -26,11 +31,7 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <Title order={1}>Recipe Book App</Title>
         <Button
-          onClick={() => {
-            signIn(undefined, {
-              callbackUrl: 'http://localhost:3000/dashboard',
-            });
-          }}
+          onClick={handleSignInClick}
           color="yellow"
           radius="md"
           size="md"
