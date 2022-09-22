@@ -1,23 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '@/pages/store';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useSession } from 'next-auth/react';
+import { trpc } from '@/utils/trpc';
 import { Button } from '@mantine/core';
 import { signOut } from 'next-auth/react';
 import styles from '../styles/Home.module.css';
+import { selectUser, setUser } from '@/features/user/userSlice';
 import CreateRecipeBook from '@/components/CreateRecipeBook';
 
 const Dashboard: NextPage = () => {
-  const { data: session, status } = useSession();
+  const dispatch = useAppDispatch();
+
+  const { data: session } = trpc.useQuery(['auth.getSession']);
   const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
 
-  if (!session) {
-    return (
-      <div className={styles.container}>Please sign in to view this page</div>
-    );
+  const user = useSelector(selectUser);
+  const {data: userData} = trpc.useQuery(['user.getUserByEmail', {email: session?.user?.email || ''}]);
+  
+  useEffect(() => {
+    if (session) {
+      if (userData){
+        
+        dispatch(setUser(userData));
+        console.log('User data: ', userData);
+      }
+    }
   }
+  , [ userData, session ]);
+
 
   return (
+    !session ? 
+    <div className={styles.container}>Please sign in to view this page</div> :
     <div className={styles.container}>
       <Head>
         <title>Recipe Book App</title>
