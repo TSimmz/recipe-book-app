@@ -22,7 +22,13 @@ export const usersRouter = createRouter()
     }),
     async resolve({input, ctx}) {
       const user = await ctx.prisma.user.findUnique({
-        where: { email: input.email }
+        where: { email: input.email },
+        select: { 
+          id: true,
+          name: true,
+          email: true,
+          username: true
+        }
       })
 
       if (!user) throw new TRPCError({ code: "NOT_FOUND", message: "Failed to find user"})
