@@ -1,35 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useAppDispatch } from '@/pages/store';
+import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { trpc } from '@/utils/trpc';
 import { Button } from '@mantine/core';
 import { signOut } from 'next-auth/react';
 import styles from '../styles/Home.module.css';
-import { selectUser, setUser } from '@/features/user/userSlice';
 import CreateRecipeBook from '@/components/CreateRecipeBook';
 
 const Dashboard: NextPage = () => {
-  const dispatch = useAppDispatch();
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
   const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
-
-  const user = useSelector(selectUser);
-  const {data: userData} = trpc.useQuery(['user.getUserByEmail', {email: session?.user?.email || ''}]);
-  
-  useEffect(() => {
-    if (session) {
-      if (userData){
-        
-        dispatch(setUser(userData));
-        console.log('User data: ', userData);
-      }
-    }
-  }
-  , [ userData, session ]);
-
 
   return (
     !session ? 
