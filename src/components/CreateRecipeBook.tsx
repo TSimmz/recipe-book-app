@@ -54,6 +54,9 @@ const CreateRecipeBook: React.FC<CreateRecipeBookProps> = ({
       <Button type="submit" color="yellow" radius="md" size="md">
         Save Recipe Book
       </Button>
+      <Button color="yellow" radius="md" size="md" onClick={() => {
+        setOpenCreateRecipeBook(false);
+      }}> Cancel </Button>
     </form>
   );
 };
