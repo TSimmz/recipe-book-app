@@ -16,6 +16,19 @@ export const usersRouter = createRouter()
       return user;
     }
   })
+  .query("getUsersRecipeBooks", {
+    input: z.object({
+      id: z.string()
+    }),
+    async resolve({input, ctx}) {
+      const recipeBooks = await ctx.prisma.user.findUnique({
+        where: {id : input.id },
+      }).recipeBooks();
+
+      if (!recipeBooks) throw new TRPCError({ code: "NOT_FOUND", message: "Failed to find user's recipe books"})
+      return recipeBooks;
+    }
+  })
   .query("getUserByEmail", {
     input: z.object({
       email: z.string()

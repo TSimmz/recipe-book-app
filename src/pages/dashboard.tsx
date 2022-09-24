@@ -8,14 +8,22 @@ import styles from '../styles/Home.module.css';
 import CreateRecipeBook from '@/components/CreateRecipeBook';
 
 const Dashboard: NextPage = () => {
-
   const { data: session } = trpc.useQuery(['auth.getSession']);
   const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
   const userId = session?.id as string;
 
-  return (
-    !session ? 
-    <div className={styles.container}>Please sign in to view this page</div> :
+  const recipeBooks = trpc.useQuery([
+    'user.getUsersRecipeBooks',
+    { id: session?.id as string },
+  ]);
+
+  if (recipeBooks.status === 'success') {
+    console.log('Recipe Books: ', recipeBooks?.data);
+  }
+
+  return !session ? (
+    <div className={styles.container}>Please sign in to view this page</div>
+  ) : (
     <div className={styles.container}>
       <Head>
         <title>Recipe Book App</title>
@@ -23,33 +31,52 @@ const Dashboard: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        This page is secret!
-        <Button
-          onClick={() => {
-            signOut();
-          }}
-          color="yellow"
-          radius="md"
-          size="md"
-        >
-          {' '}
-          Sign Out
-        </Button>
-        {!openCreateRecipeBook && (
-          <div style={{ margin: '1rem' }}>
-            <Button
-              color="yellow"
-              radius="md"
-              size="md"
-              onClick={() => setOpenCreateRecipeBook(true)}
-            >
-              Create Recipe Book
-            </Button>
-          </div>
-        )}
-        {openCreateRecipeBook && (
-          <CreateRecipeBook userId={userId} setOpenCreateRecipeBook={setOpenCreateRecipeBook} />
-        )}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          This page is secret!
+          <Button
+            onClick={() => {
+              signOut();
+            }}
+            color="yellow"
+            radius="md"
+            size="md"
+          >
+            {' '}
+            Sign Out
+          </Button>
+          {!openCreateRecipeBook && (
+            <div style={{ margin: '1rem' }}>
+              <Button
+                color="yellow"
+                radius="md"
+                size="md"
+                onClick={() => setOpenCreateRecipeBook(true)}
+              >
+                Create Recipe Book
+              </Button>
+            </div>
+          )}
+          {openCreateRecipeBook && (
+            <CreateRecipeBook
+              userId={userId}
+              setOpenCreateRecipeBook={setOpenCreateRecipeBook}
+            />
+          )}
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          {recipeBooks.status === 'success' && (
+            <>
+              {recipeBooks.data.map((recipeBook) => {
+                return (
+                  <>
+                    <h2>{recipeBook.title}</h2>
+                    <h4>{recipeBook.description}</h4>
+                  </>
+                );
+              })}
+            </>
+          )}
+        </div>
       </main>
     </div>
   );
