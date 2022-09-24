@@ -11,10 +11,12 @@ const createRecipeBookSchema = z.object({
 });
 
 interface CreateRecipeBookProps {
+  userId: string,
   setOpenCreateRecipeBook: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const CreateRecipeBook: React.FC<CreateRecipeBookProps> = ({
+  userId,
   setOpenCreateRecipeBook,
 }) => {
 
@@ -32,9 +34,12 @@ const CreateRecipeBook: React.FC<CreateRecipeBookProps> = ({
   const handleSubmit = (values: typeof form.values) => {
 
     // Create a recipe book
-    //const create = recipeBookMutation.mutate({});
+    const title = values.title;
+    const description = values.description;
+    const create = recipeBookMutation.mutate({userId, title, description});
 
     // Close modal
+    setOpenCreateRecipeBook(false);
   };
 
   return (

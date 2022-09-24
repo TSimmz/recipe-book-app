@@ -11,6 +11,7 @@ const Dashboard: NextPage = () => {
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
   const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
+  const userId = session?.id as string;
 
   return (
     !session ? 
@@ -47,7 +48,7 @@ const Dashboard: NextPage = () => {
           </div>
         )}
         {openCreateRecipeBook && (
-          <CreateRecipeBook setOpenCreateRecipeBook={setOpenCreateRecipeBook} />
+          <CreateRecipeBook userId={userId} setOpenCreateRecipeBook={setOpenCreateRecipeBook} />
         )}
       </main>
     </div>
