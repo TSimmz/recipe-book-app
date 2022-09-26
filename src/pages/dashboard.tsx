@@ -8,14 +8,21 @@ import styles from '../styles/Home.module.css';
 import CreateRecipeBook from '@/components/CreateRecipeBook';
 
 const Dashboard: NextPage = () => {
-  const { data: session } = trpc.useQuery(['auth.getSession']);
   const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
+
+  const { data: session } = trpc.useQuery(['auth.getSession'], {
+    refetchInterval: 500,
+    refetchIntervalInBackground: true,
+  });
   const userId = session?.id as string;
 
-  const recipeBooks = trpc.useQuery([
-    'user.getUsersRecipeBooks',
-    { id: session?.id as string },
-  ]);
+  const recipeBooks = trpc.useQuery(
+    ['user.getUsersRecipeBooks', { id: session?.id as string }],
+    {
+      refetchInterval: 500,
+      refetchIntervalInBackground: true,
+    },
+  );
 
   if (recipeBooks.status === 'success') {
     console.log('Recipe Books: ', recipeBooks?.data);
@@ -68,10 +75,10 @@ const Dashboard: NextPage = () => {
             <>
               {recipeBooks.data.map((recipeBook) => {
                 return (
-                  <>
+                  <div key={recipeBook.title}>
                     <h2>{recipeBook.title}</h2>
                     <h4>{recipeBook.description}</h4>
-                  </>
+                  </div>
                 );
               })}
             </>
