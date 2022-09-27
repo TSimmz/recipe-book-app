@@ -6,9 +6,11 @@ import { Button } from '@mantine/core';
 import { signOut } from 'next-auth/react';
 import styles from '../styles/Home.module.css';
 import CreateRecipeBook from '@/components/CreateRecipeBook';
+import CreateRecipe from '@/components/CreateRecipe';
 
 const Dashboard: NextPage = () => {
   const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
+  const [openCreateRecipe, setOpenCreateRecipe] = useState(false);
 
   const { data: session } = trpc.useQuery(['auth.getSession'], {
     refetchInterval: 500,
@@ -67,6 +69,24 @@ const Dashboard: NextPage = () => {
             <CreateRecipeBook
               userId={userId}
               setOpenCreateRecipeBook={setOpenCreateRecipeBook}
+            />
+          )}
+          {!openCreateRecipe && (
+            <div style={{ margin: '1rem' }}>
+              <Button
+                color="yellow"
+                radius="md"
+                size="md"
+                onClick={() => setOpenCreateRecipe(true)}
+              >
+                Create Recipe
+              </Button>
+            </div>
+          )}
+          {openCreateRecipe && (
+            <CreateRecipe
+              recipeBookId={'recipeBookId'}
+              setOpenCreateRecipe={setOpenCreateRecipe}
             />
           )}
         </div>
