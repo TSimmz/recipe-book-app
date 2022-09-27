@@ -94,6 +94,7 @@ model Recipe {
     createdAt        DateTime  @default(now())
 
     title            String
+    description      String
     cookTime         CookTime
     numberOfServings Int
     ingredients      Ingredient[]
