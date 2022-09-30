@@ -26,9 +26,9 @@ const Dashboard: NextPage = () => {
     },
   );
 
-  if (recipeBooks.status === 'success') {
-    console.log('Recipe Books: ', recipeBooks?.data);
-  }
+  // if (recipeBooks.status === 'success') {
+  //   console.log('Recipe Books: ', recipeBooks?.data);
+  // }
 
   return !session ? (
     <div className={styles.container}>Please sign in to view this page</div>

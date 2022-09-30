@@ -3,15 +3,31 @@ import { Button, TextInput, Textarea, NumberInput, Title } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import React from 'react';
 import { z } from 'zod';
+import { IconCirclePlus } from '@tabler/icons';
 
 const createRecipeSchema = z.object({
-  title: z
-    .string()
-    .min(3, { message: 'Title should have at least 3 characters' }),
+  title: z.string(),
   description: z.string(),
   hours: z.number().min(0),
   minutes: z.number().min(0).max(59),
   numberOfServings: z.number().min(1),
+  ingredients: z
+    .object({
+      name: z.string(),
+      value: z.number(),
+      unit: z.string(),
+    })
+    .array()
+    .min(1)
+    .optional(),
+  steps: z
+    .object({
+      description: z.string(),
+      notes: z.string(),
+    })
+    .array()
+    .min(1)
+    .optional(),
 });
 
 interface CreateRecipeProps {
@@ -31,13 +47,21 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
       hours: 0,
       minutes: 0,
       numberOfServings: 1,
+      ingredients: [],
+      steps: [],
     },
   });
 
   //const recipeMutation = trpc.useMutation(('recipe.createRecipe'));
 
+  const handleAddIngredient = () => {};
+
+  const handleAddStep = () => {};
+
   const handleSubmit = (values: typeof form.values) => {
     // Create the recipe
+    console.log('Recipe Values: ', values);
+
     // Close the modal
   };
 
@@ -60,6 +84,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
         label="Hours"
         stepHoldDelay={500}
         stepHoldInterval={100}
+        min={0}
         required
         {...form.getInputProps('hours')}
       />
@@ -68,6 +93,8 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
         stepHoldDelay={500}
         stepHoldInterval={100}
         required
+        min={0}
+        max={59}
         {...form.getInputProps('minutes')}
       />
       <NumberInput
@@ -75,8 +102,29 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
         stepHoldDelay={500}
         stepHoldInterval={100}
         required
+        min={0}
+        max={100}
         {...form.getInputProps('numberOfServings')}
       />
+
+      <Title order={5}>Ingredients</Title>
+      <Button
+        color="yellow"
+        rightIcon={<IconCirclePlus size={16} />}
+        onClick={handleAddIngredient}
+      >
+        Add
+      </Button>
+      <Title order={5}>Steps</Title>
+      <Button
+        color="yellow"
+        rightIcon={<IconCirclePlus size={16} />}
+        onClick={handleAddStep}
+      >
+        Add
+      </Button>
+      <br />
+      <br />
 
       <Button type="submit" color="yellow" radius="md" size="md">
         Save Recipe Book
