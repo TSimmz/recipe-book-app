@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { NextPage } from 'next';
-import Head from 'next/head';
+import { Metadata } from '@/components';
 import { trpc } from '@/utils/trpc';
 import { Button } from '@mantine/core';
 import { signOut } from 'next-auth/react';
@@ -34,11 +34,7 @@ const Dashboard: NextPage = () => {
     <div className={styles.container}>Please sign in to view this page</div>
   ) : (
     <div className={styles.container}>
-      <Head>
-        <title>Recipe Book App</title>
-        <meta name="description" content="A recipe book app" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
+      <Metadata title="Recipe Book Dashboard" />
       <main className={styles.main}>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           This page is secret!
