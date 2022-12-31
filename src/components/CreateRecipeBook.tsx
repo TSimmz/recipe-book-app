@@ -11,32 +11,32 @@ const createRecipeBookSchema = z.object({
 });
 
 interface CreateRecipeBookProps {
-  userId: string,
+  userId: string;
   setOpenCreateRecipeBook: React.Dispatch<React.SetStateAction<boolean>>;
+  recipeBookMutation: any;
 }
 
 const CreateRecipeBook: React.FC<CreateRecipeBookProps> = ({
   userId,
   setOpenCreateRecipeBook,
+  recipeBookMutation,
 }) => {
-
   const form = useForm({
     validate: zodResolver(createRecipeBookSchema),
     initialValues: { title: '', description: '' },
   });
 
-  const recipeBookMutation = trpc.useMutation(['recipebook.createRecipeBook']);
+  //const recipeBookMutation = trpc.useMutation(['recipebook.createRecipeBook']);
 
   // const handleError = (errors: typeof form.errors) => {
   //   console.log('Errors', errors);
   // };
 
   const handleSubmit = (values: typeof form.values) => {
-
     // Create a recipe book
     const title = values.title;
     const description = values.description;
-    const create = recipeBookMutation.mutate({userId, title, description});
+    const create = recipeBookMutation.mutate({ userId, title, description });
 
     // Close modal
     setOpenCreateRecipeBook(false);
@@ -59,9 +59,17 @@ const CreateRecipeBook: React.FC<CreateRecipeBookProps> = ({
       <Button type="submit" color="yellow" radius="md" size="md">
         Save Recipe Book
       </Button>
-      <Button color="yellow" radius="md" size="md" onClick={() => {
-        setOpenCreateRecipeBook(false);
-      }}> Cancel </Button>
+      <Button
+        color="yellow"
+        radius="md"
+        size="md"
+        onClick={() => {
+          setOpenCreateRecipeBook(false);
+        }}
+      >
+        {' '}
+        Cancel{' '}
+      </Button>
     </form>
   );
 };
