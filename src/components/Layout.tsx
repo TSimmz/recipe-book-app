@@ -1,29 +1,20 @@
-import { Children, useState } from 'react';
-import {
-  AppShell,
-  Navbar,
-  Header,
-  Footer,
-  //Aside,
-  Text,
-  MediaQuery,
-  Burger,
-  useMantineTheme,
-} from '@mantine/core';
+import { AppShell, useMantineTheme } from '@mantine/core';
+import { DefaultHeader, DefaultNavbar, DefaultFooter } from './defaults';
 
 type LayoutProps = {
-  header: JSX.Element;
-  navbar: JSX.Element | null;
+  header?: JSX.Element;
+  navbar?: JSX.Element;
+  footer?: JSX.Element;
   children: JSX.Element;
 };
 
 const Layout: React.FC<LayoutProps> = ({
   navbar,
   header,
+  footer,
   children,
 }: LayoutProps) => {
   const theme = useMantineTheme();
-  const [opened, setOpened] = useState(false);
   return (
     <AppShell
       styles={{
@@ -34,57 +25,10 @@ const Layout: React.FC<LayoutProps> = ({
               : theme.colors.gray[0],
         },
       }}
+      navbar={navbar !== undefined ? navbar : <DefaultNavbar />}
       navbarOffsetBreakpoint="sm"
-      asideOffsetBreakpoint="sm"
-      navbar={
-        navbar !== null ? (
-          navbar
-        ) : (
-          <Navbar
-            p="md"
-            hiddenBreakpoint="sm"
-            hidden={!opened}
-            width={{ sm: 200, lg: 300 }}
-          >
-            <Text>Application navbar</Text>
-          </Navbar>
-        )
-      }
-      // aside={
-      //   <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-      //     <Aside p="md" hiddenBreakpoint="sm" width={{ sm: 200, lg: 300 }}>
-      //       <Text>Application sidebar</Text>
-      //     </Aside>
-      //   </MediaQuery>
-      // }
-      footer={
-        <Footer height={60} p="md">
-          Application footer
-        </Footer>
-      }
-      header={
-        header !== null ? (
-          header
-        ) : (
-          <Header height={50} p="md">
-            <div
-              style={{ display: 'flex', alignItems: 'center', height: '100%' }}
-            >
-              <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-                <Burger
-                  opened={opened}
-                  onClick={() => setOpened((o) => !o)}
-                  size="sm"
-                  color={theme.colors.gray[6]}
-                  mr="xl"
-                />
-              </MediaQuery>
-
-              <Text>Application header</Text>
-            </div>
-          </Header>
-        )
-      }
+      footer={footer !== undefined ? footer : <DefaultFooter />}
+      header={header !== undefined ? header : <DefaultHeader />}
     >
       {children}
     </AppShell>
