@@ -107,24 +107,26 @@ const Dashboard: NextPage = () => {
               recipeBookMutation={recipeBookMutation}
             />
           </Modal>
-          {!openCreateRecipe && (
-            <div style={{ margin: '1rem' }}>
-              <Button
-                color="yellow"
-                radius="md"
-                size="md"
-                onClick={() => setOpenCreateRecipe(true)}
-              >
-                Create Recipe
-              </Button>
-            </div>
-          )}
-          {openCreateRecipe && (
+          <div style={{ margin: '1rem' }}>
+            <Button
+              color="yellow"
+              radius="md"
+              size="md"
+              onClick={() => setOpenCreateRecipe(true)}
+            >
+              Create Recipe
+            </Button>
+          </div>
+          <Modal
+            opened={openCreateRecipe}
+            onClose={() => setOpenCreateRecipe(false)}
+            size="md"
+          >
             <CreateRecipe
               recipeBookId={'recipeBookId'}
               setOpenCreateRecipe={setOpenCreateRecipe}
             />
-          )}
+          </Modal>
         </div>
       </Navbar>
     );
