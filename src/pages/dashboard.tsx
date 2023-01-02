@@ -12,19 +12,39 @@ import {
   Burger,
   Button,
   useMantineTheme,
+  createStyles,
 } from '@mantine/core';
 import { signOut } from 'next-auth/react';
-import styles from '../styles/Home.module.css';
 import CreateRecipeBook from '@/components/CreateRecipeBook';
 import CreateRecipe from '@/components/CreateRecipe';
 
+const useStyles = createStyles((theme) => ({
+  container: {
+    padding: '0 2rem',
+  },
+  main: {
+    minHeight: '100vh',
+    padding: '4rem 0',
+    flex: '1',
+    display: 'flex',
+    gap: '2rem',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+}));
+
 const Dashboard: NextPage = () => {
+  const { classes, cx } = useStyles();
   const theme = useMantineTheme();
+
   const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
   const [openCreateRecipe, setOpenCreateRecipe] = useState(false);
 
   const [headerOpened, setHeaderOpened] = useState(false);
   const [navbarOpened, setNavbarOpened] = useState(false);
+
+  const [recipeBookNavbarOpened, setRecipeBookNavbarOpened] = useState(true);
+  const [recipeNavbarOpened, setRecipeNavbarOpened] = useState(true);
 
   const { data: session } = trpc.useQuery(['auth.getSession'], {
     refetchInterval: 500,
@@ -78,67 +98,69 @@ const Dashboard: NextPage = () => {
 
   const renderDashboardNavbar = () => {
     return (
-      <Navbar
-        p="md"
-        hiddenBreakpoint="sm"
-        hidden={!navbarOpened}
-        width={{ sm: 200, lg: 300 }}
-      >
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          This page is secret!
-          <div style={{ margin: '1rem' }}>
-            <Button
-              color="yellow"
-              radius="md"
+      <>
+        <Navbar
+          p="md"
+          hiddenBreakpoint="sm"
+          hidden={!navbarOpened}
+          width={{ sm: 200, lg: 300 }}
+        >
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            This page is secret!
+            <div style={{ margin: '1rem' }}>
+              <Button
+                color="yellow"
+                radius="md"
+                size="md"
+                onClick={() => setOpenCreateRecipeBook(true)}
+              >
+                Create Recipe Book
+              </Button>
+            </div>
+            <Modal
+              opened={openCreateRecipeBook}
+              onClose={() => setOpenCreateRecipeBook(false)}
               size="md"
-              onClick={() => setOpenCreateRecipeBook(true)}
             >
-              Create Recipe Book
-            </Button>
-          </div>
-          <Modal
-            opened={openCreateRecipeBook}
-            onClose={() => setOpenCreateRecipeBook(false)}
-            size="md"
-          >
-            <CreateRecipeBook
-              userId={userId}
-              setOpenCreateRecipeBook={setOpenCreateRecipeBook}
-              recipeBookMutation={recipeBookMutation}
-            />
-          </Modal>
-          <div style={{ margin: '1rem' }}>
-            <Button
-              color="yellow"
-              radius="md"
+              <CreateRecipeBook
+                userId={userId}
+                setOpenCreateRecipeBook={setOpenCreateRecipeBook}
+                recipeBookMutation={recipeBookMutation}
+              />
+            </Modal>
+            <div style={{ margin: '1rem' }}>
+              <Button
+                color="yellow"
+                radius="md"
+                size="md"
+                onClick={() => setOpenCreateRecipe(true)}
+              >
+                Create Recipe
+              </Button>
+            </div>
+            <Modal
+              opened={openCreateRecipe}
+              onClose={() => setOpenCreateRecipe(false)}
               size="md"
-              onClick={() => setOpenCreateRecipe(true)}
             >
-              Create Recipe
-            </Button>
+              <CreateRecipe
+                recipeBookId={'recipeBookId'}
+                setOpenCreateRecipe={setOpenCreateRecipe}
+              />
+            </Modal>
           </div>
-          <Modal
-            opened={openCreateRecipe}
-            onClose={() => setOpenCreateRecipe(false)}
-            size="md"
-          >
-            <CreateRecipe
-              recipeBookId={'recipeBookId'}
-              setOpenCreateRecipe={setOpenCreateRecipe}
-            />
-          </Modal>
-        </div>
-      </Navbar>
+        </Navbar>
+      </>
     );
   };
 
   return !session ? (
-    <div className={styles.container}>Please sign in to view this page</div>
+    <div className={classes.container}>Please sign in to view this page</div>
   ) : (
     <Layout header={renderDashboardHeader()} navbar={renderDashboardNavbar()}>
-      <div className={styles.container}>
+      <div className={classes.container}>
         <Metadata title="Recipe Book Dashboard" />
-        <main className={styles.main}>
+        <main className={classes.main}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {recipeBooks.status === 'success' && (
               <>
