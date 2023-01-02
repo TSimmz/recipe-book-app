@@ -57,6 +57,8 @@ const Dashboard: NextPage = () => {
     { id: session?.id as string },
   ]);
 
+  console.log('RECIPE BOOK: ', recipeBooks);
+
   const recipeBookMutation = trpc.useMutation(['recipebook.createRecipeBook'], {
     onSuccess: () => {
       recipeBooks.refetch();
@@ -101,6 +103,7 @@ const Dashboard: NextPage = () => {
       <DashboardNavbar
         opened={navbarOpened}
         setOpened={setNavbarOpened}
+        recipeBooks={recipeBooks}
         recipeBookMutation={recipeBookMutation}
       />
     );
@@ -114,18 +117,7 @@ const Dashboard: NextPage = () => {
         <Metadata title="Recipe Book Dashboard" />
         <main className={classes.main}>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {recipeBooks.status === 'success' && (
-              <>
-                {recipeBooks.data.map((recipeBook) => {
-                  return (
-                    <div key={recipeBook.title}>
-                      <h2>{recipeBook.title}</h2>
-                      <h4>{recipeBook.description}</h4>
-                    </div>
-                  );
-                })}
-              </>
-            )}
+            EMPTY PAGE
           </div>
         </main>
       </div>
