@@ -10,28 +10,24 @@ const createRecipeBookSchema = z.object({
   description: z.string(),
 });
 
-interface CreateRecipeBookProps {
+type CreateRecipeBookProps = {
   userId: string;
   setOpenCreateRecipeBook: React.Dispatch<React.SetStateAction<boolean>>;
   recipeBookMutation: any;
-}
+};
 
 const CreateRecipeBook: React.FC<CreateRecipeBookProps> = ({
   userId,
   setOpenCreateRecipeBook,
   recipeBookMutation,
-}) => {
+}: CreateRecipeBookProps) => {
+  // Form set up
   const form = useForm({
     validate: zodResolver(createRecipeBookSchema),
     initialValues: { title: '', description: '' },
   });
 
-  //const recipeBookMutation = trpc.useMutation(['recipebook.createRecipeBook']);
-
-  // const handleError = (errors: typeof form.errors) => {
-  //   console.log('Errors', errors);
-  // };
-
+  // Submit
   const handleSubmit = (values: typeof form.values) => {
     // Create a recipe book
     const title = values.title;

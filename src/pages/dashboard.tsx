@@ -6,7 +6,7 @@ import {
   Container,
   Flex,
   Navbar,
-  Text,
+  Modal,
   Header,
   MediaQuery,
   Burger,
@@ -86,25 +86,27 @@ const Dashboard: NextPage = () => {
       >
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           This page is secret!
-          {!openCreateRecipeBook && (
-            <div style={{ margin: '1rem' }}>
-              <Button
-                color="yellow"
-                radius="md"
-                size="md"
-                onClick={() => setOpenCreateRecipeBook(true)}
-              >
-                Create Recipe Book
-              </Button>
-            </div>
-          )}
-          {openCreateRecipeBook && (
+          <div style={{ margin: '1rem' }}>
+            <Button
+              color="yellow"
+              radius="md"
+              size="md"
+              onClick={() => setOpenCreateRecipeBook(true)}
+            >
+              Create Recipe Book
+            </Button>
+          </div>
+          <Modal
+            opened={openCreateRecipeBook}
+            onClose={() => setOpenCreateRecipeBook(false)}
+            size="md"
+          >
             <CreateRecipeBook
               userId={userId}
               setOpenCreateRecipeBook={setOpenCreateRecipeBook}
               recipeBookMutation={recipeBookMutation}
             />
-          )}
+          </Modal>
           {!openCreateRecipe && (
             <div style={{ margin: '1rem' }}>
               <Button
