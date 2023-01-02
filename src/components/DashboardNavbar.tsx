@@ -9,12 +9,12 @@ import {
   MediaQuery,
   useMantineTheme,
   ActionIcon,
+  ScrollArea,
 } from '@mantine/core';
 import { CreateRecipeBook, CreateRecipe } from '@/components';
 
 import { trpc } from '@/utils/trpc';
 import { IconCirclePlus } from '@tabler/icons';
-import Link from 'next/link';
 
 type DashboardNavbarProps = {
   opened: boolean;
@@ -28,7 +28,7 @@ const useStyles = createStyles((theme) => ({
     display: 'flex',
   },
   navbarColumn: {
-    flex: 1,
+    flex: '0 0 220px',
     backgroundColor:
       theme.colorScheme === 'dark'
         ? theme.colors.dark[6]
@@ -48,6 +48,9 @@ const useStyles = createStyles((theme) => ({
     borderBottom: `1px solid ${
       theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[3]
     }`,
+  },
+  scrollBar: {
+    height: '100px',
   },
   link: {
     boxSizing: 'border-box',
@@ -110,11 +113,10 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
 
   const [activeRecipeBook, setActiveRecipeBook] = useState('Settings');
 
-  //recipeBooks.status === 'success' &&
   const recipeBooksList =
     recipeBooks.status === 'success'
       ? recipeBooks.data.map((recipeBook: any, index: number) => (
-          <Link
+          <a
             className={cx(classes.link, {
               [classes.linkActive]: activeRecipeBook === recipeBook.title,
             })}
@@ -122,14 +124,21 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             key={recipeBook.title}
           >
             <Title order={5}>{recipeBook.title}</Title>
-          </Link>
+          </a>
         ))
       : null;
 
   return (
     <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ lg: 500 }}>
       <Navbar.Section grow className={classes.navbar}>
-        <div className={classes.navbarColumn}>
+        <div className={classes.navbarColumn} hidden={!recipeBookNavbarOpened}>
+          <Burger
+            opened={recipeNavbarOpened}
+            onClick={() => setRecipeNavbarOpened((o) => !o)}
+            size="sm"
+            color={theme.colors.gray[6]}
+            mr="xl"
+          />
           <div className={classes.navbarTitle}>
             <Title order={5}>Create Recipe Book</Title>
             <ActionIcon
@@ -139,8 +148,14 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
               <IconCirclePlus />
             </ActionIcon>
           </div>
-
-          {recipeBooksList}
+          <ScrollArea.Autosize
+            maxHeight={600}
+            classNames={{
+              scrollbar: classes.scrollBar,
+            }}
+          >
+            {recipeBooksList}
+          </ScrollArea.Autosize>
           <Modal
             opened={openCreateRecipeBook}
             onClose={() => setOpenCreateRecipeBook(false)}
@@ -153,7 +168,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             />
           </Modal>
         </div>
-        <div className={classes.navbarColumn}>
+        <div className={classes.navbarColumn} hidden={!recipeNavbarOpened}>
           <div className={classes.navbarTitle}>
             <Title order={5}>Create Recipe</Title>
             <ActionIcon color="dark" onClick={() => setOpenCreateRecipe(true)}>
