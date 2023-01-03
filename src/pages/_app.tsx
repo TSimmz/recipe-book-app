@@ -5,7 +5,7 @@ import type { AppRouter } from '../server/router';
 import type { AppType } from 'next/dist/shared/lib/utils';
 import { Provider as ReduxProvider } from 'react-redux';
 import { MantineProvider } from '@mantine/core';
-import store from './store';
+import store from '@/features/store';
 
 import superjson from 'superjson';
 import { SessionProvider } from 'next-auth/react';

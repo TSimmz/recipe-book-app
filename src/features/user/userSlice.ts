@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { RootState } from '@/pages/store';
+import { RootState } from '@/features/store';
 
 export const userSlice = createSlice({
   name: 'user',
@@ -7,17 +7,15 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state = action.payload;
-    }, 
-    clearUser: (state) => { state = {}},
-  }
+    },
+    clearUser: (state) => {
+      state = {};
+    },
+  },
 });
 
-export const {
-  setUser,
-  clearUser,
-} = userSlice.actions;
+export const { setUser, clearUser } = userSlice.actions;
 
-
-export const selectUser = (state : RootState) => state.user;
+export const selectUser = (state: RootState) => state.user;
 
 export default userSlice.reducer;
