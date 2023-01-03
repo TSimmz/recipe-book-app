@@ -57,7 +57,7 @@ const Dashboard: NextPage = () => {
     { id: session?.id as string },
   ]);
 
-  console.log('RECIPE BOOK: ', recipeBooks);
+  //console.log('RECIPE BOOK: ', recipeBooks);
 
   const recipeBookMutation = trpc.useMutation(['recipebook.createRecipeBook'], {
     onSuccess: () => {
