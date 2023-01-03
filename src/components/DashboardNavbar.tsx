@@ -11,6 +11,7 @@ import {
   useMantineTheme,
   ActionIcon,
   ScrollArea,
+  CloseButton,
 } from '@mantine/core';
 import { CreateRecipeBook, CreateRecipe } from '@/components';
 
@@ -58,6 +59,9 @@ const useStyles = createStyles((theme) => ({
   },
   scrollBar: {
     height: '100px',
+  },
+  hideNavbar: {
+    display: 'none',
   },
   link: {
     boxSizing: 'border-box',
@@ -108,7 +112,6 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
 }: DashboardNavbarProps) => {
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
-  console.log('THEME: ', theme);
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
   const userId = session?.id as string;
@@ -128,7 +131,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             className={cx(classes.link, {
               [classes.linkActive]: activeRecipeBook === recipeBook.title,
             })}
-            href={`/${recipeBook.id}`}
+            href={`#`}
             key={recipeBook.title}
           >
             <Title order={5}>{recipeBook.title}</Title>
@@ -137,12 +140,16 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
       : null;
 
   return (
-    <Navbar hiddenBreakpoint="sm" hidden={!opened} width={{ lg: 440 }}>
+    <Navbar
+      className={cx(classes.navbar, { [classes.hideNavbar]: opened === false })}
+      width={{ lg: 440 }}
+    >
       <Navbar.Section grow className={classes.navbar}>
         <div
           className={cx(classes.navbarColumn, classes.bookNavbar)}
           hidden={!recipeBookNavbarOpened}
         >
+          <CloseButton onClick={() => setRecipeBookNavbarOpened(false)} />
           <div className={classes.navbarTitle}>
             <Title order={5}>Books</Title>
             <Tooltip
@@ -184,7 +191,8 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
           className={cx(classes.navbarColumn, classes.recipeNavbar)}
           hidden={!recipeNavbarOpened}
         >
-          <div className={classes.navbarTitle}>
+          <CloseButton onClick={() => setRecipeNavbarOpened(false)} />
+          <div className={cx(classes.navbarTitle)}>
             <Title order={5}>Recipes</Title>
             <Tooltip
               label="Create New Recipe"

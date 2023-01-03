@@ -47,8 +47,8 @@ const Dashboard: NextPage = () => {
   const [navbarOpened, setNavbarOpened] = useState(false);
 
   const { data: session } = trpc.useQuery(['auth.getSession'], {
-    refetchInterval: 500,
-    refetchIntervalInBackground: true,
+    // refetchInterval: 500,
+    // refetchIntervalInBackground: true,
   });
   const userId = session?.id as string;
 
@@ -69,15 +69,14 @@ const Dashboard: NextPage = () => {
     return (
       <Header height={70} p="md">
         <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-          <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-            <Burger
-              opened={headerOpened}
-              onClick={() => setHeaderOpened((o) => !o)}
-              size="sm"
-              color={theme.colors.gray[6]}
-              mr="xl"
-            />
-          </MediaQuery>
+          <Burger
+            opened={navbarOpened}
+            onClick={() => setNavbarOpened((o) => !o)}
+            size="sm"
+            color={theme.colors.gray[6]}
+            mr="xl"
+          />
+
           <Container style={{ width: '100%', padding: '1rem', margin: '0' }}>
             <Flex justify="flex-end">
               <Button
