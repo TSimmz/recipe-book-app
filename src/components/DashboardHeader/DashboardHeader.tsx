@@ -1,5 +1,4 @@
 import {
-  createStyles,
   Burger,
   Flex,
   Button,
@@ -10,8 +9,9 @@ import {
   useMantineTheme,
   ActionIcon,
   Avatar,
-  Anchor,
+  Text,
 } from '@mantine/core';
+import useStyles from './styles';
 import { IconTrash, IconEdit, IconSettings } from '@tabler/icons';
 import { signOut } from 'next-auth/react';
 import { ArrowTooltip } from '@/components';
@@ -20,29 +20,6 @@ type DashboardHeaderProps = {
   navbarOpened: boolean;
   setNavbarOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
-const useStyles = createStyles((theme) => ({
-  header: {
-    boxSizing: 'border-box',
-  },
-  mainHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    padding: theme.spacing.xs,
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[6]
-        : theme.colors.appOrange[4],
-  },
-  subHeader: {
-    height: '35px',
-    paddingInline: theme.spacing.lg,
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[6]
-        : theme.colors.appOrange[5],
-  },
-}));
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   navbarOpened,
@@ -55,11 +32,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     { title: 'My Books', href: '#' },
     { title: "Grandma's Cookin'", href: '#' },
     { title: 'Lasagna', href: '#' },
-  ].map((item, index) => (
-    <Anchor href={item.href} key={index}>
-      {item.title}
-    </Anchor>
-  ));
+  ].map((item) => <Text key={item.title}>{item.title}</Text>);
 
   return (
     <Header className={classes.header} height={85}>
