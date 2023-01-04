@@ -25,10 +25,10 @@ const Layout: React.FC<LayoutProps> = ({
               : theme.colors.gray[0],
         },
       }}
+      header={header !== undefined ? header : <DefaultHeader />}
       navbar={navbar !== undefined ? navbar : <DefaultNavbar />}
       navbarOffsetBreakpoint="sm"
       footer={footer !== undefined ? footer : <DefaultFooter />}
-      header={header !== undefined ? header : <DefaultHeader />}
     >
       {children}
     </AppShell>

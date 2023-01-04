@@ -4,12 +4,11 @@ import {
   Navbar,
   Modal,
   Title,
-  Tooltip,
   ActionIcon,
   ScrollArea,
   CloseButton,
 } from '@mantine/core';
-import { CreateRecipeBook, CreateRecipe } from '@/components';
+import { CreateRecipeBook, CreateRecipe, ArrowTooltip } from '@/components';
 
 import { trpc } from '@/utils/trpc';
 import { IconCirclePlus } from '@tabler/icons';
@@ -144,15 +143,10 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
           className={cx(classes.navbarColumn, classes.bookNavbar)}
           hidden={!recipeBookNavbarOpened}
         >
-          <CloseButton onClick={() => setRecipeBookNavbarOpened(false)} />
+          {/* <CloseButton onClick={() => setRecipeBookNavbarOpened(false)} /> */}
           <div className={classes.navbarTitle}>
             <Title order={5}>Books</Title>
-            <Tooltip
-              label="Create New Book"
-              withArrow
-              transition="fade"
-              transitionDuration={250}
-            >
+            <ArrowTooltip label="Create New Book">
               <ActionIcon
                 radius="lg"
                 color="dark"
@@ -160,7 +154,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
               >
                 <IconCirclePlus />
               </ActionIcon>
-            </Tooltip>
+            </ArrowTooltip>
           </div>
           <ScrollArea.Autosize
             maxHeight={1200}
@@ -186,15 +180,10 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
           className={cx(classes.navbarColumn, classes.recipeNavbar)}
           hidden={!recipeNavbarOpened}
         >
-          <CloseButton onClick={() => setRecipeNavbarOpened(false)} />
+          {/* <CloseButton onClick={() => setRecipeNavbarOpened(false)} /> */}
           <div className={cx(classes.navbarTitle)}>
             <Title order={5}>Recipes</Title>
-            <Tooltip
-              label="Create New Recipe"
-              withArrow
-              transition="fade"
-              transitionDuration={250}
-            >
+            <ArrowTooltip label="Create New Recipe">
               <ActionIcon
                 radius="lg"
                 color="dark"
@@ -202,7 +191,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
               >
                 <IconCirclePlus />
               </ActionIcon>
-            </Tooltip>
+            </ArrowTooltip>
           </div>
 
           <Modal

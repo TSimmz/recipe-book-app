@@ -2,16 +2,7 @@ import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import { Layout, Metadata } from '@/components';
 import { trpc } from '@/utils/trpc';
-import {
-  Container,
-  Flex,
-  Header,
-  Burger,
-  Button,
-  useMantineTheme,
-  createStyles,
-} from '@mantine/core';
-import { signOut } from 'next-auth/react';
+import { useMantineTheme, createStyles } from '@mantine/core';
 import { DashboardHeader, DashboardNavbar } from '@/components';
 
 const useStyles = createStyles((theme) => ({
@@ -19,9 +10,6 @@ const useStyles = createStyles((theme) => ({
     padding: '0 2rem',
   },
   main: {
-    minHeight: '100vh',
-    padding: '4rem 0',
-    flex: '1',
     display: 'flex',
     gap: '2rem',
     justifyContent: 'center',
@@ -31,15 +19,10 @@ const useStyles = createStyles((theme) => ({
 
 const Dashboard: NextPage = () => {
   const { classes } = useStyles();
-  const theme = useMantineTheme();
 
   const [navbarOpened, setNavbarOpened] = useState(false);
 
-  const { data: session } = trpc.useQuery(['auth.getSession'], {
-    // refetchInterval: 500,
-    // refetchIntervalInBackground: true,
-  });
-  const userId = session?.id as string;
+  const { data: session } = trpc.useQuery(['auth.getSession']);
 
   const recipeBooks = trpc.useQuery([
     'user.getUsersRecipeBooks',
@@ -75,14 +58,14 @@ const Dashboard: NextPage = () => {
   return !session ? (
     <div className={classes.container}>Please sign in to view this page</div>
   ) : (
-    <Layout header={renderDashboardHeader()} navbar={renderDashboardNavbar()}>
+    <Layout
+      header={renderDashboardHeader()}
+      navbar={renderDashboardNavbar()}
+      footer={<></>}
+    >
       <div className={classes.container}>
         <Metadata title="Recipe Book Dashboard" />
-        <main className={classes.main}>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            EMPTY PAGE
-          </div>
-        </main>
+        <main className={classes.main}>EMPTY PAGE</main>
       </div>
     </Layout>
   );
