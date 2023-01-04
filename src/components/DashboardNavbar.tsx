@@ -3,12 +3,8 @@ import {
   createStyles,
   Navbar,
   Modal,
-  Button,
   Title,
-  Burger,
-  MediaQuery,
   Tooltip,
-  useMantineTheme,
   ActionIcon,
   ScrollArea,
   CloseButton,
@@ -20,7 +16,7 @@ import { IconCirclePlus } from '@tabler/icons';
 
 type DashboardNavbarProps = {
   opened: boolean;
-  setOpened: any;
+  setOpened: React.Dispatch<React.SetStateAction<boolean>>;
   recipeBooks: any;
   recipeBookMutation: any;
 };
@@ -111,7 +107,6 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   recipeBookMutation,
 }: DashboardNavbarProps) => {
   const { classes, cx } = useStyles();
-  const theme = useMantineTheme();
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
   const userId = session?.id as string;

@@ -5,17 +5,14 @@ import { trpc } from '@/utils/trpc';
 import {
   Container,
   Flex,
-  Navbar,
-  Modal,
   Header,
-  MediaQuery,
   Burger,
   Button,
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
 import { signOut } from 'next-auth/react';
-import { DashboardNavbar } from '@/components';
+import { DashboardHeader, DashboardNavbar } from '@/components';
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -30,20 +27,12 @@ const useStyles = createStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  ma: {
-    flex: 1,
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[6]
-        : theme.colors.gray[0],
-  },
 }));
 
 const Dashboard: NextPage = () => {
-  const { classes, cx } = useStyles();
+  const { classes } = useStyles();
   const theme = useMantineTheme();
 
-  const [headerOpened, setHeaderOpened] = useState(false);
   const [navbarOpened, setNavbarOpened] = useState(false);
 
   const { data: session } = trpc.useQuery(['auth.getSession'], {
@@ -57,8 +46,6 @@ const Dashboard: NextPage = () => {
     { id: session?.id as string },
   ]);
 
-  //console.log('RECIPE BOOK: ', recipeBooks);
-
   const recipeBookMutation = trpc.useMutation(['recipebook.createRecipeBook'], {
     onSuccess: () => {
       recipeBooks.refetch();
@@ -67,33 +54,10 @@ const Dashboard: NextPage = () => {
 
   const renderDashboardHeader = () => {
     return (
-      <Header height={70} p="md">
-        <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
-          <Burger
-            opened={navbarOpened}
-            onClick={() => setNavbarOpened((o) => !o)}
-            size="sm"
-            color={theme.colors.gray[6]}
-            mr="xl"
-          />
-
-          <Container style={{ width: '100%', padding: '1rem', margin: '0' }}>
-            <Flex justify="flex-end">
-              <Button
-                onClick={() => {
-                  signOut();
-                }}
-                color="yellow"
-                radius="md"
-                size="md"
-              >
-                {' '}
-                Sign Out
-              </Button>
-            </Flex>
-          </Container>
-        </div>
-      </Header>
+      <DashboardHeader
+        navbarOpened={navbarOpened}
+        setNavbarOpened={setNavbarOpened}
+      />
     );
   };
 
