@@ -25,10 +25,12 @@ export const recipeBooksRouter = createRouter()
     input: z.object({
       id: z.string(),
     }),
-    async resolve({input, ctx}) {
-      const recipes = await ctx.prisma.recipeBook.findUnique({
-        where: { id: input.id }
-      }).recipes();
+    async resolve({ input, ctx }) {
+      const recipes = await ctx.prisma.recipeBook
+        .findUnique({
+          where: { id: input.id },
+        })
+        .recipes();
 
       if (!recipes)
         throw new TRPCError({
@@ -37,7 +39,7 @@ export const recipeBooksRouter = createRouter()
         });
 
       return recipes;
-    }
+    },
   })
   .mutation('createRecipeBook', {
     input: z.object({
@@ -55,6 +57,9 @@ export const recipeBooksRouter = createRouter()
               id: input.userId,
             },
           },
+        },
+        include: {
+          user: true,
         },
       });
 

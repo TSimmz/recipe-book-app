@@ -71,7 +71,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             </ArrowTooltip>
           </div>
           <ScrollArea.Autosize
-            maxHeight={1200}
+            maxHeight={600}
             classNames={{
               scrollbar: classes.scrollBar,
             }}

@@ -118,6 +118,7 @@ type Ingredient {
 }
 
 type Step {
+  stepNumber Int
   description String
   notes       String
 }
