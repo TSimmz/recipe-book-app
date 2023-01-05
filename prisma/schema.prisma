@@ -112,6 +112,7 @@ type CookTime {
 }
 
 type Ingredient {
+  key   String
   name  String
   value Float
   unit  String

@@ -1,68 +1,118 @@
-import { trpc } from '@/utils/trpc';
-import { Button, TextInput, Textarea, NumberInput, Title } from '@mantine/core';
+import {
+  Button,
+  Flex,
+  TextInput,
+  Textarea,
+  NumberInput,
+  Title,
+} from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import React from 'react';
-import { z } from 'zod';
 import { IconCirclePlus } from '@tabler/icons';
+import { randomId } from '@mantine/hooks';
+import { z } from 'zod';
 
 const createRecipeSchema = z.object({
   title: z.string(),
   description: z.string(),
-  hours: z.number().min(0),
-  minutes: z.number().min(0).max(59),
-  numberOfServings: z.number().min(1),
+  cookTime: z.object({
+    hours: z.number().nonnegative().int().min(0),
+    minutes: z.number().positive().int().min(0).max(59),
+  }),
+  numberOfServings: z.number().int().positive().min(1),
   ingredients: z
     .object({
-      name: z.string(),
       value: z.number(),
       unit: z.string(),
+      name: z.string(),
     })
     .array()
-    .min(1)
-    .optional(),
+    .nonempty(),
   steps: z
     .object({
+      stepNumber: z.number().positive().int(),
       description: z.string(),
-      notes: z.string(),
+      note: z.string(),
     })
     .array()
-    .min(1)
-    .optional(),
+    .nonempty(),
 });
 
-interface CreateRecipeProps {
+type CreateRecipeProps = {
   recipeBookId: string;
   setOpenCreateRecipe: React.Dispatch<React.SetStateAction<boolean>>;
-}
+  recipeMutation: any;
+};
 
 const CreateRecipe: React.FC<CreateRecipeProps> = ({
   recipeBookId,
   setOpenCreateRecipe,
-}) => {
+  recipeMutation,
+}: CreateRecipeProps) => {
+  // Form set up
   const form = useForm({
     validate: zodResolver(createRecipeSchema),
     initialValues: {
       title: '',
       description: '',
-      hours: 0,
-      minutes: 0,
+      cookTime: {
+        hours: 0,
+        minutes: 0,
+      },
       numberOfServings: 1,
-      ingredients: [],
-      steps: [],
+      ingredients: [{ key: randomId(), value: 0, unit: '', name: '' }],
+      steps: [{ stepNumber: 1, description: '', note: '' }],
     },
   });
 
-  //const recipeMutation = trpc.useMutation(('recipe.createRecipe'));
+  const handleAddIngredient = () => {
+    form.insertListItem('ingredients', {
+      key: randomId(),
+      value: 0,
+      unit: '',
+      name: '',
+    });
+  };
 
-  const handleAddIngredient = () => {};
+  const handleRemoveIngredient = () => {};
+
+  const ingredientFields = form.values.ingredients.map((item, index) => (
+    <Flex key={`${item.key}-${index}`}>
+      <NumberInput
+        label="Value"
+        stepHoldDelay={500}
+        stepHoldInterval={100}
+        min={0}
+        required
+        {...form.getInputProps(`ingredients.${index}.value`)}
+      />
+      <TextInput
+        placeholder="Unit"
+        label="Unit"
+        required
+        {...form.getInputProps(`ingredients.${index}.unit`)}
+      />
+      <TextInput
+        placeholder="Name"
+        label="Name"
+        required
+        {...form.getInputProps(`ingredients.${index}.name`)}
+      />
+    </Flex>
+  ));
 
   const handleAddStep = () => {};
+
+  const renderSteps = () => {};
 
   const handleSubmit = (values: typeof form.values) => {
     // Create the recipe
     console.log('Recipe Values: ', values);
-
+    // const create = recipeMutation.mutate({
+    //   recipeBookId,
+    //   ...values,
+    // });
     // Close the modal
+    setOpenCreateRecipe(false);
   };
 
   return (
@@ -86,7 +136,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
         stepHoldInterval={100}
         min={0}
         required
-        {...form.getInputProps('hours')}
+        {...form.getInputProps('cookTime.hours')}
       />
       <NumberInput
         label="Minutes"
@@ -95,7 +145,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
         required
         min={0}
         max={59}
-        {...form.getInputProps('minutes')}
+        {...form.getInputProps('cookTime.minutes')}
       />
       <NumberInput
         label="Number of Servings"
@@ -108,6 +158,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
       />
 
       <Title order={5}>Ingredients</Title>
+      {ingredientFields}
       <Button
         color="yellow"
         rightIcon={<IconCirclePlus size={16} />}

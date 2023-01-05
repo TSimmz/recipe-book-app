@@ -32,6 +32,7 @@ const CreateRecipeBook: React.FC<CreateRecipeBookProps> = ({
     // Create a recipe book
     const title = values.title;
     const description = values.description;
+
     const create = recipeBookMutation.mutate({ userId, title, description });
 
     // Close modal

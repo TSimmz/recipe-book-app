@@ -27,12 +27,13 @@ export const recipesRouter = createRouter()
       title: z.string(),
       description: z.string(),
       cookTime: z.object({
-        hours: z.number().nonnegative().int(),
-        minutes: z.number().positive().int(),
+        hours: z.number().nonnegative().int().min(0),
+        minutes: z.number().positive().int().min(0).max(59),
       }),
-      numberOfServings: z.number().positive(),
+      numberOfServings: z.number().int().positive().min(1),
       ingredients: z
         .object({
+          key: z.string(),
           name: z.string(),
           value: z.number(),
           unit: z.string(),
@@ -43,7 +44,7 @@ export const recipesRouter = createRouter()
         .object({
           stepNumber: z.number().positive().int(),
           description: z.string(),
-          notes: z.string(),
+          note: z.string(),
         })
         .array()
         .nonempty(),

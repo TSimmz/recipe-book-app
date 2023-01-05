@@ -11,6 +11,12 @@ type DashboardNavbarProps = {
   setOpened: React.Dispatch<React.SetStateAction<boolean>>;
   recipeBooks: any;
   recipeBookMutation: any;
+  recipes: any;
+  recipeMutation: any;
+  activeRecipeBook: string;
+  setActiveRecipeBook: React.Dispatch<React.SetStateAction<string>>;
+  activeRecipe: string;
+  setActiveRecipe: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
@@ -18,6 +24,12 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   setOpened,
   recipeBooks,
   recipeBookMutation,
+  recipes,
+  recipeMutation,
+  activeRecipeBook,
+  setActiveRecipeBook,
+  activeRecipe,
+  setActiveRecipe,
 }: DashboardNavbarProps) => {
   const { classes, cx } = useStyles();
 
@@ -30,17 +42,16 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   const [openCreateRecipe, setOpenCreateRecipe] = useState(false);
   const [recipeNavbarOpened, setRecipeNavbarOpened] = useState(true);
 
-  const [activeRecipeBook, setActiveRecipeBook] = useState('Settings');
-
   const recipeBooksList =
     recipeBooks.status === 'success'
       ? recipeBooks.data.map((recipeBook: any, index: number) => (
           <a
             className={cx(classes.link, {
-              [classes.linkActive]: activeRecipeBook === recipeBook.title,
+              [classes.linkActive]: activeRecipeBook === recipeBook.id,
             })}
             href={`#`}
             key={recipeBook.title}
+            onClick={() => setActiveRecipeBook(recipeBook.id)}
           >
             <Title order={5}>{recipeBook.title}</Title>
           </a>
@@ -101,6 +112,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
               <ActionIcon
                 radius="lg"
                 color="dark"
+                disabled={activeRecipeBook === ''}
                 onClick={() => setOpenCreateRecipe(true)}
               >
                 <IconCirclePlus />
@@ -114,8 +126,9 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             size="md"
           >
             <CreateRecipe
-              recipeBookId={'recipeBookId'}
+              recipeBookId={activeRecipeBook}
               setOpenCreateRecipe={setOpenCreateRecipe}
+              recipeMutation={recipeMutation}
             />
           </Modal>
         </div>

@@ -9,6 +9,8 @@ const Dashboard: NextPage = () => {
   const { classes } = useStyles();
 
   const [navbarOpened, setNavbarOpened] = useState(false);
+  const [activeRecipeBook, setActiveRecipeBook] = useState('');
+  const [activeRecipe, setActiveRecipe] = useState('');
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
 
@@ -20,6 +22,17 @@ const Dashboard: NextPage = () => {
   const recipeBookMutation = trpc.useMutation(['recipebook.createRecipeBook'], {
     onSuccess: () => {
       recipeBooks.refetch();
+    },
+  });
+
+  const recipes = trpc.useQuery([
+    'recipebook.getAllRecipesInBook',
+    { id: activeRecipeBook },
+  ]);
+
+  const recipeMutation = trpc.useMutation(['recipe.createRecipe'], {
+    onSuccess: () => {
+      recipes.refetch();
     },
   });
 
@@ -39,6 +52,12 @@ const Dashboard: NextPage = () => {
         setOpened={setNavbarOpened}
         recipeBooks={recipeBooks}
         recipeBookMutation={recipeBookMutation}
+        recipes={recipes}
+        recipeMutation={recipeMutation}
+        activeRecipeBook={activeRecipeBook}
+        setActiveRecipeBook={setActiveRecipeBook}
+        activeRecipe={activeRecipe}
+        setActiveRecipe={setActiveRecipe}
       />
     );
   };
