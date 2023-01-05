@@ -8,7 +8,7 @@ import {
 } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { IconCirclePlus } from '@tabler/icons';
-import { randomId } from '@mantine/hooks';
+import { randomId, useCounter } from '@mantine/hooks';
 import { z } from 'zod';
 
 const createRecipeSchema = z.object({
@@ -21,6 +21,7 @@ const createRecipeSchema = z.object({
   numberOfServings: z.number().int().positive().min(1),
   ingredients: z
     .object({
+      key: z.string(),
       value: z.number(),
       unit: z.string(),
       name: z.string(),
@@ -29,9 +30,10 @@ const createRecipeSchema = z.object({
     .nonempty(),
   steps: z
     .object({
+      key: z.string(),
       stepNumber: z.number().positive().int(),
       description: z.string(),
-      note: z.string(),
+      note: z.string().optional(),
     })
     .array()
     .nonempty(),
@@ -60,9 +62,11 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
       },
       numberOfServings: 1,
       ingredients: [{ key: randomId(), value: 0, unit: '', name: '' }],
-      steps: [{ stepNumber: 1, description: '', note: '' }],
+      steps: [{ key: randomId(), stepNumber: 1, description: '', note: '' }],
     },
   });
+
+  const [stepCount, stepCounterHandler] = useCounter(2, { min: 0 });
 
   const handleAddIngredient = () => {
     form.insertListItem('ingredients', {
@@ -100,9 +104,32 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
     </Flex>
   ));
 
-  const handleAddStep = () => {};
+  const handleAddStep = () => {
+    form.insertListItem('steps', {
+      key: randomId(),
+      stepNumber: stepCount,
+      description: '',
+      note: '',
+    });
 
-  const renderSteps = () => {};
+    stepCounterHandler.increment;
+  };
+
+  const stepsFields = form.values.steps.map((item, index) => (
+    <Flex key={`${item.key}-${index}`}>
+      <Textarea
+        placeholder="Description"
+        label="Description"
+        required
+        {...form.getInputProps(`steps.${index}.description`)}
+      />
+      <Textarea
+        placeholder="Note"
+        label="Note"
+        {...form.getInputProps(`steps.${index}.note`)}
+      />
+    </Flex>
+  ));
 
   const handleSubmit = (values: typeof form.values) => {
     // Create the recipe
@@ -167,6 +194,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
         Add
       </Button>
       <Title order={5}>Steps</Title>
+      {stepsFields}
       <Button
         color="yellow"
         rightIcon={<IconCirclePlus size={16} />}
