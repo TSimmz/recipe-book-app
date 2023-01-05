@@ -2,20 +2,8 @@ import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import { Layout, Metadata } from '@/components';
 import { trpc } from '@/utils/trpc';
-import { useMantineTheme, createStyles } from '@mantine/core';
+import useStyles from '@/styles/dashboardStyles';
 import { DashboardHeader, DashboardNavbar } from '@/components';
-
-const useStyles = createStyles((theme) => ({
-  container: {
-    padding: '0 2rem',
-  },
-  main: {
-    display: 'flex',
-    gap: '2rem',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-}));
 
 const Dashboard: NextPage = () => {
   const { classes } = useStyles();
