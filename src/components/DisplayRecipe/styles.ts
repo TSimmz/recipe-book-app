@@ -1,8 +1,8 @@
 import { createStyles } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
-  main: {
-    display: 'flex',
+  title: {
+    borderBottom: `3px solid ${theme.black}`,
   },
 }));
 

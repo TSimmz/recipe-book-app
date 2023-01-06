@@ -1,8 +1,14 @@
 import type { NextPage } from 'next';
-import { Layout, Metadata } from '@/components';
+import {
+  DisplayRecipe,
+  Layout,
+  Metadata,
+  DashboardHeader,
+  DashboardNavbar,
+} from '@/components';
+import { Text } from '@mantine/core';
 import { trpc } from '@/utils/trpc';
 import useStyles from '@/styles/dashboardStyles';
-import { DashboardHeader, DashboardNavbar } from '@/components';
 import {
   selectActiveRecipe,
   selectActiveRecipeBook,
@@ -41,11 +47,11 @@ const Dashboard: NextPage = () => {
     },
   });
 
-  const renderDashboardHeader = () => {
+  const renderDashboardHeader: () => JSX.Element = () => {
     return <DashboardHeader />;
   };
 
-  const renderDashboardNavbar = () => {
+  const renderDashboardNavbar: () => JSX.Element = () => {
     return navbarOpened ? (
       <DashboardNavbar
         recipeBooks={recipeBooks}
@@ -59,16 +65,16 @@ const Dashboard: NextPage = () => {
   };
 
   return !session ? (
-    <div className={classes.container}>Please sign in to view this page</div>
+    <div>Please sign in to view this page</div>
   ) : (
     <Layout
       header={renderDashboardHeader()}
       navbar={renderDashboardNavbar()}
       footer={<></>}
     >
-      <div className={classes.container}>
-        <Metadata title="Recipe Book Dashboard" />
-        <main className={classes.main}>EMPTY PAGE</main>
+      <Metadata title="Recipe Book Dashboard" />
+      <div className={classes.main}>
+        {activeRecipe ? <DisplayRecipe /> : <Text>EMPTY PAGE</Text>}
       </div>
     </Layout>
   );

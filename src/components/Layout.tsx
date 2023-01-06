@@ -5,7 +5,7 @@ type LayoutProps = {
   header?: JSX.Element;
   navbar?: JSX.Element;
   footer?: JSX.Element;
-  children: JSX.Element;
+  children: React.ReactNode;
 };
 
 const Layout: React.FC<LayoutProps> = ({

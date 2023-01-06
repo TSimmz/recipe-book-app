@@ -17,7 +17,7 @@ type TooltipPosition =
 type ArrowTooltipProps = {
   label: string;
   position?: TooltipPosition;
-  children: JSX.Element;
+  children: React.ReactNode;
 };
 
 const ArrowTooltip: React.FC<ArrowTooltipProps> = ({
