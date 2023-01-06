@@ -12,6 +12,7 @@ import {
   Text,
 } from '@mantine/core';
 import useStyles from './styles';
+import { trpc } from '@/utils/trpc';
 import { IconTrash, IconEdit, IconSettings } from '@tabler/icons';
 import { signOut } from 'next-auth/react';
 import { ArrowTooltip } from '@/components';
@@ -19,20 +20,30 @@ import { ArrowTooltip } from '@/components';
 type DashboardHeaderProps = {
   navbarOpened: boolean;
   setNavbarOpened: React.Dispatch<React.SetStateAction<boolean>>;
+  activeRecipeBook: string;
+  activeRecipe: string;
 };
 
 const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   navbarOpened,
   setNavbarOpened,
+  activeRecipeBook,
+  activeRecipe,
 }: DashboardHeaderProps) => {
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
 
-  const testBreadcrumbs = [
-    { title: 'My Books', href: '#' },
-    { title: "Grandma's Cookin'", href: '#' },
-    { title: 'Lasagna', href: '#' },
-  ].map((item) => <Text key={item.title}>{item.title}</Text>);
+  const recipeBook = trpc.useQuery([
+    'recipebook.getRecipeBookById',
+    { id: activeRecipeBook },
+  ]);
+  const recipe = trpc.useQuery(['recipe.getRecipeById', { id: activeRecipe }]);
+
+  const breadCrumbs = [
+    { crumb: 'My Books' },
+    { crumb: recipeBook.data?.title },
+    { crumb: recipe.data?.title },
+  ].map((item) => item.crumb && <Text key={item.crumb}>{item.crumb}</Text>);
 
   return (
     <Header className={classes.header} height={85}>
@@ -63,7 +74,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               color={theme.colors.gray[6]}
               mr="xl"
             />
-            <Breadcrumbs separator=">">{testBreadcrumbs}</Breadcrumbs>
+            <Breadcrumbs separator=">">{breadCrumbs}</Breadcrumbs>
           </Flex>
           <Flex gap={10}>
             <ArrowTooltip label="Delete Recipe" position="bottom">

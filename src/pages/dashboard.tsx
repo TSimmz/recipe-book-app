@@ -41,6 +41,8 @@ const Dashboard: NextPage = () => {
       <DashboardHeader
         navbarOpened={navbarOpened}
         setNavbarOpened={setNavbarOpened}
+        activeRecipeBook={activeRecipeBook}
+        activeRecipe={activeRecipe}
       />
     );
   };

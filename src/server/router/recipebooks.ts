@@ -8,6 +8,7 @@ export const recipeBooksRouter = createRouter()
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
+      if (input.id === '') return;
       const recipeBook = await ctx.prisma.recipeBook.findUnique({
         where: { id: input.id },
       });
