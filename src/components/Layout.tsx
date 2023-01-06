@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({
           background:
             theme.colorScheme === 'dark'
               ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+              : theme.colors.appOrange[0],
         },
       }}
       header={header !== undefined ? header : <DefaultHeader />}

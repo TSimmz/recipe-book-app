@@ -22,7 +22,7 @@ const DefaultHeader: React.FC<
             opened={opened}
             onClick={() => setOpened((o) => !o)}
             size="sm"
-            color={theme.colors.gray[6]}
+            color={theme.black}
             mr="xl"
           />
         </MediaQuery>

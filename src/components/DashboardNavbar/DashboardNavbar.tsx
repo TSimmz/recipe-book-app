@@ -1,6 +1,14 @@
 import { useState } from 'react';
 import useStyles from './styles';
-import { Navbar, Modal, Title, ActionIcon, ScrollArea } from '@mantine/core';
+import {
+  Navbar,
+  Modal,
+  Title,
+  ActionIcon,
+  ScrollArea,
+  Anchor,
+  useMantineTheme,
+} from '@mantine/core';
 import { CreateRecipeBook, CreateRecipe, ArrowTooltip } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
@@ -36,6 +44,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   const activeRecipe = useSelector(selectActiveRecipe);
 
   const { classes, cx } = useStyles();
+  const theme = useMantineTheme();
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
   const userId = session?.id as string;
@@ -55,16 +64,18 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   const recipeBooksList =
     recipeBooks.status === 'success'
       ? recipeBooks.data.map((recipeBook: any, index: number) => (
-          <a
-            className={cx(classes.link, {
-              [classes.linkActive]: activeRecipeBook === recipeBook.id,
+          <Anchor
+            component="button"
+            type="button"
+            className={cx(classes.navLink, classes.recipeBookLinkColor, {
+              [classes.recipeBookLinkActiveColor]:
+                activeRecipeBook === recipeBook.id,
             })}
-            href={`#`}
             key={recipeBook.title}
             onClick={() => handleRecipeBookClick(recipeBook.id)}
           >
             <Title order={5}>{recipeBook.title}</Title>
-          </a>
+          </Anchor>
         ))
       : null;
 
@@ -76,16 +87,17 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   const recipesList =
     activeRecipeBook !== '' && recipes.status === 'success'
       ? recipes.data.map((recipe: any, index: number) => (
-          <a
-            className={cx(classes.link, {
-              [classes.linkActive]: activeRecipe === recipe.id,
+          <Anchor
+            component="button"
+            type="button"
+            className={cx(classes.navLink, classes.recipeLinkColor, {
+              [classes.recipeLinkActiveColor]: activeRecipe === recipe.id,
             })}
-            href={`#`}
             key={recipe.title}
             onClick={() => handleRecipeClick(recipe.id)}
           >
             <Title order={5}>{recipe.title}</Title>
-          </a>
+          </Anchor>
         ))
       : null;
 

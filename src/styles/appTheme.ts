@@ -4,7 +4,7 @@ const appTheme: MantineThemeOverride = {
   colorScheme: 'light',
   colors: {
     appOrange: [
-      '#E5E5E5', // Base background
+      '#FEF9F2', // Base background
       '#FAEAD2',
       '#FFD9A0', // Recipe Navbar
       '#FFCB7D', // Recipebook Navbar
@@ -16,6 +16,8 @@ const appTheme: MantineThemeOverride = {
       '#6E4F22',
     ],
   },
+  fontFamily:
+    'Poppins, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
 };
 
 export default appTheme;

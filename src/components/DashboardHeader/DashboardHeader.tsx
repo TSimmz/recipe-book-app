@@ -77,24 +77,24 @@ const DashboardHeader: React.FC<
               opened={navbarOpened}
               onClick={() => dispatch(toggleNavbar())}
               size="sm"
-              color={theme.colors.gray[6]}
+              color={theme.black}
               mr="xl"
             />
             <Breadcrumbs separator=">">{breadCrumbs}</Breadcrumbs>
           </Flex>
           <Flex gap={10}>
             <ArrowTooltip label="Delete Recipe" position="bottom">
-              <ActionIcon>
+              <ActionIcon color="dark">
                 <IconTrash />
               </ActionIcon>
             </ArrowTooltip>
             <ArrowTooltip label="Edit Recipe" position="bottom">
-              <ActionIcon>
+              <ActionIcon color="dark">
                 <IconEdit />
               </ActionIcon>
             </ArrowTooltip>
             <ArrowTooltip label="Recipe Settings" position="bottom">
-              <ActionIcon>
+              <ActionIcon color="dark">
                 <IconSettings />
               </ActionIcon>
             </ArrowTooltip>
