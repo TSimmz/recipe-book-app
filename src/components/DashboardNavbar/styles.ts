@@ -37,9 +37,6 @@ const useStyles = createStyles((theme) => ({
   scrollBar: {
     height: '100px',
   },
-  hideNavbar: {
-    display: 'none',
-  },
   navLink: {
     boxSizing: 'border-box',
     display: 'block',

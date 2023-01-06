@@ -102,12 +102,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
       : null;
 
   return (
-    <Navbar
-      className={cx(classes.navbar, {
-        [classes.hideNavbar]: navbarOpened === false,
-      })}
-      width={{ lg: 440 }}
-    >
+    <Navbar className={classes.navbar} width={{ lg: 440 }}>
       <Navbar.Section grow className={classes.navbar}>
         <div
           className={cx(classes.navbarColumn, classes.bookNavbar)}

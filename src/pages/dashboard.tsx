@@ -4,10 +4,14 @@ import { Layout, Metadata } from '@/components';
 import { trpc } from '@/utils/trpc';
 import useStyles from '@/styles/dashboardStyles';
 import { DashboardHeader, DashboardNavbar } from '@/components';
-import { selectActiveRecipeBook } from '@/features/dashboard/dashboardSlice';
+import {
+  selectActiveRecipeBook,
+  selectNavbarOpened,
+} from '@/features/dashboard/dashboardSlice';
 import { useSelector } from 'react-redux';
 
 const Dashboard: NextPage = () => {
+  const navbarOpened = useSelector(selectNavbarOpened);
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const { classes } = useStyles();
 
@@ -40,13 +44,15 @@ const Dashboard: NextPage = () => {
   };
 
   const renderDashboardNavbar = () => {
-    return (
+    return navbarOpened ? (
       <DashboardNavbar
         recipeBooks={recipeBooks}
         recipeBookMutation={recipeBookMutation}
         recipes={recipes}
         recipeMutation={recipeMutation}
       />
+    ) : (
+      <></>
     );
   };
 
