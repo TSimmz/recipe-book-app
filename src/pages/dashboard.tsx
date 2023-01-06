@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
 import type { NextPage } from 'next';
 import { Layout, Metadata } from '@/components';
 import { trpc } from '@/utils/trpc';
 import useStyles from '@/styles/dashboardStyles';
 import { DashboardHeader, DashboardNavbar } from '@/components';
 import {
+  selectActiveRecipe,
   selectActiveRecipeBook,
   selectNavbarOpened,
 } from '@/features/dashboard/dashboardSlice';
@@ -13,6 +13,8 @@ import { useSelector } from 'react-redux';
 const Dashboard: NextPage = () => {
   const navbarOpened = useSelector(selectNavbarOpened);
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
+  const activeRecipe = useSelector(selectActiveRecipe);
+
   const { classes } = useStyles();
 
   const { data: session } = trpc.useQuery(['auth.getSession']);

@@ -17,7 +17,6 @@ import {
   selectActiveRecipe,
   setActiveRecipeBook,
   setActiveRecipe,
-  clearActiveRecipeBook,
   clearActiveRecipe,
 } from '@/features/dashboard/dashboardSlice';
 import { useSelector } from 'react-redux';

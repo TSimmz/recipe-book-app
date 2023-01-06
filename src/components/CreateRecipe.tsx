@@ -141,8 +141,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
 
   const handleSubmit = (values: typeof form.values) => {
     // Create the recipe
-    console.log('Recipe Values: ', values);
-
     const create = recipeMutation.mutate({
       recipeBookId,
       ...values,

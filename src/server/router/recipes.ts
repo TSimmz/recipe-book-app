@@ -71,8 +71,6 @@ export const recipesRouter = createRouter()
         },
       });
 
-      console.log('NEW RECIPE: ', recipe);
-
       if (!recipe)
         throw new TRPCError({
           code: 'NOT_FOUND',
