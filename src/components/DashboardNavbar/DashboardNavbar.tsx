@@ -51,7 +51,11 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             })}
             href={`#`}
             key={recipeBook.title}
-            onClick={() => setActiveRecipeBook(recipeBook.id)}
+            onClick={() => {
+              setActiveRecipeBook(recipeBook.id);
+              setActiveRecipe('');
+              return;
+            }}
           >
             <Title order={5}>{recipeBook.title}</Title>
           </a>
@@ -59,7 +63,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
       : null;
 
   const recipesList =
-    recipes.status === 'success'
+    activeRecipeBook !== '' && recipes.status === 'success'
       ? recipes.data.map((recipe: any, index: number) => (
           <a
             className={cx(classes.link, {
@@ -67,7 +71,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             })}
             href={`#`}
             key={recipe.title}
-            onClick={() => setActiveRecipeBook(recipe.id)}
+            onClick={() => setActiveRecipe(recipe.id)}
           >
             <Title order={5}>{recipe.title}</Title>
           </a>
