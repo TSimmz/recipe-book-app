@@ -27,8 +27,8 @@ export const recipesRouter = createRouter()
       title: z.string(),
       description: z.string(),
       cookTime: z.object({
-        hours: z.number().nonnegative().int().min(0),
-        minutes: z.number().positive().int().min(0).max(59),
+        hours: z.number().nonnegative().int(),
+        minutes: z.number().nonnegative().int().max(59),
       }),
       numberOfServings: z.number().int().positive().min(1),
       ingredients: z

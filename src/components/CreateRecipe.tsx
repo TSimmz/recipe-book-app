@@ -5,18 +5,20 @@ import {
   Textarea,
   NumberInput,
   Title,
+  ActionIcon,
 } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
+import { IconTrash } from '@tabler/icons';
 import { IconCirclePlus } from '@tabler/icons';
-import { randomId, useCounter } from '@mantine/hooks';
+import { randomId } from '@mantine/hooks';
 import { z } from 'zod';
 
 const createRecipeSchema = z.object({
   title: z.string(),
   description: z.string(),
   cookTime: z.object({
-    hours: z.number().nonnegative().int().min(0),
-    minutes: z.number().positive().int().min(0).max(59),
+    hours: z.number().nonnegative().int(),
+    minutes: z.number().nonnegative().int().max(59),
   }),
   numberOfServings: z.number().int().positive().min(1),
   ingredients: z
@@ -66,8 +68,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
     },
   });
 
-  const [stepCount, stepCounterHandler] = useCounter(2, { min: 0 });
-
   const handleAddIngredient = () => {
     form.insertListItem('ingredients', {
       key: randomId(),
@@ -76,8 +76,6 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
       name: '',
     });
   };
-
-  const handleRemoveIngredient = () => {};
 
   const ingredientFields = form.values.ingredients.map((item, index) => (
     <Flex key={`${item.key}-${index}`}>
@@ -101,18 +99,22 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
         required
         {...form.getInputProps(`ingredients.${index}.name`)}
       />
+      <ActionIcon
+        color="red"
+        onClick={() => form.removeListItem('ingredients', index)}
+      >
+        <IconTrash size={16} />
+      </ActionIcon>
     </Flex>
   ));
 
   const handleAddStep = () => {
     form.insertListItem('steps', {
       key: randomId(),
-      stepNumber: stepCount,
+      stepNumber: 1,
       description: '',
       note: '',
     });
-
-    stepCounterHandler.increment;
   };
 
   const stepsFields = form.values.steps.map((item, index) => (
@@ -128,6 +130,12 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
         label="Note"
         {...form.getInputProps(`steps.${index}.note`)}
       />
+      <ActionIcon
+        color="red"
+        onClick={() => form.removeListItem('steps', index)}
+      >
+        <IconTrash size={16} />
+      </ActionIcon>
     </Flex>
   ));
 
@@ -206,7 +214,7 @@ const CreateRecipe: React.FC<CreateRecipeProps> = ({
       <br />
 
       <Button type="submit" color="yellow" radius="md" size="md">
-        Save Recipe Book
+        Save Recipe
       </Button>
       <Button
         color="yellow"
