@@ -42,6 +42,12 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
   const [openCreateRecipe, setOpenCreateRecipe] = useState(false);
   const [recipeNavbarOpened, setRecipeNavbarOpened] = useState(true);
 
+  const handleRecipeBookClick = (recipeBookId: string) => {
+    if (activeRecipeBook === recipeBookId) return;
+    setActiveRecipeBook(recipeBookId);
+    setActiveRecipe('');
+  };
+
   const recipeBooksList =
     recipeBooks.status === 'success'
       ? recipeBooks.data.map((recipeBook: any, index: number) => (
@@ -51,16 +57,17 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             })}
             href={`#`}
             key={recipeBook.title}
-            onClick={() => {
-              setActiveRecipeBook(recipeBook.id);
-              setActiveRecipe('');
-              return;
-            }}
+            onClick={() => handleRecipeBookClick(recipeBook.id)}
           >
             <Title order={5}>{recipeBook.title}</Title>
           </a>
         ))
       : null;
+
+  const handleRecipeClick = (recipeId: string) => {
+    if (activeRecipe === recipeId) return;
+    setActiveRecipe(recipeId);
+  };
 
   const recipesList =
     activeRecipeBook !== '' && recipes.status === 'success'
@@ -71,7 +78,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             })}
             href={`#`}
             key={recipe.title}
-            onClick={() => setActiveRecipe(recipe.id)}
+            onClick={() => handleRecipeClick(recipe.id)}
           >
             <Title order={5}>{recipe.title}</Title>
           </a>
