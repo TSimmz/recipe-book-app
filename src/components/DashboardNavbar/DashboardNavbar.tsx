@@ -58,6 +58,22 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
         ))
       : null;
 
+  const recipesList =
+    recipes.status === 'success'
+      ? recipes.data.map((recipe: any, index: number) => (
+          <a
+            className={cx(classes.link, {
+              [classes.linkActive]: activeRecipe === recipe.id,
+            })}
+            href={`#`}
+            key={recipe.title}
+            onClick={() => setActiveRecipeBook(recipe.id)}
+          >
+            <Title order={5}>{recipe.title}</Title>
+          </a>
+        ))
+      : null;
+
   return (
     <Navbar
       className={cx(classes.navbar, { [classes.hideNavbar]: opened === false })}
@@ -119,7 +135,14 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
               </ActionIcon>
             </ArrowTooltip>
           </div>
-
+          <ScrollArea.Autosize
+            maxHeight={600}
+            classNames={{
+              scrollbar: classes.scrollBar,
+            }}
+          >
+            {recipesList}
+          </ScrollArea.Autosize>
           <Modal
             opened={openCreateRecipe}
             onClose={() => setOpenCreateRecipe(false)}

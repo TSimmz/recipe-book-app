@@ -42,6 +42,7 @@ export const recipesRouter = createRouter()
         .nonempty(),
       steps: z
         .object({
+          key: z.string(),
           stepNumber: z.number().positive().int(),
           description: z.string(),
           note: z.string(),
@@ -68,6 +69,8 @@ export const recipesRouter = createRouter()
           recipeBook: true,
         },
       });
+
+      console.log('NEW RECIPE: ', recipe);
 
       if (!recipe)
         throw new TRPCError({
