@@ -16,20 +16,26 @@ import { trpc } from '@/utils/trpc';
 import { IconTrash, IconEdit, IconSettings } from '@tabler/icons';
 import { signOut } from 'next-auth/react';
 import { ArrowTooltip } from '@/components';
+import { useAppDispatch } from '@/features/store';
+import {
+  selectNavbarOpened,
+  selectActiveRecipeBook,
+  selectActiveRecipe,
+  toggleNavbar,
+} from '@/features/dashboard/dashboardSlice';
+import { useSelector } from 'react-redux';
 
-type DashboardHeaderProps = {
-  navbarOpened: boolean;
-  setNavbarOpened: React.Dispatch<React.SetStateAction<boolean>>;
-  activeRecipeBook: string;
-  activeRecipe: string;
-};
+type DashboardHeaderProps = {};
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({
-  navbarOpened,
-  setNavbarOpened,
-  activeRecipeBook,
-  activeRecipe,
-}: DashboardHeaderProps) => {
+const DashboardHeader: React.FC<
+  DashboardHeaderProps
+> = ({}: DashboardHeaderProps) => {
+  const dispatch = useAppDispatch();
+
+  const navbarOpened = useSelector(selectNavbarOpened);
+  const activeRecipeBook = useSelector(selectActiveRecipeBook);
+  const activeRecipe = useSelector(selectActiveRecipe);
+
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
 
@@ -69,7 +75,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           <Flex>
             <Burger
               opened={navbarOpened}
-              onClick={() => setNavbarOpened((o) => !o)}
+              onClick={() => dispatch(toggleNavbar())}
               size="sm"
               color={theme.colors.gray[6]}
               mr="xl"

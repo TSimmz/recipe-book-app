@@ -2,35 +2,39 @@ import { useState } from 'react';
 import useStyles from './styles';
 import { Navbar, Modal, Title, ActionIcon, ScrollArea } from '@mantine/core';
 import { CreateRecipeBook, CreateRecipe, ArrowTooltip } from '@/components';
-
+import { useAppDispatch } from '@/features/store';
+import {
+  selectNavbarOpened,
+  selectActiveRecipeBook,
+  selectActiveRecipe,
+  setActiveRecipeBook,
+  setActiveRecipe,
+  clearActiveRecipeBook,
+  clearActiveRecipe,
+} from '@/features/dashboard/dashboardSlice';
+import { useSelector } from 'react-redux';
 import { trpc } from '@/utils/trpc';
 import { IconCirclePlus } from '@tabler/icons';
 
 type DashboardNavbarProps = {
-  opened: boolean;
-  setOpened: React.Dispatch<React.SetStateAction<boolean>>;
   recipeBooks: any;
   recipeBookMutation: any;
   recipes: any;
   recipeMutation: any;
-  activeRecipeBook: string;
-  setActiveRecipeBook: React.Dispatch<React.SetStateAction<string>>;
-  activeRecipe: string;
-  setActiveRecipe: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
-  opened,
-  setOpened,
   recipeBooks,
   recipeBookMutation,
   recipes,
   recipeMutation,
-  activeRecipeBook,
-  setActiveRecipeBook,
-  activeRecipe,
-  setActiveRecipe,
 }: DashboardNavbarProps) => {
+  const dispatch = useAppDispatch();
+
+  const navbarOpened = useSelector(selectNavbarOpened);
+  const activeRecipeBook = useSelector(selectActiveRecipeBook);
+  const activeRecipe = useSelector(selectActiveRecipe);
+
   const { classes, cx } = useStyles();
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
@@ -44,8 +48,8 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
 
   const handleRecipeBookClick = (recipeBookId: string) => {
     if (activeRecipeBook === recipeBookId) return;
-    setActiveRecipeBook(recipeBookId);
-    setActiveRecipe('');
+    dispatch(setActiveRecipeBook(recipeBookId));
+    dispatch(clearActiveRecipe());
   };
 
   const recipeBooksList =
@@ -66,7 +70,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
 
   const handleRecipeClick = (recipeId: string) => {
     if (activeRecipe === recipeId) return;
-    setActiveRecipe(recipeId);
+    dispatch(setActiveRecipe(recipeId));
   };
 
   const recipesList =
@@ -87,7 +91,9 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
 
   return (
     <Navbar
-      className={cx(classes.navbar, { [classes.hideNavbar]: opened === false })}
+      className={cx(classes.navbar, {
+        [classes.hideNavbar]: navbarOpened === false,
+      })}
       width={{ lg: 440 }}
     >
       <Navbar.Section grow className={classes.navbar}>

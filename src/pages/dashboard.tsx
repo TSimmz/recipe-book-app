@@ -4,13 +4,12 @@ import { Layout, Metadata } from '@/components';
 import { trpc } from '@/utils/trpc';
 import useStyles from '@/styles/dashboardStyles';
 import { DashboardHeader, DashboardNavbar } from '@/components';
+import { selectActiveRecipeBook } from '@/features/dashboard/dashboardSlice';
+import { useSelector } from 'react-redux';
 
 const Dashboard: NextPage = () => {
+  const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const { classes } = useStyles();
-
-  const [navbarOpened, setNavbarOpened] = useState(false);
-  const [activeRecipeBook, setActiveRecipeBook] = useState('');
-  const [activeRecipe, setActiveRecipe] = useState('');
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
 
@@ -37,29 +36,16 @@ const Dashboard: NextPage = () => {
   });
 
   const renderDashboardHeader = () => {
-    return (
-      <DashboardHeader
-        navbarOpened={navbarOpened}
-        setNavbarOpened={setNavbarOpened}
-        activeRecipeBook={activeRecipeBook}
-        activeRecipe={activeRecipe}
-      />
-    );
+    return <DashboardHeader />;
   };
 
   const renderDashboardNavbar = () => {
     return (
       <DashboardNavbar
-        opened={navbarOpened}
-        setOpened={setNavbarOpened}
         recipeBooks={recipeBooks}
         recipeBookMutation={recipeBookMutation}
         recipes={recipes}
         recipeMutation={recipeMutation}
-        activeRecipeBook={activeRecipeBook}
-        setActiveRecipeBook={setActiveRecipeBook}
-        activeRecipe={activeRecipe}
-        setActiveRecipe={setActiveRecipe}
       />
     );
   };
