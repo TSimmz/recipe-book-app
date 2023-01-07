@@ -13,7 +13,12 @@ import {
 } from '@mantine/core';
 import useStyles from './styles';
 import { trpc } from '@/utils/trpc';
-import { IconTrash, IconEdit, IconSettings } from '@tabler/icons';
+import {
+  IconTrash,
+  IconEdit,
+  IconSettings,
+  IconArrowRight,
+} from '@tabler/icons';
 import { signOut } from 'next-auth/react';
 import { ArrowTooltip } from '@/components';
 import { useAppDispatch } from '@/features/store';
@@ -54,8 +59,16 @@ const DashboardHeader: React.FC<
   return (
     <Header className={classes.header} height={85}>
       <Flex direction="column">
-        <div className={classes.mainHeader}>
-          <Title order={4}>Recipe Book</Title>
+        <Group
+          className={classes.mainHeader}
+          position="apart"
+          h={50}
+          py={7}
+          px={24}
+        >
+          <Title size={24} fw={'normal'} ff={theme.fontFamily}>
+            Recipe Book
+          </Title>
           <Group>
             <Button
               onClick={() => {
@@ -70,19 +83,30 @@ const DashboardHeader: React.FC<
             </Button>
             <Avatar size={32} radius="xl" />
           </Group>
-        </div>
-        <Group position="apart" className={classes.subHeader}>
+        </Group>
+        <Group
+          className={classes.subHeader}
+          position="apart"
+          h={35}
+          pl={12}
+          pr={24}
+        >
           <Flex>
             <Burger
               opened={navbarOpened}
               onClick={() => dispatch(toggleNavbar())}
               size="sm"
               color={theme.black}
-              mr="xl"
+              mr={12}
             />
-            <Breadcrumbs separator=">">{breadCrumbs}</Breadcrumbs>
+            <Breadcrumbs
+              fz={18}
+              separator={<IconArrowRight color={theme.black} size={18} />}
+            >
+              {breadCrumbs}
+            </Breadcrumbs>
           </Flex>
-          <Flex gap={10}>
+          <Flex gap={8}>
             <ArrowTooltip label="Delete Recipe" position="bottom">
               <ActionIcon color="dark">
                 <IconTrash />
