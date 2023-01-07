@@ -109,7 +109,6 @@ const DashboardHeader: React.FC<
             <IconButton
               label="Delete Recipe"
               tooltipPosition="bottom"
-              disabled={true}
               icon={<IconTrash />}
             />
             <IconButton

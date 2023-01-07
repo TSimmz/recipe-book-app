@@ -8,6 +8,7 @@ import {
   Flex,
   Text,
   useMantineTheme,
+  Loader,
 } from '@mantine/core';
 import { IconUser } from '@tabler/icons';
 import { selectActiveRecipe } from '@/features/dashboard/dashboardSlice';
@@ -46,9 +47,19 @@ const DisplayRecipe: React.FC<
     </Group>
   ));
 
-  return activeRecipe === '' && recipe.status !== 'success' ? (
-    <></>
-  ) : (
+  if (recipe.status === 'loading') {
+    return (
+      <Container w={'100%'} mx={theme.spacing.xl} py={theme.spacing.lg}>
+        <Loader color={theme.colors.appOrange[5]} size="lg" />
+      </Container>
+    );
+  }
+
+  // if (recipe.status === 'error') {
+
+  // }
+
+  return (
     <Container w={'100%'} mx={theme.spacing.xl} py={theme.spacing.lg}>
       <Title size={48} fw={400} mb={theme.spacing.md} className={classes.title}>
         {recipe.data?.title}
