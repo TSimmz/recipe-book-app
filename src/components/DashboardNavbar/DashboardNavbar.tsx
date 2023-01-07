@@ -4,9 +4,12 @@ import {
   Navbar,
   Modal,
   Title,
+  Text,
   ActionIcon,
   ScrollArea,
   Anchor,
+  Group,
+  Flex,
   useMantineTheme,
 } from '@mantine/core';
 import { CreateRecipeBook, CreateRecipe, ArrowTooltip } from '@/components';
@@ -73,7 +76,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             key={recipeBook.title}
             onClick={() => handleRecipeBookClick(recipeBook.id)}
           >
-            <Title order={5}>{recipeBook.title}</Title>
+            <Text>{recipeBook.title}</Text>
           </Anchor>
         ))
       : null;
@@ -95,21 +98,20 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             key={recipe.title}
             onClick={() => handleRecipeClick(recipe.id)}
           >
-            <Title order={5}>{recipe.title}</Title>
+            <Text className={classes.navLinkText}>{recipe.title}</Text>
           </Anchor>
         ))
       : null;
 
   return (
-    <Navbar className={classes.navbar} width={{ lg: 440 }}>
-      <Navbar.Section grow className={classes.navbar}>
-        <div
+    <Navbar display="flex" p={0} width={{ base: 440 }}>
+      <Navbar.Section grow display="flex">
+        <Flex
           className={cx(classes.navbarColumn, classes.bookNavbar)}
           hidden={!recipeBookNavbarOpened}
         >
-          {/* <CloseButton onClick={() => setRecipeBookNavbarOpened(false)} /> */}
-          <div className={classes.navbarTitle}>
-            <Title order={5}>Books</Title>
+          <Group className={classes.navbarTitle} position="apart">
+            <Title>Books</Title>
             <ArrowTooltip label="Create New Book">
               <ActionIcon
                 radius="lg"
@@ -119,15 +121,11 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                 <IconCirclePlus />
               </ActionIcon>
             </ArrowTooltip>
-          </div>
-          <ScrollArea.Autosize
-            maxHeight={600}
-            classNames={{
-              scrollbar: classes.scrollBar,
-            }}
-          >
+          </Group>
+
+          <ScrollArea h={800} w="100%">
             {recipeBooksList}
-          </ScrollArea.Autosize>
+          </ScrollArea>
           <Modal
             opened={openCreateRecipeBook}
             onClose={() => setOpenCreateRecipeBook(false)}
@@ -139,14 +137,14 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
               recipeBookMutation={recipeBookMutation}
             />
           </Modal>
-        </div>
-        <div
+        </Flex>
+        <Flex
           className={cx(classes.navbarColumn, classes.recipeNavbar)}
           hidden={!recipeNavbarOpened}
         >
           {/* <CloseButton onClick={() => setRecipeNavbarOpened(false)} /> */}
-          <div className={cx(classes.navbarTitle)}>
-            <Title order={5}>Recipes</Title>
+          <Group className={classes.navbarTitle} position="apart">
+            <Title>Recipes</Title>
             <ArrowTooltip label="Create New Recipe">
               <ActionIcon
                 radius="lg"
@@ -157,15 +155,10 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
                 <IconCirclePlus />
               </ActionIcon>
             </ArrowTooltip>
-          </div>
-          <ScrollArea.Autosize
-            maxHeight={600}
-            classNames={{
-              scrollbar: classes.scrollBar,
-            }}
-          >
+          </Group>
+          <ScrollArea h={800} w="100%">
             {recipesList}
-          </ScrollArea.Autosize>
+          </ScrollArea>
           <Modal
             opened={openCreateRecipe}
             onClose={() => setOpenCreateRecipe(false)}
@@ -177,7 +170,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
               recipeMutation={recipeMutation}
             />
           </Modal>
-        </div>
+        </Flex>
       </Navbar.Section>
     </Navbar>
   );

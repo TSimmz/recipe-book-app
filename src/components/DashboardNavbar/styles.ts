@@ -1,56 +1,72 @@
 import { createStyles } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
-  navbar: {
-    display: 'flex',
-  },
   navbarColumn: {
     flex: '0 0 220px',
+    display: 'flex',
+    flexDirection: 'column',
+    padding: '10px 0px 10px 10px',
+
+    h1: {
+      fontSize: 18,
+      fontWeight: 'normal',
+      fontFamily: theme.fontFamily,
+    },
   },
+
   bookNavbar: {
     backgroundColor:
       theme.colorScheme === 'dark'
         ? theme.colors.dark[6]
         : theme.colors.appOrange[3],
   },
+
   recipeNavbar: {
     backgroundColor:
       theme.colorScheme === 'dark'
         ? theme.colors.dark[5]
         : theme.colors.appOrange[2],
   },
+
   navbarTitle: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     boxSizing: 'border-box',
-    marginBottom: theme.spacing.xl,
-    padding: theme.spacing.md,
-    paddingTop: 18,
-    height: 60,
-    borderBottom: `1px solid ${
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[7]
-        : theme.colors.appOrange[5]
+    marginBottom: 10,
+    marginRight: 14,
+    marginLeft: 7,
+    padding: '14px 0 8px 7px',
+    height: 50,
+    borderBottom: `2px solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.black
     }`,
   },
-  scrollBar: {
-    height: '100px',
-  },
+
   navLink: {
-    boxSizing: 'border-box',
-    display: 'block',
-    textDecoration: 'none',
     width: '100%',
+    maxWidth: '210px',
+    display: 'block',
+    boxSizing: 'border-box',
+    textDecoration: 'none',
     textAlign: 'left',
     borderTopLeftRadius: theme.radius.md,
     borderBottomLeftRadius: theme.radius.md,
-    padding: `0 ${theme.spacing.md}px`,
-    fontSize: theme.fontSizes.sm,
-    marginLeft: theme.spacing.md,
+    padding: '6px 10px',
+    fontSize: 18,
+    fontWeight: 'normal',
+    fontFamily: theme.fontFamily,
+    marginBottom: '4px',
     height: 44,
     lineHeight: '44px',
+
+    ' > div': {
+      display: 'block',
+      width: '100%',
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
   },
+
+  navLinkText: {},
 
   recipeBookLinkColor: {
     color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
@@ -60,7 +76,7 @@ const useStyles = createStyles((theme) => ({
       backgroundColor:
         theme.colorScheme === 'dark'
           ? theme.colors.dark[5]
-          : theme.colors.appOrange[0],
+          : theme.colors.appOrange[2],
       color: theme.colorScheme === 'dark' ? theme.white : theme.black,
     },
   },
