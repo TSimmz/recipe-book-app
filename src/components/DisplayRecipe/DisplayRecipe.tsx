@@ -33,7 +33,7 @@ const DisplayRecipe: React.FC<
 
   const ingredients = recipe.data?.ingredients.map((ingredient, index) => (
     <Group key={ingredient?.key} mb={theme.spacing.md}>
-      <Text>{ingredient.value}</Text>
+      <Text mr={-10}>{ingredient.value}</Text>
       <Text>{ingredient.unit}</Text>
       <Text>{ingredient.name}</Text>
     </Group>
@@ -43,7 +43,7 @@ const DisplayRecipe: React.FC<
     <Group key={step?.key} mb={theme.spacing.md}>
       <Text>{`${step.stepNumber})`}</Text>
       <Text>{step.description}</Text>
-      {step.note ? <Text>{step.note}</Text> : <></>}
+      {step.note ? <Text ml={48}>{step.note}</Text> : <></>}
     </Group>
   ));
 
@@ -61,26 +61,33 @@ const DisplayRecipe: React.FC<
 
   return (
     <Container w={'100%'} mx={theme.spacing.xl} py={theme.spacing.lg}>
-      <Title size={48} fw={400} mb={theme.spacing.md} className={classes.title}>
+      <Title
+        size={48}
+        fw={400}
+        pb={16}
+        mb={theme.spacing.md}
+        className={classes.title}
+      >
         {recipe.data?.title}
       </Title>
-      <Group mb={theme.spacing.xl}>
+      <Group w="100%" mb={theme.spacing.xl}>
         <Text
           size={14}
           fs="italic"
+          mr={32}
         >{`Cook Time: ${recipe.data?.cookTime.hours}hr ${recipe.data?.cookTime.minutes}min`}</Text>
         <Group position="left">
-          <Text size={14} fs="italic">
+          <Text size={14} mr={-10} fs="italic">
             Serving Size:
           </Text>
-          <Flex gap={4}>{servingSizeField}</Flex>
+          <Flex gap={2}>{servingSizeField}</Flex>
         </Group>
       </Group>
       <Text size={24} mb={theme.spacing.md} td="underline">
         Ingredients
       </Text>
       {ingredients}
-      <Text size={24} mb={theme.spacing.md} td="underline">
+      <Text size={24} my={theme.spacing.md} td="underline">
         Steps
       </Text>
       {steps}
