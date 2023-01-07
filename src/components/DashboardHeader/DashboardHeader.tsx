@@ -7,7 +7,6 @@ import {
   Breadcrumbs,
   Group,
   useMantineTheme,
-  ActionIcon,
   Avatar,
   Text,
 } from '@mantine/core';
@@ -20,7 +19,7 @@ import {
   IconArrowRight,
 } from '@tabler/icons';
 import { signOut } from 'next-auth/react';
-import { ArrowTooltip } from '@/components';
+import { IconButton } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
   selectNavbarOpened,
@@ -107,21 +106,22 @@ const DashboardHeader: React.FC<
             </Breadcrumbs>
           </Flex>
           <Flex gap={8}>
-            <ArrowTooltip label="Delete Recipe" position="bottom">
-              <ActionIcon color="dark">
-                <IconTrash />
-              </ActionIcon>
-            </ArrowTooltip>
-            <ArrowTooltip label="Edit Recipe" position="bottom">
-              <ActionIcon color="dark">
-                <IconEdit />
-              </ActionIcon>
-            </ArrowTooltip>
-            <ArrowTooltip label="Recipe Settings" position="bottom">
-              <ActionIcon color="dark">
-                <IconSettings />
-              </ActionIcon>
-            </ArrowTooltip>
+            <IconButton
+              label="Delete Recipe"
+              tooltipPosition="bottom"
+              disabled={true}
+              icon={<IconTrash />}
+            />
+            <IconButton
+              label="Edit Recipe"
+              tooltipPosition="bottom"
+              icon={<IconEdit />}
+            />
+            <IconButton
+              label="Recipe Settings"
+              tooltipPosition="bottom"
+              icon={<IconSettings />}
+            />
           </Flex>
         </Group>
       </Flex>

@@ -5,14 +5,13 @@ import {
   Modal,
   Title,
   Text,
-  ActionIcon,
   ScrollArea,
   Anchor,
   Group,
   Flex,
   useMantineTheme,
 } from '@mantine/core';
-import { CreateRecipeBook, CreateRecipe, ArrowTooltip } from '@/components';
+import { CreateRecipeBook, CreateRecipe, IconButton } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
   selectNavbarOpened,
@@ -112,15 +111,12 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
         >
           <Group className={classes.navbarTitle} position="apart">
             <Title>Books</Title>
-            <ArrowTooltip label="Create New Book">
-              <ActionIcon
-                radius="lg"
-                color="dark"
-                onClick={() => setOpenCreateRecipeBook(true)}
-              >
-                <IconCirclePlus />
-              </ActionIcon>
-            </ArrowTooltip>
+            <IconButton
+              label="Create New Book"
+              tooltipPosition="top"
+              icon={<IconCirclePlus />}
+              handleClick={() => setOpenCreateRecipeBook(true)}
+            />
           </Group>
 
           <ScrollArea h={800} w="100%">
@@ -145,16 +141,13 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
           {/* <CloseButton onClick={() => setRecipeNavbarOpened(false)} /> */}
           <Group className={classes.navbarTitle} position="apart">
             <Title>Recipes</Title>
-            <ArrowTooltip label="Create New Recipe">
-              <ActionIcon
-                radius="lg"
-                color="dark"
-                disabled={activeRecipeBook === ''}
-                onClick={() => setOpenCreateRecipe(true)}
-              >
-                <IconCirclePlus />
-              </ActionIcon>
-            </ArrowTooltip>
+            <IconButton
+              label="Create New Recipe"
+              tooltipPosition="top"
+              disabled={activeRecipeBook === ''}
+              icon={<IconCirclePlus />}
+              handleClick={() => setOpenCreateRecipe(true)}
+            />
           </Group>
           <ScrollArea h={800} w="100%">
             {recipesList}
