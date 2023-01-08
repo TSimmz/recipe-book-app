@@ -31,7 +31,7 @@ const DisplayRecipe: React.FC<
     }
   }
 
-  const ingredients = recipe.data?.ingredients.map((ingredient, index) => (
+  const ingredients = recipe.data?.ingredients.map((ingredient) => (
     <Group key={ingredient?.key} mb={theme.spacing.md}>
       <Text mr={-10}>{ingredient.value}</Text>
       <Text>{ingredient.unit}</Text>
@@ -39,11 +39,11 @@ const DisplayRecipe: React.FC<
     </Group>
   ));
 
-  const steps = recipe.data?.steps.map((step, index) => (
+  const steps = recipe.data?.steps.map((step) => (
     <Group key={step?.key} mb={theme.spacing.md}>
       <Text>{`${step.stepNumber})`}</Text>
       <Text>{step.description}</Text>
-      {step.note ? <Text ml={48}>{step.note}</Text> : <></>}
+      {step.note ? <Text ml={48}>{step.note}</Text> : null}
     </Group>
   ));
 

@@ -48,7 +48,7 @@ const Dashboard: NextPage = () => {
   });
 
   const renderDashboardHeader: () => JSX.Element = () => {
-    return <DashboardHeader />;
+    return <DashboardHeader recipeBooks={recipeBooks} recipes={recipes} />;
   };
 
   const renderDashboardNavbar: () => JSX.Element = () => {

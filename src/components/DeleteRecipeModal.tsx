@@ -1,24 +1,37 @@
 import { trpc } from '@/utils/trpc';
-import { Loader, Modal, Flex, Text, Group, Button } from '@mantine/core';
+import { useSelector } from 'react-redux';
+import { clearActiveRecipe } from '@/features/dashboard/dashboardSlice';
+import { Modal, Flex, Text, Group, Button } from '@mantine/core';
+import { useAppDispatch } from '@/features/store';
 
 type DeleteRecipeModalProps = {
   activeRecipe: string;
+  recipes: any;
   isDeleteRecipeModalOpened: boolean;
   setDeleteRecipeModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const DeleteRecipeModal: React.FC<DeleteRecipeModalProps> = ({
   activeRecipe,
+  recipes,
   isDeleteRecipeModalOpened,
   setDeleteRecipeModalOpened,
 }: DeleteRecipeModalProps) => {
-  const deleteRecipe = trpc.useMutation(['recipe.deleteRecipe']);
+  const dispatch = useAppDispatch();
+
+  const deleteRecipe = trpc.useMutation(['recipe.deleteRecipe'], {
+    onSuccess: () => {
+      recipes?.refetch();
+    },
+  });
 
   const handleYesClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
     deleteRecipe.mutate({ id: activeRecipe });
+
+    dispatch(clearActiveRecipe());
 
     setDeleteRecipeModalOpened(false);
   };

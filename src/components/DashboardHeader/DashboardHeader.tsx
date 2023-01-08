@@ -30,11 +30,15 @@ import {
 } from '@/features/dashboard/dashboardSlice';
 import { useSelector } from 'react-redux';
 
-type DashboardHeaderProps = {};
+type DashboardHeaderProps = {
+  recipeBooks: any;
+  recipes: any;
+};
 
-const DashboardHeader: React.FC<
-  DashboardHeaderProps
-> = ({}: DashboardHeaderProps) => {
+const DashboardHeader: React.FC<DashboardHeaderProps> = ({
+  recipeBooks,
+  recipes,
+}: DashboardHeaderProps) => {
   const dispatch = useAppDispatch();
 
   const navbarOpened = useSelector(selectNavbarOpened);
@@ -127,6 +131,7 @@ const DashboardHeader: React.FC<
             />
             <DeleteRecipeModal
               activeRecipe={activeRecipe}
+              recipes={recipes}
               isDeleteRecipeModalOpened={isDeleteRecipeModalOpened}
               setDeleteRecipeModalOpened={setDeleteRecipeModalOpened}
             />
