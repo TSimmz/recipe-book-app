@@ -79,4 +79,25 @@ export const recipesRouter = createRouter()
 
       return recipe;
     },
+  })
+  .mutation('deleteRecipe', {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      if (input.id === '') return;
+      const recipe = await ctx.prisma.recipe.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!recipe)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Failed to find recipe',
+        });
+
+      return recipe;
+    },
   });

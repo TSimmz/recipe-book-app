@@ -48,12 +48,24 @@ const DashboardHeader: React.FC<
     { id: activeRecipeBook },
   ]);
   const recipe = trpc.useQuery(['recipe.getRecipeById', { id: activeRecipe }]);
+  const deleteRecipe = trpc.useMutation(['recipe.deleteRecipe']);
 
   const breadCrumbs = [
     { crumb: 'My Books' },
     { crumb: recipeBook.data?.title },
     { crumb: recipe.data?.title },
   ].map((item) => item.crumb && <Text key={item.crumb}>{item.crumb}</Text>);
+
+  const handleDeleteRecipe = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    if (activeRecipe === '') return;
+
+    // TODO: Add 'Are you sure?' Modal for deletion
+
+    deleteRecipe.mutate({ id: activeRecipe });
+  };
 
   return (
     <Header className={classes.header} height={85}>
@@ -110,6 +122,7 @@ const DashboardHeader: React.FC<
               label="Delete Recipe"
               tooltipPosition="bottom"
               icon={<IconTrash />}
+              handleClick={handleDeleteRecipe}
             />
             <IconButton
               label="Edit Recipe"
