@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Burger,
   Flex,
@@ -19,7 +20,7 @@ import {
   IconArrowRight,
 } from '@tabler/icons';
 import { signOut } from 'next-auth/react';
-import { IconButton } from '@/components';
+import { DeleteRecipeModal, IconButton } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
   selectNavbarOpened,
@@ -40,6 +41,9 @@ const DashboardHeader: React.FC<
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
 
+  const [isDeleteRecipeModalOpened, setDeleteRecipeModalOpened] =
+    useState(false);
+
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
 
@@ -48,7 +52,6 @@ const DashboardHeader: React.FC<
     { id: activeRecipeBook },
   ]);
   const recipe = trpc.useQuery(['recipe.getRecipeById', { id: activeRecipe }]);
-  const deleteRecipe = trpc.useMutation(['recipe.deleteRecipe']);
 
   const breadCrumbs = [
     { crumb: 'My Books' },
@@ -62,9 +65,7 @@ const DashboardHeader: React.FC<
     event.preventDefault();
     if (activeRecipe === '') return;
 
-    // TODO: Add 'Are you sure?' Modal for deletion
-
-    deleteRecipe.mutate({ id: activeRecipe });
+    setDeleteRecipeModalOpened(true);
   };
 
   return (
@@ -123,6 +124,11 @@ const DashboardHeader: React.FC<
               tooltipPosition="bottom"
               icon={<IconTrash />}
               handleClick={handleDeleteRecipe}
+            />
+            <DeleteRecipeModal
+              activeRecipe={activeRecipe}
+              isDeleteRecipeModalOpened={isDeleteRecipeModalOpened}
+              setDeleteRecipeModalOpened={setDeleteRecipeModalOpened}
             />
             <IconButton
               label="Edit Recipe"
