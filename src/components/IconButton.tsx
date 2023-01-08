@@ -4,6 +4,7 @@ import {
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
+import { Position } from '@/utils/types';
 
 const useStyles = createStyles((theme) => ({
   tooltip: {},
@@ -36,23 +37,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type TooltipPosition =
-  | 'top'
-  | 'left'
-  | 'bottom'
-  | 'right'
-  | 'top-start'
-  | 'left-start'
-  | 'bottom-start'
-  | 'right-start'
-  | 'top-end'
-  | 'left-end'
-  | 'bottom-end'
-  | 'right-end';
-
 type IconButtonProps = {
   label: string;
-  tooltipPosition: TooltipPosition;
+  tooltipPosition: Position;
   icon: React.ReactNode;
   disabled?: boolean;
   handleClick?: React.MouseEventHandler<HTMLButtonElement>;

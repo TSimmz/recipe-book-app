@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   Burger,
   Flex,
-  Button,
   Header,
   Title,
   Breadcrumbs,
@@ -19,8 +18,7 @@ import {
   IconSettings,
   IconArrowRight,
 } from '@tabler/icons';
-import { signOut } from 'next-auth/react';
-import { DeleteRecipeModal, IconButton } from '@/components';
+import { DeleteRecipeModal, IconButton, AvatarMenu } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
   selectNavbarOpened,
@@ -85,20 +83,8 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           <Title size={24} fw={'normal'} ff={theme.fontFamily}>
             Recipe Book
           </Title>
-          <Group>
-            <Button
-              onClick={() => {
-                signOut();
-              }}
-              color="yellow"
-              radius="md"
-              size="xs"
-            >
-              {' '}
-              Sign Out
-            </Button>
-            <Avatar size={32} radius="xl" />
-          </Group>
+
+          <AvatarMenu menuPosition="bottom-end" />
         </Group>
         <Group
           className={classes.subHeader}
