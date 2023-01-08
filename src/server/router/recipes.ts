@@ -6,12 +6,32 @@ export const recipesRouter = createRouter()
   .query('getRecipeById', {
     input: z.object({
       id: z.string(),
+      filter: z
+        .object({
+          id: z.boolean().optional(),
+          createdAt: z.boolean().optional(),
+          title: z.boolean().optional(),
+          description: z.boolean().optional(),
+          cookTime: z.boolean().optional(),
+          numberOfServings: z.boolean().optional(),
+          ingredients: z.boolean().optional(),
+          steps: z.boolean().optional(),
+        })
+        .optional(),
     }),
     async resolve({ input, ctx }) {
       if (input.id === '') return;
-      const recipe = await ctx.prisma.recipe.findUnique({
-        where: { id: input.id },
-      });
+
+      let recipe;
+      if (input.filter === undefined)
+        recipe = await ctx.prisma.recipe.findUnique({
+          where: { id: input.id },
+        });
+      else
+        recipe = await ctx.prisma.recipe.findUnique({
+          where: { id: input.id },
+          select: { ...input.filter },
+        });
 
       if (!recipe)
         throw new TRPCError({
