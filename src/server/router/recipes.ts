@@ -6,32 +6,44 @@ export const recipesRouter = createRouter()
   .query('getRecipeById', {
     input: z.object({
       id: z.string(),
-      filter: z
-        .object({
-          id: z.boolean().optional(),
-          createdAt: z.boolean().optional(),
-          title: z.boolean().optional(),
-          description: z.boolean().optional(),
-          cookTime: z.boolean().optional(),
-          numberOfServings: z.boolean().optional(),
-          ingredients: z.boolean().optional(),
-          steps: z.boolean().optional(),
-        })
-        .optional(),
     }),
     async resolve({ input, ctx }) {
       if (input.id === '') return;
 
-      let recipe;
-      if (input.filter === undefined)
-        recipe = await ctx.prisma.recipe.findUnique({
-          where: { id: input.id },
+      const recipe = await ctx.prisma.recipe.findUnique({
+        where: { id: input.id },
+      });
+
+      if (!recipe)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Failed to find recipe',
         });
-      else
-        recipe = await ctx.prisma.recipe.findUnique({
-          where: { id: input.id },
-          select: { ...input.filter },
-        });
+
+      return recipe;
+    },
+  })
+  .query('getFilteredRecipeById', {
+    input: z.object({
+      id: z.string(),
+      filter: z.object({
+        id: z.boolean().optional(),
+        createdAt: z.boolean().optional(),
+        title: z.boolean().optional(),
+        description: z.boolean().optional(),
+        cookTime: z.boolean().optional(),
+        numberOfServings: z.boolean().optional(),
+        ingredients: z.boolean().optional(),
+        steps: z.boolean().optional(),
+      }),
+    }),
+    async resolve({ input, ctx }) {
+      if (input.id === '') return;
+
+      const recipe = await ctx.prisma.recipe.findUnique({
+        where: { id: input.id },
+        select: { ...input.filter },
+      });
 
       if (!recipe)
         throw new TRPCError({
