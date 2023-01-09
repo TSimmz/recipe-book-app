@@ -25,6 +25,7 @@ import {
   selectActiveRecipeBook,
   selectActiveRecipe,
   toggleNavbar,
+  setNavbarWidth,
 } from '@/features/dashboard/dashboardSlice';
 import { useSelector } from 'react-redux';
 
@@ -98,7 +99,10 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
           <Flex>
             <Burger
               opened={navbarOpened}
-              onClick={() => dispatch(toggleNavbar())}
+              onClick={() => {
+                dispatch(toggleNavbar());
+                dispatch(setNavbarWidth(440));
+              }}
               size="sm"
               color={theme.black}
               mr={12}
