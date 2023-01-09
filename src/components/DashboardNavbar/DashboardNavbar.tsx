@@ -9,21 +9,21 @@ import {
   Anchor,
   Group,
   Flex,
-  useMantineTheme,
 } from '@mantine/core';
 import { CreateRecipeBook, CreateRecipe, IconButton } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
-  selectNavbarOpened,
   selectActiveRecipeBook,
   selectActiveRecipe,
   setActiveRecipeBook,
   setActiveRecipe,
   clearActiveRecipe,
+  selectNavbarWidth,
+  setNavbarWidth,
 } from '@/features/dashboard/dashboardSlice';
 import { useSelector } from 'react-redux';
 import { trpc } from '@/utils/trpc';
-import { IconCirclePlus } from '@tabler/icons';
+import { IconCirclePlus, IconX } from '@tabler/icons';
 
 type DashboardNavbarProps = {
   recipeBooks: any;
@@ -40,31 +40,41 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
 }: DashboardNavbarProps) => {
   const dispatch = useAppDispatch();
 
-  const navbarOpened = useSelector(selectNavbarOpened);
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
+  const navbarWidth = useSelector(selectNavbarWidth);
 
   const { classes, cx } = useStyles();
-  const theme = useMantineTheme();
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
   const userId = session?.id as string;
 
   const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
-  const [recipeBookNavbarOpened, setRecipeBookNavbarOpened] = useState(true);
-
   const [openCreateRecipe, setOpenCreateRecipe] = useState(false);
+
   const [recipeNavbarOpened, setRecipeNavbarOpened] = useState(true);
 
   const handleRecipeBookClick = (recipeBookId: string) => {
+    if (recipeNavbarOpened === false) {
+      if (activeRecipe !== recipeBookId) {
+        dispatch(setActiveRecipeBook(recipeBookId));
+        dispatch(clearActiveRecipe());
+      }
+
+      setRecipeNavbarOpened(true);
+      dispatch(setNavbarWidth(440));
+      return;
+    }
+
     if (activeRecipeBook === recipeBookId) return;
+
     dispatch(setActiveRecipeBook(recipeBookId));
     dispatch(clearActiveRecipe());
   };
 
   const recipeBooksList =
     recipeBooks.status === 'success'
-      ? recipeBooks.data.map((recipeBook: any, index: number) => (
+      ? recipeBooks.data.map((recipeBook: any) => (
           <Anchor
             component="button"
             type="button"
@@ -87,7 +97,7 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
 
   const recipesList =
     activeRecipeBook !== '' && recipes.status === 'success'
-      ? recipes.data.map((recipe: any, index: number) => (
+      ? recipes.data.map((recipe: any) => (
           <Anchor
             component="button"
             type="button"
@@ -103,20 +113,19 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
       : null;
 
   return (
-    <Navbar display="flex" p={0} width={{ base: 440 }}>
+    <Navbar display="flex" p={0} width={{ base: navbarWidth }}>
       <Navbar.Section grow display="flex">
-        <Flex
-          className={cx(classes.navbarColumn, classes.bookNavbar)}
-          hidden={!recipeBookNavbarOpened}
-        >
+        <Flex className={cx(classes.navbarColumn, classes.bookNavbar)}>
           <Group className={classes.navbarTitle} position="apart">
-            <Title>Books</Title>
-            <IconButton
-              label="Create New Book"
-              tooltipPosition="top"
-              icon={<IconCirclePlus />}
-              handleClick={() => setOpenCreateRecipeBook(true)}
-            />
+            <Group>
+              <Title mr={-10}>Books</Title>
+              <IconButton
+                label="Create New Book"
+                tooltipPosition="top"
+                icon={<IconCirclePlus />}
+                handleClick={() => setOpenCreateRecipeBook(true)}
+              />
+            </Group>
           </Group>
 
           <ScrollArea h={800} w="100%">
@@ -138,15 +147,26 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
           className={cx(classes.navbarColumn, classes.recipeNavbar)}
           hidden={!recipeNavbarOpened}
         >
-          {/* <CloseButton onClick={() => setRecipeNavbarOpened(false)} /> */}
+          <Group mr={10} style={{ alignSelf: 'flex-end' }}></Group>
           <Group className={classes.navbarTitle} position="apart">
-            <Title>Recipes</Title>
+            <Group>
+              <Title mr={-10}>Recipes</Title>
+              <IconButton
+                label="Create New Recipe"
+                tooltipPosition="top"
+                disabled={activeRecipeBook === ''}
+                icon={<IconCirclePlus />}
+                handleClick={() => setOpenCreateRecipe(true)}
+              />
+            </Group>
             <IconButton
-              label="Create New Recipe"
+              label="Close Recipes"
               tooltipPosition="top"
-              disabled={activeRecipeBook === ''}
-              icon={<IconCirclePlus />}
-              handleClick={() => setOpenCreateRecipe(true)}
+              icon={<IconX size={16} />}
+              handleClick={() => {
+                setRecipeNavbarOpened(false);
+                dispatch(setNavbarWidth(220));
+              }}
             />
           </Group>
           <ScrollArea h={800} w="100%">

@@ -61,6 +61,8 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
     { crumb: recipe.data?.title },
   ].map((item) => item.crumb && <Text key={item.crumb}>{item.crumb}</Text>);
 
+  const disabledRecipeButtons = activeRecipe === '';
+
   const handleDeleteRecipe = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
@@ -113,6 +115,7 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               label="Delete Recipe"
               tooltipPosition="bottom"
               icon={<IconTrash />}
+              disabled={disabledRecipeButtons}
               handleClick={handleDeleteRecipe}
             />
             <DeleteRecipeModal
@@ -125,11 +128,13 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
               label="Edit Recipe"
               tooltipPosition="bottom"
               icon={<IconEdit />}
+              disabled={disabledRecipeButtons}
             />
             <IconButton
               label="Recipe Settings"
               tooltipPosition="bottom"
               icon={<IconSettings />}
+              disabled={disabledRecipeButtons}
             />
           </Flex>
         </Group>

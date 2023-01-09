@@ -3,12 +3,14 @@ import { RootState } from '@/features/store';
 
 type DashboardSliceState = {
   navbarOpened: boolean;
+  navbarWidth: number;
   activeRecipeBook: string;
   activeRecipe: string;
 };
 
 const initialState: DashboardSliceState = {
   navbarOpened: false,
+  navbarWidth: 220,
   activeRecipeBook: '',
   activeRecipe: '',
 };
@@ -25,6 +27,12 @@ export const dashboardSlice = createSlice({
     },
     toggleNavbar: (state: DashboardSliceState) => {
       state.navbarOpened = !state.navbarOpened;
+    },
+    setNavbarWidth: (
+      state: DashboardSliceState,
+      action: PayloadAction<number>,
+    ) => {
+      state.navbarWidth = action.payload;
     },
     setActiveRecipeBook: (
       state: DashboardSliceState,
@@ -54,6 +62,7 @@ export const {
   setActiveRecipe,
   clearActiveRecipeBook,
   clearActiveRecipe,
+  setNavbarWidth,
 } = dashboardSlice.actions;
 
 export const selectNavbarOpened = (state: RootState) =>
@@ -62,5 +71,7 @@ export const selectActiveRecipeBook = (state: RootState) =>
   state.dashboard.activeRecipeBook;
 export const selectActiveRecipe = (state: RootState) =>
   state.dashboard.activeRecipe;
+export const selectNavbarWidth = (state: RootState) =>
+  state.dashboard.navbarWidth;
 
 export default dashboardSlice.reducer;
