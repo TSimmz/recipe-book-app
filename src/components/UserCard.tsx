@@ -41,7 +41,7 @@ const UserCard: React.FC<UserCardProps> = ({}: UserCardProps) => {
             bg={theme.colors.dark[3]}
             radius="xl"
           ></Avatar>
-          <Title order={1} fw="normal" fz={20}>
+          <Title order={1} fw="normal" fz={20} ff={theme.fontFamily}>
             Tyler Simoni
           </Title>
           <Title
@@ -50,6 +50,7 @@ const UserCard: React.FC<UserCardProps> = ({}: UserCardProps) => {
             fz={16}
             mb={theme.spacing.sm}
             c={theme.colors.orange[3]}
+            ff={theme.fontFamily}
           >
             @TSimmz
           </Title>
