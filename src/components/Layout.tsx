@@ -19,10 +19,7 @@ const Layout: React.FC<LayoutProps> = ({
     <AppShell
       styles={{
         main: {
-          background:
-            theme.colorScheme === 'dark'
-              ? theme.colors.dark[8]
-              : theme.colors.appOrange[0],
+          background: theme.colors.dark[7],
         },
       }}
       header={header !== undefined ? header : <DefaultHeader />}
