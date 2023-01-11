@@ -1,6 +1,12 @@
 import type { NextPage } from 'next';
 import { trpc } from '@/utils/trpc';
-import { Layout, Metadata, CustomHeader, CustomNavbar } from '@/components';
+import {
+  Layout,
+  Metadata,
+  CustomHeader,
+  CustomNavbar,
+  CardsContainer,
+} from '@/components';
 import { Text } from '@mantine/core';
 
 const MyShelf: NextPage = () => {
@@ -11,7 +17,7 @@ const MyShelf: NextPage = () => {
   ) : (
     <Layout header={<CustomHeader />} navbar={<CustomNavbar />} footer={<></>}>
       <Metadata title="Recipe Book Dashboard" />
-      <Text>This is the new shelf page</Text>
+      <CardsContainer />
     </Layout>
   );
 };

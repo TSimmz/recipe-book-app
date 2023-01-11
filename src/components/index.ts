@@ -11,5 +11,8 @@ export { default as AvatarMenu } from './AvatarMenu';
 export { default as CustomHeader } from './CustomHeader';
 export { default as CustomNavLink } from './CustomNavLink';
 export { default as CustomNavbar } from './CustomNavbar';
+export { default as CustomCard } from './CustomCard';
 export { default as UserCard } from './UserCard';
 export { default as RecipeBookCard } from './RecipeBookCard';
+export { default as ShelfDisplay } from './ShelfDisplay';
+export { default as CardsContainer } from './CardsContainer';
