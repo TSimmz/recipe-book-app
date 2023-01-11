@@ -1,25 +1,25 @@
-import { Navbar, Title, Text, Group, createStyles } from '@mantine/core';
+import { Navbar, Text, createStyles, useMantineTheme } from '@mantine/core';
+import { UserCard } from '@/components';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
-    dislay: 'grid',
-    gridTemplateRows: '1fr 1fr',
     border: 'none',
-    padding: theme.spacing.lg,
+    paddingTop: theme.spacing.md,
+    paddingBottom: theme.spacing.md,
+    paddingLeft: theme.spacing.lg,
   },
-  navbarCard: {
-    display: 'grid',
-  },
+  navbarCard: {},
 }));
 
 type CustomNavbarProps = {};
 
 const CustomNavbar: React.FC<CustomNavbarProps> = ({}: CustomNavbarProps) => {
   const { classes } = useStyles();
+  const theme = useMantineTheme();
   return (
     <Navbar className={classes.navbar} width={{ base: 340 }}>
-      <Navbar.Section className={classes.navbarCard}>
-        <Text>Profile Stuff</Text>
+      <Navbar.Section mb={theme.spacing.lg} className={classes.navbarCard}>
+        <UserCard />
       </Navbar.Section>
       <Navbar.Section className={classes.navbarCard}>
         <Text>Edit Profile Stuff</Text>

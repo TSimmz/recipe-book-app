@@ -11,3 +11,4 @@ export { default as AvatarMenu } from './AvatarMenu';
 export { default as CustomHeader } from './CustomHeader';
 export { default as CustomNavLink } from './CustomNavLink';
 export { default as CustomNavbar } from './CustomNavbar';
+export { default as UserCard } from './UserCard';
