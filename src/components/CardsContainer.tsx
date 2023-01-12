@@ -5,7 +5,7 @@ import {
   ScrollArea,
   createStyles,
 } from '@mantine/core';
-import { RecipeBookCard } from '@/components';
+import { RecipeBookCard, RecipeCard } from '@/components';
 
 const useStyles = createStyles((theme) => ({
   cardContainer: {
@@ -20,7 +20,7 @@ const useStyles = createStyles((theme) => ({
   },
   cardGrid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
     gap: theme.spacing.xl,
     paddingTop: theme.spacing.sm,
     paddingBottom: theme.spacing.lg,
@@ -60,21 +60,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
         maxHeight={1000}
         style={{ width: '100%' }}
       >
-        <div className={classes.cardGrid}>
-          <RecipeBookCard active />
-          <RecipeBookCard />
-          <RecipeBookCard />
-          <RecipeBookCard active />
-          <RecipeBookCard />
-          <RecipeBookCard />
-          <RecipeBookCard />
-          <RecipeBookCard />
-          <RecipeBookCard />
-          <RecipeBookCard />
-          <RecipeBookCard />
-          <RecipeBookCard />
-          <RecipeBookCard />
-        </div>
+        <div className={classes.cardGrid}>{cards}</div>
       </ScrollArea.Autosize>
     </div>
   );

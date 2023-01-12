@@ -19,7 +19,7 @@ const useStyles = createStyles((theme) => ({
 type CustomCardProps = {
   bookId: string;
   active: boolean;
-  onClickHandler: (bookId: string) => void;
+  onClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
   image: React.ReactNode;
   body: React.ReactNode;
 };
@@ -39,7 +39,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
       radius={24}
       c={theme.white}
       bg={theme.colors.dark[7]}
-      onClick={() => onClickHandler(bookId)}
+      onClick={onClickHandler}
       className={cx(classes.card, { [classes.cardActive]: active === true })}
     >
       <Card.Section>{image}</Card.Section>

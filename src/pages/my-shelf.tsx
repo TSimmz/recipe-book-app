@@ -6,6 +6,7 @@ import {
   CustomHeader,
   CustomNavbar,
   CardsContainer,
+  ShelfDisplay,
 } from '@/components';
 import { Text } from '@mantine/core';
 
@@ -17,7 +18,7 @@ const MyShelf: NextPage = () => {
   ) : (
     <Layout header={<CustomHeader />} navbar={<CustomNavbar />} footer={<></>}>
       <Metadata title="Recipe Book Dashboard" />
-      <CardsContainer />
+      <ShelfDisplay userId={session.id as string} />
     </Layout>
   );
 };
