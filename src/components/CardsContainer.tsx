@@ -57,7 +57,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
         offsetScrollbars
         scrollHideDelay={150}
         mt={theme.spacing.md}
-        maxHeight={1000}
+        maxHeight={'100vh'}
         style={{ width: '100%' }}
       >
         <div className={classes.cardGrid}>{cards}</div>
