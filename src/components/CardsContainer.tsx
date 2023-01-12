@@ -3,9 +3,19 @@ import {
   Divider,
   useMantineTheme,
   ScrollArea,
+  Group,
+  Button,
   createStyles,
 } from '@mantine/core';
-import { RecipeBookCard, RecipeCard } from '@/components';
+import { CustomButton } from '@/components';
+import { useSelector } from 'react-redux';
+import {
+  selectActiveRecipeBook,
+  selectActiveRecipe,
+  clearActiveRecipeBook,
+  clearActiveRecipe,
+} from '@/features/dashboard/dashboardSlice';
+import { useAppDispatch } from '@/features/store';
 
 const useStyles = createStyles((theme) => ({
   cardContainer: {
@@ -39,25 +49,36 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
   title,
   cards,
 }: CardsContainerProps) => {
+  const dispatch = useAppDispatch();
+  const activeRecipeBook = useSelector(selectActiveRecipeBook);
+  const activeRecipe = useSelector(selectActiveRecipe);
+
   const { classes } = useStyles();
   const theme = useMantineTheme();
+
+  const handleBackClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    if (activeRecipe) return dispatch(clearActiveRecipe());
+    if (!activeRecipe && activeRecipeBook)
+      return dispatch(clearActiveRecipeBook());
+  };
+
   return (
     <div className={classes.cardContainer}>
-      <Title
-        fz={24}
-        fw={'normal'}
-        c={theme.white}
-        ff={theme.fontFamily}
-        mb={theme.spacing.sm}
-      >
-        {title || 'My Books'}
-      </Title>
+      <Group position="apart" mb={theme.spacing.sm}>
+        <Title fz={24} fw={'normal'} c={theme.white} ff={theme.fontFamily}>
+          {title}
+        </Title>
+        <CustomButton label="Back" onClickHandler={handleBackClick} />
+      </Group>
       <Divider color={theme.white} size={2} />
       <ScrollArea.Autosize
         offsetScrollbars
         scrollHideDelay={150}
         mt={theme.spacing.md}
-        maxHeight={'100vh'}
+        maxHeight={'82vh'}
         style={{ width: '100%' }}
       >
         <div className={classes.cardGrid}>{cards}</div>
