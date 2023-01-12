@@ -17,7 +17,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 type CustomCardProps = {
-  bookId: string;
   active: boolean;
   onClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
   image: React.ReactNode;
@@ -25,7 +24,6 @@ type CustomCardProps = {
 };
 
 const CustomCard: React.FC<CustomCardProps> = ({
-  bookId,
   active,
   onClickHandler,
   image,

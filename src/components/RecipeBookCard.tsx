@@ -24,7 +24,6 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
 
   return (
     <CustomCard
-      bookId={bookId}
       active={active}
       onClickHandler={handleCardClick}
       image={

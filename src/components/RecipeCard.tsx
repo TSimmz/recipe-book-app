@@ -8,25 +8,32 @@ import {
   Divider,
 } from '@mantine/core';
 import { CustomCard } from '@/components';
+import { useAppDispatch } from '@/features/store';
+import { setActiveRecipe } from '@/features/dashboard/dashboardSlice';
 
 type RecipeCardProps = {
-  bookId: string;
+  recipeId: string;
   active: boolean;
-  onClickHandler: (bookId: string) => void;
+  recipe: any;
 };
 
 const RecipeCard: React.FC<RecipeCardProps> = ({
-  bookId,
+  recipeId,
   active,
-  onClickHandler,
+  recipe,
 }: RecipeCardProps) => {
+  const dispatch = useAppDispatch();
   const theme = useMantineTheme();
+
+  const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
+    event.preventDefault();
+    dispatch(setActiveRecipe(recipeId));
+  };
 
   return (
     <CustomCard
-      bookId={bookId}
       active={active}
-      onClickHandler={onClickHandler}
+      onClickHandler={handleCardClick}
       image={
         <Image
           src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1453&q=80"
@@ -37,18 +44,18 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
       body={
         <Stack align="flex-start" spacing="xs">
           <Title order={1} fw="normal" fz={16} ff={theme.fontFamily} underline>
-            The Best Lasagna
+            {recipe.title}
           </Title>
           <Group position="apart" w="100%">
             <Text fz={12} italic c={theme.colors.orange[3]}>
               {'Prep Time: 1h 25m'}
             </Text>
             <Text fz={12} italic c={theme.colors.orange[3]}>
-              {'Cook Time: 1h 25m'}
+              {`Cook Time: ${recipe.cookTime.hours}h ${recipe.cookTime.minutes}m`}
             </Text>
           </Group>
           <Text fz={12} italic lineClamp={3}>
-            {'This is a big long description of this recipe. Its so dang good!'}
+            {recipe.description}
           </Text>
           <Divider color={theme.white} size={2} />
           {/** TODO: Recipe tags will go here */}

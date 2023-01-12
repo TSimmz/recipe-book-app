@@ -9,6 +9,7 @@ import {
 import { useSelector } from 'react-redux';
 import CardsContainer from './CardsContainer';
 import RecipeBookCard from './RecipeBookCard';
+import RecipeCard from './RecipeCard';
 
 type ShelfDisplayProps = {
   userId: string;
@@ -48,12 +49,31 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
         ))
       : null;
 
+  const recipeCards =
+    recipes.status === 'success' && recipes.data
+      ? recipes?.data.map((recipe: any) => (
+          <RecipeCard
+            key={recipe.id}
+            recipeId={recipe.id}
+            active={recipe.id === activeRecipe}
+            recipe={recipe}
+          />
+        ))
+      : null;
+
   // If nothing selected, show cards container with user's books
 
   // If book selected, show cards container with user's books, with selected book card above
 
   // If selected book is opened, show cards container with that book's recipes
-
+  if (activeRecipeBook !== '') {
+    return (
+      <CardsContainer
+        title={`${user.data?.name}'s Recipes`}
+        cards={recipeCards}
+      />
+    );
+  }
   // If recipe selected, show cards container with book's recipes with selected recipe card above
 
   // If selected recipe is opened, show recipe display
