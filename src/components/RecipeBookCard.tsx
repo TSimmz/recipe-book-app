@@ -6,11 +6,13 @@ import { setActiveRecipeBook } from '@/features/dashboard/dashboardSlice';
 type RecipeBookCardProps = {
   bookId: string;
   active: boolean;
+  recipeBook: any;
 };
 
 const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
   bookId,
   active,
+  recipeBook,
 }: RecipeBookCardProps) => {
   const dispatch = useAppDispatch();
   const theme = useMantineTheme();
@@ -42,12 +44,10 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
             mb={theme.spacing.sm}
             underline
           >
-            Grandma Recipes
+            {recipeBook.title}
           </Title>
           <Text fz={12} italic mb={theme.spacing.sm} lineClamp={4}>
-            {
-              '“The best recipes from dear, old Grangran’s cooking days. These are rich, delicious, delectible and will never leave you disappointed. Dive in for more...'
-            }
+            {recipeBook.description}
           </Text>
         </Stack>
       }

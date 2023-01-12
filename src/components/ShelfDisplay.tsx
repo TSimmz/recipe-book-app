@@ -43,6 +43,7 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
             key={recipeBook.id}
             bookId={recipeBook.id}
             active={recipeBook.id === activeRecipeBook}
+            recipeBook={recipeBook}
           />
         ))
       : null;
