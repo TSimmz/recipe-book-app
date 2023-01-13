@@ -1,15 +1,11 @@
 import { trpc } from '@/utils/trpc';
-import { useAppDispatch } from '@/features/store';
 import {
   selectActiveRecipeBook,
   selectActiveRecipe,
-  setActiveRecipeBook,
-  setActiveRecipe,
 } from '@/features/dashboard/dashboardSlice';
 import { useSelector } from 'react-redux';
-import CardsContainer from './CardsContainer';
-import RecipeBookCard from './RecipeBookCard';
-import RecipeCard from './RecipeCard';
+import { CardsContainer, RecipeBookCard, RecipeCard } from '@/components';
+import { Text } from '@mantine/core';
 
 type ShelfDisplayProps = {
   userId: string;
@@ -19,7 +15,6 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
   userId,
 }: ShelfDisplayProps) => {
   // Shelf state stored in redux for page changes.
-  const dispatch = useAppDispatch();
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
 
@@ -62,7 +57,14 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
       : null;
 
   // If nothing selected, show cards container with user's books
-
+  if (activeRecipe !== '') {
+    return (
+      <CardsContainer
+        title={`A Recipe!`}
+        cards={<Text> RECIPE GOES HERE</Text>}
+      />
+    );
+  }
   // If book selected, show cards container with user's books, with selected book card above
 
   // If selected book is opened, show cards container with that book's recipes

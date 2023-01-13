@@ -18,3 +18,4 @@ export { default as RecipeBookCard } from './RecipeBookCard';
 export { default as RecipeCard } from './RecipeCard';
 export { default as ShelfDisplay } from './ShelfDisplay';
 export { default as CardsContainer } from './CardsContainer';
+export { default as RecipeBookDisplayCard } from './RecipeBookDisplayCard';

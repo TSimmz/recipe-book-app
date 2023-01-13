@@ -1,5 +1,5 @@
 import { Navbar, Text, createStyles, useMantineTheme } from '@mantine/core';
-import { RecipeBookCard, UserCard } from '@/components';
+import { RecipeBookDisplayCard, UserCard } from '@/components';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -22,7 +22,7 @@ const CustomNavbar: React.FC<CustomNavbarProps> = ({}: CustomNavbarProps) => {
         <UserCard />
       </Navbar.Section>
       <Navbar.Section className={classes.navbarCard}>
-        <Text>STUFF GOES HERE</Text>
+        <RecipeBookDisplayCard />
       </Navbar.Section>
     </Navbar>
   );

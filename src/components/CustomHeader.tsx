@@ -23,17 +23,17 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({}: CustomHeaderProps) => {
         <Group position="right">
           <CustomNavLink
             label="Browse"
-            linkTo="#"
+            linkTo="/browse"
             active={router.pathname === '/browse'}
           />
           <CustomNavLink
             label="My Shelf"
-            linkTo="#"
+            linkTo="/my-shelf"
             active={router.pathname === '/my-shelf'}
           />
           <CustomNavLink
             label="My Pantry"
-            linkTo="#"
+            linkTo="/my-pantry"
             active={router.pathname === '/my-pantry'}
           />
           <AvatarMenu menuPosition="bottom-end" />

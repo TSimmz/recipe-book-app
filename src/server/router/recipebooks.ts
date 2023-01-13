@@ -22,6 +22,29 @@ export const recipeBooksRouter = createRouter()
       return recipeBook;
     },
   })
+  .query('getRecipeBookWithRecipesById', {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      if (input.id === '') return;
+
+      const recipes = await ctx.prisma.recipeBook.findUnique({
+        where: { id: input.id },
+        include: {
+          recipes: true,
+        },
+      });
+
+      if (!recipes)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Failed to find any recipes',
+        });
+
+      return recipes;
+    },
+  })
   .query('getAllRecipesInBook', {
     input: z.object({
       id: z.string(),
