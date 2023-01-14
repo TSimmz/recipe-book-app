@@ -3,12 +3,14 @@ import {
   Title,
   Text,
   Image,
+  BackgroundImage,
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
-import { CustomCard } from '@/components';
+import { CustomCard, IconButton } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import { setActiveRecipeBook } from '@/features/dashboard/dashboardSlice';
+import { IconTrash } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
   image: {
@@ -23,6 +25,29 @@ const useStyles = createStyles((theme) => ({
       background: `linear-gradient(180deg, transparent, ${theme.colors.dark[7]})`,
       opacity: '90%',
       zIndex: 1,
+    },
+  },
+  background: {
+    position: 'relative',
+    height: '110px',
+
+    '> div': {
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      justifyContent: 'flex-end',
+      alignItems: 'flex-end',
+      padding: theme.spacing.sm,
+    },
+
+    '&::before': {
+      position: 'absolute',
+      content: '""',
+      display: 'block',
+      inset: 0,
+      background: `linear-gradient(180deg, transparent, ${theme.colors.dark[7]})`,
+      opacity: '90%',
+      zIndex: 0,
     },
   },
 }));
@@ -52,12 +77,25 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
       active={active}
       onClickHandler={handleCardClick}
       image={
-        <Image
-          className={classes.image}
+        <BackgroundImage
           src="https://images.unsplash.com/photo-1542010589005-d1eacc3918f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1784&q=80"
-          height={110}
-          alt="Recipe Book"
-        />
+          className={classes.background}
+        >
+          <div>
+            <IconButton
+              label="Delete Book"
+              tooltipPosition="top"
+              handleClick={() => alert('DELETE')}
+              icon={<IconTrash color={theme.colors.red[7]} size={18} />}
+            />
+          </div>
+        </BackgroundImage>
+        // <Image
+        //   className={classes.image}
+        //   src="https://images.unsplash.com/photo-1542010589005-d1eacc3918f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1784&q=80"
+        //   height={110}
+        //   alt="Recipe Book"
+        // />
       }
       body={
         <Stack align="flex-start" spacing="xs">
