@@ -1,7 +1,31 @@
-import { Stack, Title, Text, Image, useMantineTheme } from '@mantine/core';
+import {
+  Stack,
+  Title,
+  Text,
+  Image,
+  useMantineTheme,
+  createStyles,
+} from '@mantine/core';
 import { CustomCard } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import { setActiveRecipeBook } from '@/features/dashboard/dashboardSlice';
+
+const useStyles = createStyles((theme) => ({
+  image: {
+    position: 'relative',
+
+    '&::before': {
+      position: 'absolute',
+      content: '""',
+      display: 'block',
+      inset: 0,
+      border: 'none',
+      background: `linear-gradient(180deg, transparent, ${theme.colors.dark[7]})`,
+      opacity: '90%',
+      zIndex: 1,
+    },
+  },
+}));
 
 type RecipeBookCardProps = {
   bookId: string;
@@ -15,6 +39,7 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
   recipeBook,
 }: RecipeBookCardProps) => {
   const dispatch = useAppDispatch();
+  const { classes } = useStyles();
   const theme = useMantineTheme();
 
   const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -28,6 +53,7 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
       onClickHandler={handleCardClick}
       image={
         <Image
+          className={classes.image}
           src="https://images.unsplash.com/photo-1542010589005-d1eacc3918f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1784&q=80"
           height={110}
           alt="Recipe Book"

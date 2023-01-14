@@ -18,14 +18,13 @@ const useStyles = createStyles((theme) => ({
   background: {
     position: 'relative',
 
-    '&::after': {
+    '&::before': {
       position: 'absolute',
       content: '""',
       display: 'block',
       inset: 0,
-      borderColor: theme.colors.dark[4],
-      backgroundColor: theme.colors.dark[4],
-      opacity: 0.8,
+      background: `linear-gradient(180deg, ${theme.colors.dark[7]} 10%, ${theme.black} 75%)`,
+      opacity: '90%',
       zIndex: 0,
     },
   },
@@ -60,19 +59,25 @@ const RecipeBookDisplayCard: React.FC<
       : null;
 
   return recipeBook.status === 'success' && recipeBook.data ? (
-    <Card radius={24} c={theme.white} bg={theme.colors.dark[6]} p={0}>
+    <Card radius={24} c={theme.white} bg={theme.colors.dark[9]} p={0}>
       <BackgroundImage
         src="https://images.unsplash.com/photo-1542010589005-d1eacc3918f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1784&q=80"
         className={classes.background}
       >
         <Stack p={16} className={classes.stack}>
-          <Title order={1} fw="normal" fz={20} ff={theme.fontFamily}>
+          <Title
+            order={1}
+            fw="normal"
+            fz={20}
+            c={theme.white}
+            ff={theme.fontFamily}
+          >
             {recipeBook?.data.title}
           </Title>
-          <Text fz={12} italic lineClamp={4}>
+          <Text fz={12} italic lineClamp={4} c={theme.white}>
             {`"${recipeBook?.data.description}"`}
           </Text>
-          <Text fz={14} underline>
+          <Text fz={14} underline c={theme.white}>
             {'Recipes'}
           </Text>
           <ScrollArea style={{ height: 150 }} offsetScrollbars>
