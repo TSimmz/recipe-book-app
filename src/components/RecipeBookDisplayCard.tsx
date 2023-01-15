@@ -17,6 +17,7 @@ import {
   setActiveRecipeBook,
 } from '@/features/dashboard/dashboardSlice';
 import CustomButton from './CustomButton';
+import CustomLoader from './CustomLoader';
 
 const useStyles = createStyles((theme) => ({
   background: {
@@ -72,6 +73,14 @@ const RecipeBookDisplayCard: React.FC<
     event.preventDefault();
     dispatch(setActiveRecipeBook(selectedRecipeBook));
   };
+
+  if (recipeBook.status === 'loading') {
+    return (
+      <Card radius={24} c={theme.white} bg={theme.colors.dark[9]} p={0}>
+        <CustomLoader />
+      </Card>
+    );
+  }
 
   return recipeBook.status === 'success' && recipeBook.data ? (
     <Card radius={24} c={theme.white} bg={theme.colors.dark[9]} p={0}>

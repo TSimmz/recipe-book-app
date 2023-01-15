@@ -13,6 +13,7 @@ export { default as CustomNavLink } from './CustomNavLink';
 export { default as CustomNavbar } from './CustomNavbar';
 export { default as CustomCard } from './CustomCard';
 export { default as CustomButton } from './CustomButton';
+export { default as CustomLoader } from './CustomLoader';
 export { default as UserCard } from './UserCard';
 export { default as RecipeBookCard } from './RecipeBookCard';
 export { default as RecipeCard } from './RecipeCard';
