@@ -109,6 +109,7 @@ const RecipeBookDisplayCard: React.FC<
           </ScrollArea>
           <CustomButton
             label={'Open Book'}
+            active
             onClickHandler={handleRecipeBookOpen}
           />
         </Stack>

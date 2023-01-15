@@ -7,7 +7,8 @@ const useStyles = createStyles((theme) => ({
     height: '100px',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'inherit',
+    backgroundColor: theme.colors.dark[4],
+    opacity: 0.5,
   },
 }));
 

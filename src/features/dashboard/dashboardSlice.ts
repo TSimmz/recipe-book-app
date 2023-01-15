@@ -60,7 +60,9 @@ export const dashboardSlice = createSlice({
       state: DashboardSliceState,
       action: PayloadAction<string>,
     ) => {
-      state.selectedRecipeBook = action.payload;
+      if (state.selectedRecipeBook === action.payload)
+        state.selectedRecipeBook = '';
+      else state.selectedRecipeBook = action.payload;
     },
     clearSelectedRecipeBook: (state: DashboardSliceState) => {
       state.selectedRecipeBook = '';
@@ -69,7 +71,8 @@ export const dashboardSlice = createSlice({
       state: DashboardSliceState,
       action: PayloadAction<string>,
     ) => {
-      state.selectedRecipe = action.payload;
+      if (state.selectedRecipe === action.payload) state.selectedRecipe = '';
+      else state.selectedRecipe = action.payload;
     },
     clearSelectedRecipe: (state: DashboardSliceState) => {
       state.selectedRecipe = '';
