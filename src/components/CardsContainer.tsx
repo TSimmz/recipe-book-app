@@ -26,7 +26,7 @@ const useStyles = createStyles((theme) => ({
     paddingLeft: theme.spacing.xl,
     paddingRight: theme.spacing.xl,
     margin: 0,
-    marginLeft: '2rem',
+    marginLeft: '1rem',
     backgroundColor: theme.colors.dark[6],
   },
   cardGrid: {

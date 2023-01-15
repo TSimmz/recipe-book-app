@@ -19,6 +19,7 @@ const Layout: React.FC<LayoutProps> = ({
     <AppShell
       styles={{
         main: {
+          paddingRight: `calc(var(--mantine-aside-width, 0px) + ${theme.spacing.xl}px)`,
           background: theme.colors.dark[7],
         },
       }}
