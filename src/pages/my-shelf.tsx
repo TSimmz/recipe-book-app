@@ -14,7 +14,11 @@ const MyShelf: NextPage = () => {
   return !session ? (
     <div>Please sign in to view this page</div>
   ) : (
-    <Layout header={<CustomHeader />} navbar={<CustomNavbar />} footer={<></>}>
+    <Layout
+      header={<CustomHeader />}
+      navbar={<CustomNavbar userId={session.id as string} />}
+      footer={<></>}
+    >
       <Metadata title="Recipe Book Dashboard" />
       <ShelfDisplay userId={session.id as string} />
     </Layout>

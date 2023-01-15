@@ -22,16 +22,20 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type CustomNavbarProps = {};
+type CustomNavbarProps = {
+  userId: string;
+};
 
-const CustomNavbar: React.FC<CustomNavbarProps> = ({}: CustomNavbarProps) => {
+const CustomNavbar: React.FC<CustomNavbarProps> = ({
+  userId,
+}: CustomNavbarProps) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   return (
     <Navbar className={classes.navbar} width={{ base: 350 }}>
       <ScrollArea.Autosize maxHeight={'90vh'} offsetScrollbars>
         <Navbar.Section mb={theme.spacing.lg} className={classes.navbarCard}>
-          <UserCard />
+          <UserCard userId={userId} />
         </Navbar.Section>
         <Navbar.Section className={classes.navbarCard}>
           <RecipeDisplayCard />

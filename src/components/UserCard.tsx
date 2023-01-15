@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { trpc } from '@/utils/trpc';
 import {
   Title,
   Text,
@@ -8,7 +10,16 @@ import {
   Image,
   useMantineTheme,
   Avatar,
+  Modal,
 } from '@mantine/core';
+import { useRouter } from 'next/router';
+import {
+  IconButton,
+  CreateRecipeBook,
+  CreateRecipe,
+  CustomLoader,
+} from '@/components';
+import { IconCirclePlus } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
   bioBorder: {
@@ -17,11 +28,35 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type UserCardProps = {};
+type UserCardProps = {
+  userId: string;
+};
 
-const UserCard: React.FC<UserCardProps> = ({}: UserCardProps) => {
+const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
+  const router = useRouter();
   const { classes } = useStyles();
   const theme = useMantineTheme();
+
+  const user = trpc.useQuery(['user.getUserById', { id: userId }]);
+
+  const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
+  const [openCreateRecipe, setOpenCreateRecipe] = useState(false);
+
+  const handleOpenRecipeBookModal = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+
+    setOpenCreateRecipeBook(true);
+  };
+
+  if (user.status === 'loading')
+    return (
+      <Card radius={24} c={theme.white} bg={theme.colors.dark[6]}>
+        <CustomLoader />
+      </Card>
+    );
+
   return (
     <Card radius={24} c={theme.white} bg={theme.colors.dark[6]}>
       <Card.Section>
@@ -64,22 +99,71 @@ const UserCard: React.FC<UserCardProps> = ({}: UserCardProps) => {
           >
             {'"Cooking is my passion. Come along for my culinary journey."'}
           </Text>{' '}
-          <Group position="center" w="100%">
-            <Stack align="center">
-              <Text>12</Text>
-              <Text fz={14} c={theme.colors.orange[3]} mt={-theme.spacing.md}>
-                Books
-              </Text>
-            </Stack>
-            <Stack align="center">
-              <Text>124</Text>
-              <Text fz={14} c={theme.colors.orange[3]} mt={-theme.spacing.md}>
-                Recipes
-              </Text>
-            </Stack>
+          <Group position="center" style={{ gap: theme.spacing.xl }} w="100%">
+            <Group>
+              <Stack align="center">
+                <Text>12</Text>
+                <Text fz={14} c={theme.colors.orange[3]} mt={-theme.spacing.md}>
+                  Books
+                </Text>
+              </Stack>
+              {router.pathname === '/my-shelf' ? (
+                <IconButton
+                  label="Create Book"
+                  tooltipPosition="top"
+                  icon={<IconCirclePlus color={theme.colors.orange[4]} />}
+                  handleClick={handleOpenRecipeBookModal}
+                />
+              ) : null}
+            </Group>
+            <Group>
+              <Stack align="center">
+                <Text>124</Text>
+                <Text fz={14} c={theme.colors.orange[3]} mt={-theme.spacing.md}>
+                  Recipes
+                </Text>
+              </Stack>
+              {router.pathname === '/my-shelf' ? (
+                <IconButton
+                  label="Create Recipe"
+                  tooltipPosition="top"
+                  icon={<IconCirclePlus color={theme.colors.orange[4]} />}
+                  handleClick={() => ({})}
+                />
+              ) : null}
+            </Group>
           </Group>
         </Stack>
       </Card.Section>
+      {router.pathname === '/my-shelf' ? (
+        <>
+          <Modal
+            title="Create a New Recipe Book"
+            opened={openCreateRecipeBook}
+            radius={18}
+            onClose={() => setOpenCreateRecipeBook(false)}
+            size="md"
+          >
+            <CreateRecipeBook
+              userId={userId}
+              closeModal={() => {
+                setOpenCreateRecipeBook(false);
+              }}
+            />
+          </Modal>
+          {/* <Modal
+            opened={openCreateRecipeBook}
+            onClose={() => setOpenCreateRecipeBook(false)}
+            size="md"
+          >
+            <CreateRecipe
+              recipeBookId={activeRecipeBook}
+              setOpenCreateRecipe={setOpenCreateRecipe}
+              recipeMutation={recipeMutation}
+            />
+          </Modal> */}
+        </>
+      ) : null}
     </Card>
   );
 };

@@ -136,11 +136,11 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             onClose={() => setOpenCreateRecipeBook(false)}
             size="md"
           >
-            <CreateRecipeBook
+            {/* <CreateRecipeBook
               userId={userId}
               setOpenCreateRecipeBook={setOpenCreateRecipeBook}
               recipeBookMutation={recipeBookMutation}
-            />
+            /> */}
           </Modal>
         </Flex>
         <Flex

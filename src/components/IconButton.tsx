@@ -13,10 +13,13 @@ const useStyles = createStyles((theme) => ({
     position: 'relative',
     zIndex: 1,
     overflow: 'hidden',
+    transition: 'all ease-in-out 150ms',
 
     '&:hover': {
       color: theme.black,
       backgroundColor: 'transparent',
+      scale: 1.01,
+      transition: 'all ease-in-out 150ms',
     },
 
     '&:hover::before': {
@@ -25,7 +28,7 @@ const useStyles = createStyles((theme) => ({
       inset: 0,
       zIndex: -1,
       color: theme.black,
-      backgroundColor: theme.colors.appOrange[7],
+      backgroundColor: theme.colors.orange[3],
       opacity: 0.2,
     },
 
@@ -62,6 +65,8 @@ const IconButton: React.FC<IconButtonProps> = ({
       withArrow
       transition="fade"
       transitionDuration={250}
+      c={theme.black}
+      bg={theme.colors.orange[3]}
     >
       <ActionIcon
         className={classes.button}
