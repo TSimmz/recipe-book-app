@@ -4,7 +4,6 @@ import {
   useMantineTheme,
   ScrollArea,
   Group,
-  Button,
   createStyles,
 } from '@mantine/core';
 import { CustomButton } from '@/components';
@@ -14,6 +13,8 @@ import {
   selectActiveRecipe,
   clearActiveRecipeBook,
   clearActiveRecipe,
+  clearSelectedRecipe,
+  selectSelectedRecipe,
 } from '@/features/dashboard/dashboardSlice';
 import { useAppDispatch } from '@/features/store';
 
@@ -52,6 +53,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
   const dispatch = useAppDispatch();
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
+  const selectedRecipe = useSelector(selectSelectedRecipe);
 
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -60,9 +62,19 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    if (activeRecipe) return dispatch(clearActiveRecipe());
-    if (!activeRecipe && activeRecipeBook)
+    if (selectedRecipe && !activeRecipe) {
+      dispatch(clearSelectedRecipe());
       return dispatch(clearActiveRecipeBook());
+    }
+
+    if (activeRecipe) {
+      dispatch(clearSelectedRecipe());
+      return dispatch(clearActiveRecipe());
+    }
+
+    if (!activeRecipe && activeRecipeBook) {
+      return dispatch(clearActiveRecipeBook());
+    }
   };
 
   return (
