@@ -1,5 +1,14 @@
-import { Navbar, Text, createStyles, useMantineTheme } from '@mantine/core';
-import { RecipeBookDisplayCard, UserCard } from '@/components';
+import {
+  Navbar,
+  createStyles,
+  useMantineTheme,
+  ScrollArea,
+} from '@mantine/core';
+import {
+  RecipeBookDisplayCard,
+  RecipeDisplayCard,
+  UserCard,
+} from '@/components';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -8,7 +17,9 @@ const useStyles = createStyles((theme) => ({
     paddingBottom: theme.spacing.md,
     paddingLeft: theme.spacing.lg,
   },
-  navbarCard: {},
+  navbarCard: {
+    marginBottom: theme.spacing.lg,
+  },
 }));
 
 type CustomNavbarProps = {};
@@ -17,13 +28,18 @@ const CustomNavbar: React.FC<CustomNavbarProps> = ({}: CustomNavbarProps) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
   return (
-    <Navbar className={classes.navbar} width={{ base: 340 }}>
-      <Navbar.Section mb={theme.spacing.lg} className={classes.navbarCard}>
-        <UserCard />
-      </Navbar.Section>
-      <Navbar.Section className={classes.navbarCard}>
-        <RecipeBookDisplayCard />
-      </Navbar.Section>
+    <Navbar className={classes.navbar} width={{ base: 350 }}>
+      <ScrollArea.Autosize maxHeight={'90vh'} offsetScrollbars>
+        <Navbar.Section mb={theme.spacing.lg} className={classes.navbarCard}>
+          <UserCard />
+        </Navbar.Section>
+        <Navbar.Section className={classes.navbarCard}>
+          <RecipeDisplayCard />
+        </Navbar.Section>
+        <Navbar.Section className={classes.navbarCard}>
+          <RecipeBookDisplayCard />
+        </Navbar.Section>
+      </ScrollArea.Autosize>
     </Navbar>
   );
 };
