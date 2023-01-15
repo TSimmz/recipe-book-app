@@ -10,8 +10,12 @@ import {
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
+import { useAppDispatch } from '@/features/store';
 import { useSelector } from 'react-redux';
-import { selectActiveRecipeBook } from '@/features/dashboard/dashboardSlice';
+import {
+  selectSelectedRecipeBook,
+  setActiveRecipeBook,
+} from '@/features/dashboard/dashboardSlice';
 import CustomButton from './CustomButton';
 
 const useStyles = createStyles((theme) => ({
@@ -41,12 +45,16 @@ type RecipeBookDisplayCardProps = {};
 const RecipeBookDisplayCard: React.FC<
   RecipeBookDisplayCardProps
 > = ({}: RecipeBookDisplayCardProps) => {
+  const dispatch = useAppDispatch();
+
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const activeRecipeBook = useSelector(selectActiveRecipeBook);
+
+  const selectedRecipeBook = useSelector(selectSelectedRecipeBook);
+
   const recipeBook = trpc.useQuery([
     'recipebook.getRecipeBookWithRecipesById',
-    { id: activeRecipeBook },
+    { id: selectedRecipeBook },
   ]);
 
   const recipesList =
@@ -57,6 +65,13 @@ const RecipeBookDisplayCard: React.FC<
           </List.Item>
         ))
       : null;
+
+  const handleRecipeBookOpen = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    dispatch(setActiveRecipeBook(selectedRecipeBook));
+  };
 
   return recipeBook.status === 'success' && recipeBook.data ? (
     <Card radius={24} c={theme.white} bg={theme.colors.dark[9]} p={0}>
@@ -83,7 +98,10 @@ const RecipeBookDisplayCard: React.FC<
           <ScrollArea style={{ height: 150 }} offsetScrollbars>
             <List size="xs">{recipesList}</List>
           </ScrollArea>
-          <CustomButton label={'Open Book'} />
+          <CustomButton
+            label={'Open Book'}
+            onClickHandler={handleRecipeBookOpen}
+          />
         </Stack>
       </BackgroundImage>
     </Card>

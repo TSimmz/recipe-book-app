@@ -10,7 +10,7 @@ import {
 } from '@mantine/core';
 import { CustomCard } from '@/components';
 import { useAppDispatch } from '@/features/store';
-import { setActiveRecipe } from '@/features/dashboard/dashboardSlice';
+import { setSelectedRecipe } from '@/features/dashboard/dashboardSlice';
 
 const useStyles = createStyles((theme) => ({
   image: {
@@ -46,7 +46,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
 
   const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    dispatch(setActiveRecipe(recipeId));
+    dispatch(setSelectedRecipe(recipeId));
   };
 
   return (

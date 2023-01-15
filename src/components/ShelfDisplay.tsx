@@ -2,9 +2,16 @@ import { trpc } from '@/utils/trpc';
 import {
   selectActiveRecipeBook,
   selectActiveRecipe,
+  selectSelectedRecipeBook,
+  selectSelectedRecipe,
 } from '@/features/dashboard/dashboardSlice';
 import { useSelector } from 'react-redux';
-import { CardsContainer, RecipeBookCard, RecipeCard } from '@/components';
+import {
+  CardsContainer,
+  DisplayRecipe,
+  RecipeBookCard,
+  RecipeCard,
+} from '@/components';
 import { Text } from '@mantine/core';
 
 type ShelfDisplayProps = {
@@ -17,6 +24,8 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
   // Shelf state stored in redux for page changes.
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
+  const selectedRecipeBook = useSelector(selectSelectedRecipeBook);
+  const selectedRecipe = useSelector(selectSelectedRecipe);
 
   // Get data from DB
   const user = trpc.useQuery(['user.getUserById', { id: userId }]);
@@ -38,7 +47,7 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
           <RecipeBookCard
             key={recipeBook.id}
             bookId={recipeBook.id}
-            active={recipeBook.id === activeRecipeBook}
+            active={recipeBook.id === selectedRecipeBook}
             recipeBook={recipeBook}
           />
         ))
@@ -50,7 +59,7 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
           <RecipeCard
             key={recipe.id}
             recipeId={recipe.id}
-            active={recipe.id === activeRecipe}
+            active={recipe.id === selectedRecipe}
             recipe={recipe}
           />
         ))
@@ -58,12 +67,7 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
 
   // If nothing selected, show cards container with user's books
   if (activeRecipe !== '') {
-    return (
-      <CardsContainer
-        title={`A Recipe!`}
-        cards={<Text> RECIPE GOES HERE</Text>}
-      />
-    );
+    return <DisplayRecipe />;
   }
   // If book selected, show cards container with user's books, with selected book card above
 

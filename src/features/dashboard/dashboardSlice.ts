@@ -6,6 +6,8 @@ type DashboardSliceState = {
   navbarWidth: number;
   activeRecipeBook: string;
   activeRecipe: string;
+  selectedRecipeBook: string;
+  selectedRecipe: string;
 };
 
 const initialState: DashboardSliceState = {
@@ -13,6 +15,8 @@ const initialState: DashboardSliceState = {
   navbarWidth: 220,
   activeRecipeBook: '',
   activeRecipe: '',
+  selectedRecipeBook: '',
+  selectedRecipe: '',
 };
 
 export const dashboardSlice = createSlice({
@@ -52,6 +56,24 @@ export const dashboardSlice = createSlice({
     clearActiveRecipe: (state: DashboardSliceState) => {
       state.activeRecipe = '';
     },
+    setSelectedRecipeBook: (
+      state: DashboardSliceState,
+      action: PayloadAction<string>,
+    ) => {
+      state.selectedRecipeBook = action.payload;
+    },
+    clearSelectedRecipeBook: (state: DashboardSliceState) => {
+      state.selectedRecipeBook = '';
+    },
+    setSelectedRecipe: (
+      state: DashboardSliceState,
+      action: PayloadAction<string>,
+    ) => {
+      state.selectedRecipe = action.payload;
+    },
+    clearSelectedRecipe: (state: DashboardSliceState) => {
+      state.selectedRecipe = '';
+    },
   },
 });
 
@@ -62,6 +84,10 @@ export const {
   setActiveRecipe,
   clearActiveRecipeBook,
   clearActiveRecipe,
+  setSelectedRecipeBook,
+  setSelectedRecipe,
+  clearSelectedRecipeBook,
+  clearSelectedRecipe,
   setNavbarWidth,
 } = dashboardSlice.actions;
 
@@ -71,6 +97,10 @@ export const selectActiveRecipeBook = (state: RootState) =>
   state.dashboard.activeRecipeBook;
 export const selectActiveRecipe = (state: RootState) =>
   state.dashboard.activeRecipe;
+export const selectSelectedRecipeBook = (state: RootState) =>
+  state.dashboard.selectedRecipeBook;
+export const selectSelectedRecipe = (state: RootState) =>
+  state.dashboard.selectedRecipe;
 export const selectNavbarWidth = (state: RootState) =>
   state.dashboard.navbarWidth;
 

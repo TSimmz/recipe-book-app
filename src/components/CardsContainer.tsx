@@ -71,7 +71,9 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
         <Title fz={24} fw={'normal'} c={theme.white} ff={theme.fontFamily}>
           {title}
         </Title>
-        <CustomButton label="Back" onClickHandler={handleBackClick} />
+        {activeRecipeBook !== '' ? (
+          <CustomButton label="Back" onClickHandler={handleBackClick} />
+        ) : null}
       </Group>
       <Divider color={theme.white} size={2} />
       <ScrollArea.Autosize
