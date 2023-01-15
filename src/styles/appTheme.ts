@@ -1,7 +1,7 @@
 import { MantineThemeOverride } from '@mantine/core';
 
 const appTheme: MantineThemeOverride = {
-  colorScheme: 'light',
+  colorScheme: 'dark',
   colors: {
     appOrange: [
       '#FEF9F2', // Base background
@@ -15,6 +15,13 @@ const appTheme: MantineThemeOverride = {
       '#845D22',
       '#6E4F22',
     ],
+  },
+  spacing: {
+    xs: 4,
+    sm: 8,
+    md: 16,
+    lg: 24,
+    xl: 32,
   },
   fontFamily:
     'Poppins, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
