@@ -31,6 +31,7 @@ export const recipesRouter = createRouter()
         createdAt: z.boolean().optional(),
         title: z.boolean().optional(),
         description: z.boolean().optional(),
+        prepTime: z.boolean().optional(),
         cookTime: z.boolean().optional(),
         numberOfServings: z.boolean().optional(),
         ingredients: z.boolean().optional(),
@@ -56,9 +57,12 @@ export const recipesRouter = createRouter()
   })
   .mutation('createRecipe', {
     input: z.object({
-      recipeBookId: z.string(),
       title: z.string(),
       description: z.string(),
+      prepTime: z.object({
+        hours: z.number().nonnegative().int(),
+        minutes: z.number().nonnegative().int().max(59),
+      }),
       cookTime: z.object({
         hours: z.number().nonnegative().int(),
         minutes: z.number().nonnegative().int().max(59),
@@ -67,9 +71,9 @@ export const recipesRouter = createRouter()
       ingredients: z
         .object({
           key: z.string(),
-          name: z.string(),
           value: z.number(),
           unit: z.string(),
+          name: z.string(),
         })
         .array()
         .nonempty(),
@@ -82,12 +86,15 @@ export const recipesRouter = createRouter()
         })
         .array()
         .nonempty(),
+
+      recipeBookId: z.string(),
     }),
     async resolve({ input, ctx }) {
       const recipe = await ctx.prisma.recipe.create({
         data: {
           title: input.title,
           description: input.description,
+          prepTime: input.prepTime,
           cookTime: input.cookTime,
           numberOfServings: input.numberOfServings,
           ingredients: input.ingredients,

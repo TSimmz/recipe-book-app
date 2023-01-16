@@ -10,7 +10,7 @@ import {
   Group,
   Flex,
 } from '@mantine/core';
-import { CreateRecipeBook, CreateRecipe, IconButton } from '@/components';
+import { IconButton } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
   selectActiveRecipeBook,
@@ -177,11 +177,11 @@ const DashboardNavbar: React.FC<DashboardNavbarProps> = ({
             onClose={() => setOpenCreateRecipe(false)}
             size="md"
           >
-            <CreateRecipe
+            {/* <CreateRecipe
               recipeBookId={activeRecipeBook}
               setOpenCreateRecipe={setOpenCreateRecipe}
               recipeMutation={recipeMutation}
-            />
+            /> */}
           </Modal>
         </Flex>
       </Navbar.Section>

@@ -10,15 +10,16 @@ import {
   Image,
   useMantineTheme,
   Avatar,
-  Modal,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
 import {
   IconButton,
   CreateRecipeBookModal,
-  CreateRecipe,
+  CreateRecipeModal,
   CustomLoader,
 } from '@/components';
+import { selectActiveRecipeBook } from '@/features/dashboard/dashboardSlice';
+import { useSelector } from 'react-redux';
 import { IconCirclePlus } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
@@ -36,6 +37,7 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
   const router = useRouter();
   const { classes } = useStyles();
   const theme = useMantineTheme();
+  const activeRecipeBook = useSelector(selectActiveRecipeBook);
 
   const user = trpc.useQuery(['user.getUserById', { id: userId }]);
 
@@ -48,6 +50,14 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
     event.preventDefault();
 
     setOpenCreateRecipeBook(true);
+  };
+
+  const handleOpenRecipeModal = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+
+    setOpenCreateRecipe(true);
   };
 
   if (user.status === 'loading')
@@ -123,12 +133,12 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
                   Recipes
                 </Text>
               </Stack>
-              {router.pathname === '/my-shelf' ? (
+              {router.pathname === '/my-shelf' && activeRecipeBook !== '' ? (
                 <IconButton
                   label="Create Recipe"
                   tooltipPosition="top"
                   icon={<IconCirclePlus color={theme.colors.orange[4]} />}
-                  handleClick={() => ({})}
+                  handleClick={handleOpenRecipeModal}
                 />
               ) : null}
             </Group>
@@ -140,21 +150,13 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
           <CreateRecipeBookModal
             userId={userId}
             modalState={openCreateRecipeBook}
-            closeModal={() => {
-              setOpenCreateRecipeBook(false);
-            }}
+            closeModal={() => setOpenCreateRecipeBook(false)}
           />
-          {/* <Modal
-            opened={openCreateRecipeBook}
-            onClose={() => setOpenCreateRecipeBook(false)}
-            size="md"
-          >
-            <CreateRecipe
-              recipeBookId={activeRecipeBook}
-              setOpenCreateRecipe={setOpenCreateRecipe}
-              recipeMutation={recipeMutation}
-            />
-          </Modal> */}
+          <CreateRecipeModal
+            bookId={activeRecipeBook}
+            modalState={openCreateRecipe}
+            closeModal={() => setOpenCreateRecipe(false)}
+          />
         </>
       ) : null}
     </Card>
