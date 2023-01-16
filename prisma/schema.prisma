@@ -1,7 +1,7 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-type CookTime {
+type Time {
   hours   Int
   minutes Int
 }
@@ -114,7 +114,8 @@ model Recipe {
 
     title            String
     description      String
-    cookTime         CookTime
+    prepTime         Time
+    cookTime         Time
     numberOfServings Int
     ingredients      Ingredient[]
     steps            Step[]
