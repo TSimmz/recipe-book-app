@@ -75,8 +75,7 @@ export const recipesRouter = createRouter()
           unit: z.string(),
           name: z.string(),
         })
-        .array()
-        .nonempty(),
+        .array(),
       steps: z
         .object({
           key: z.string(),
@@ -84,8 +83,7 @@ export const recipesRouter = createRouter()
           description: z.string(),
           note: z.string(),
         })
-        .array()
-        .nonempty(),
+        .array(),
 
       recipeBookId: z.string(),
     }),

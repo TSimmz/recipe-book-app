@@ -10,14 +10,39 @@ import {
   Modal,
   useMantineTheme,
   createStyles,
+  Stack,
+  ScrollArea,
+  Group,
 } from '@mantine/core';
+import { CustomButton, IconButton } from '@/components';
 import { useForm, zodResolver } from '@mantine/form';
-import { IconTrash } from '@tabler/icons';
-import { IconCirclePlus } from '@tabler/icons';
+import { IconTrash, IconCirclePlus } from '@tabler/icons';
 import { randomId } from '@mantine/hooks';
 import { z } from 'zod';
 
-const useStyles = createStyles((theme) => ({}));
+const useStyles = createStyles((theme) => ({
+  form: {
+    '& .mantine-TextInput-label, .mantine-Textarea-label, .mantine-NumberInput-label':
+      {
+        marginBottom: theme.spacing.xs,
+      },
+
+    '& .mantine-TextInput-required, .mantine-Textarea-required, .mantine-NumberInput-required':
+      {
+        color: theme.colors.orange[3],
+      },
+  },
+
+  stack: {
+    paddingRight: theme.spacing.md,
+  },
+
+  ingredientField: {
+    display: 'flex',
+    gap: '12px',
+    alignItems: 'center',
+  },
+}));
 
 const createRecipeSchema = z.object({
   title: z.string(),
@@ -38,8 +63,7 @@ const createRecipeSchema = z.object({
       unit: z.string(),
       name: z.string(),
     })
-    .array()
-    .nonempty(),
+    .array(),
   steps: z
     .object({
       key: z.string(),
@@ -47,8 +71,7 @@ const createRecipeSchema = z.object({
       description: z.string(),
       note: z.string().optional(),
     })
-    .array()
-    .nonempty(),
+    .array(),
 });
 
 type CreateRecipeModalProps = {
@@ -99,7 +122,7 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
   };
 
   const ingredientFields = form.values.ingredients.map((item, index) => (
-    <Flex key={`${item.key}-${index}`}>
+    <div className={classes.ingredientField} key={`${item.key}-${index}`}>
       <NumberInput
         label="Value"
         stepHoldDelay={500}
@@ -120,13 +143,13 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
         required
         {...form.getInputProps(`ingredients.${index}.name`)}
       />
-      <ActionIcon
-        color="red"
-        onClick={() => form.removeListItem('ingredients', index)}
-      >
-        <IconTrash size={16} />
-      </ActionIcon>
-    </Flex>
+      <IconButton
+        label="Delete"
+        tooltipPosition={'top'}
+        icon={<IconTrash color={theme.colors.red[5]} size={20} />}
+        handleClick={() => form.removeListItem('ingredients', index)}
+      />
+    </div>
   ));
 
   const handleAddStep = () => {
@@ -139,8 +162,9 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
   };
 
   const stepsFields = form.values.steps.map((item, index) => (
-    <Flex key={`${item.key}-${index}`}>
+    <div className={classes.ingredientField} key={`${item.key}-${index}`}>
       <Textarea
+        style={{ flexGrow: 1 }}
         placeholder="Description"
         label="Description"
         required
@@ -151,13 +175,13 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
         label="Note"
         {...form.getInputProps(`steps.${index}.note`)}
       />
-      <ActionIcon
-        color="red"
-        onClick={() => form.removeListItem('steps', index)}
-      >
-        <IconTrash size={16} />
-      </ActionIcon>
-    </Flex>
+      <IconButton
+        label="Delete"
+        tooltipPosition={'top'}
+        icon={<IconTrash color={theme.colors.red[5]} size={20} />}
+        handleClick={() => form.removeListItem('steps', index)}
+      />
+    </div>
   ));
 
   const handleSubmit = (values: typeof form.values) => {
@@ -175,102 +199,121 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
       radius={18}
       centered
       onClose={() => closeModal()}
-      size="md"
+      size="lg"
     >
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <TextInput
-          placeholder="Recipe Title"
-          label="Recipe Title"
-          required
-          {...form.getInputProps('title')}
-        />
-        <Textarea
-          placeholder="Description"
-          label="Description"
-          required
-          {...form.getInputProps('description')}
-        />
-        <Title order={5}>Prep Time</Title>
-        <NumberInput
-          label="Hours"
-          stepHoldDelay={500}
-          stepHoldInterval={100}
-          min={0}
-          required
-          {...form.getInputProps('prepTime.hours')}
-        />
-        <NumberInput
-          label="Minutes"
-          stepHoldDelay={500}
-          stepHoldInterval={100}
-          required
-          min={0}
-          max={59}
-          {...form.getInputProps('prepTime.minutes')}
-        />
-        <Title order={5}>Cook Time</Title>
-        <NumberInput
-          label="Hours"
-          stepHoldDelay={500}
-          stepHoldInterval={100}
-          min={0}
-          required
-          {...form.getInputProps('cookTime.hours')}
-        />
-        <NumberInput
-          label="Minutes"
-          stepHoldDelay={500}
-          stepHoldInterval={100}
-          required
-          min={0}
-          max={59}
-          {...form.getInputProps('cookTime.minutes')}
-        />
-        <NumberInput
-          label="Number of Servings"
-          stepHoldDelay={500}
-          stepHoldInterval={100}
-          required
-          min={0}
-          max={100}
-          {...form.getInputProps('numberOfServings')}
-        />
+      <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
+        <ScrollArea.Autosize maxHeight={800} offsetScrollbars>
+          <Stack className={classes.stack}>
+            <TextInput
+              placeholder="Recipe Title"
+              label="Recipe Title"
+              required
+              {...form.getInputProps('title')}
+            />
+            <Textarea
+              placeholder="Description"
+              label="Description"
+              required
+              {...form.getInputProps('description')}
+            />
+            <Title
+              order={5}
+              mb={-theme.spacing.md}
+              ff={theme.fontFamily}
+              mt={theme.spacing.md}
+            >
+              Prep Time
+            </Title>
+            <Group grow>
+              <NumberInput
+                label="Hours"
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                min={0}
+                required
+                {...form.getInputProps('prepTime.hours')}
+              />
+              <NumberInput
+                label="Minutes"
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                required
+                min={0}
+                max={59}
+                {...form.getInputProps('prepTime.minutes')}
+              />
+            </Group>
+            <Title
+              order={5}
+              mb={-theme.spacing.md}
+              ff={theme.fontFamily}
+              mt={theme.spacing.md}
+            >
+              Cook Time
+            </Title>
+            <Group grow>
+              <NumberInput
+                label="Hours"
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                min={0}
+                required
+                {...form.getInputProps('cookTime.hours')}
+              />
+              <NumberInput
+                label="Minutes"
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                required
+                min={0}
+                max={59}
+                {...form.getInputProps('cookTime.minutes')}
+              />
+            </Group>
+            <NumberInput
+              label="Number of Servings"
+              stepHoldDelay={500}
+              stepHoldInterval={100}
+              required
+              min={0}
+              max={100}
+              {...form.getInputProps('numberOfServings')}
+            />
+            <Stack mt={theme.spacing.md}>
+              <Title order={5} mb={-theme.spacing.md} ff={theme.fontFamily}>
+                Ingredients
+              </Title>
+              {ingredientFields}
+              <CustomButton
+                active
+                label={'Add Ingredient'}
+                rightIcon={<IconCirclePlus size={16} />}
+                onClickHandler={handleAddIngredient}
+              />
+            </Stack>
+            <Stack mt={theme.spacing.md}>
+              <Title order={5} mb={-theme.spacing.md} ff={theme.fontFamily}>
+                Directions
+              </Title>
+              {stepsFields}
+              <CustomButton
+                active
+                label={'Add Step'}
+                rightIcon={<IconCirclePlus size={16} />}
+                onClickHandler={handleAddStep}
+              />
+            </Stack>
 
-        <Title order={5}>Ingredients</Title>
-        {ingredientFields}
-        <Button
-          color="yellow"
-          rightIcon={<IconCirclePlus size={16} />}
-          onClick={handleAddIngredient}
-        >
-          Add
-        </Button>
-        <Title order={5}>Steps</Title>
-        {stepsFields}
-        <Button
-          color="yellow"
-          rightIcon={<IconCirclePlus size={16} />}
-          onClick={handleAddStep}
-        >
-          Add
-        </Button>
-        <br />
-        <br />
-
-        <Button type="submit" color="yellow" radius="md" size="md">
-          Save Recipe
-        </Button>
-        <Button
-          color="yellow"
-          radius="md"
-          size="md"
-          onClick={() => {
-            closeModal();
-          }}
-        >
-          {' '}
-          Cancel{' '}
-        </Button>
+            <Group mt={theme.spacing.xl} position="apart">
+              <CustomButton type="submit" label="Save New Recipe" active />
+              <CustomButton
+                label="Cancel"
+                active
+                onClickHandler={() => closeModal()}
+              />
+            </Group>
+          </Stack>
+        </ScrollArea.Autosize>
       </form>
     </Modal>
   );

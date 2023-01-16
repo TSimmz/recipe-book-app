@@ -72,6 +72,7 @@ type CustomButtonProps = {
   label: string;
   active?: boolean;
   type?: 'submit' | 'button' | 'reset';
+  rightIcon?: React.ReactNode;
   onClickHandler?: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => void;
@@ -81,6 +82,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   label,
   active,
   type,
+  rightIcon,
   onClickHandler,
 }: CustomButtonProps) => {
   const { classes, cx } = useStyles();
@@ -92,6 +94,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
       className={cx(classes.button, {
         [classes.buttonActive]: active === true,
       })}
+      rightIcon={rightIcon}
       onClick={onClickHandler}
     >
       {label}
