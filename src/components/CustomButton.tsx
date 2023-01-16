@@ -71,6 +71,7 @@ const useStyles = createStyles((theme) => ({
 type CustomButtonProps = {
   label: string;
   active?: boolean;
+  type?: 'submit' | 'button' | 'reset';
   onClickHandler?: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => void;
@@ -79,12 +80,14 @@ type CustomButtonProps = {
 const CustomButton: React.FC<CustomButtonProps> = ({
   label,
   active,
+  type,
   onClickHandler,
 }: CustomButtonProps) => {
   const { classes, cx } = useStyles();
 
   return (
     <Button
+      type={type}
       radius="xl"
       className={cx(classes.button, {
         [classes.buttonActive]: active === true,

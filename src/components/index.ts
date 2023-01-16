@@ -1,6 +1,6 @@
 export { default as Metadata } from './Metadata';
 export { default as CreateRecipe } from './CreateRecipe';
-export { default as CreateRecipeBook } from './CreateRecipeBook';
+export { default as CreateRecipeBookModal } from './CreateRecipeBookModal';
 export { default as Layout } from './Layout';
 export { default as DashboardHeader } from './DashboardHeader/DashboardHeader';
 export { default as DashboardNavbar } from './DashboardNavbar/DashboardNavbar';

@@ -15,7 +15,7 @@ import {
 import { useRouter } from 'next/router';
 import {
   IconButton,
-  CreateRecipeBook,
+  CreateRecipeBookModal,
   CreateRecipe,
   CustomLoader,
 } from '@/components';
@@ -137,20 +137,13 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
       </Card.Section>
       {router.pathname === '/my-shelf' ? (
         <>
-          <Modal
-            title="Create a New Recipe Book"
-            opened={openCreateRecipeBook}
-            radius={18}
-            onClose={() => setOpenCreateRecipeBook(false)}
-            size="md"
-          >
-            <CreateRecipeBook
-              userId={userId}
-              closeModal={() => {
-                setOpenCreateRecipeBook(false);
-              }}
-            />
-          </Modal>
+          <CreateRecipeBookModal
+            userId={userId}
+            modalState={openCreateRecipeBook}
+            closeModal={() => {
+              setOpenCreateRecipeBook(false);
+            }}
+          />
           {/* <Modal
             opened={openCreateRecipeBook}
             onClose={() => setOpenCreateRecipeBook(false)}
