@@ -1,12 +1,46 @@
-import { Header, Group, Title, useMantineTheme } from '@mantine/core';
-import { AvatarMenu, CustomNavLink } from '@/components';
+import {
+  Header,
+  Group,
+  Title,
+  useMantineTheme,
+  createStyles,
+} from '@mantine/core';
+import { AvatarMenu, CustomButton, CustomNavLink } from '@/components';
 import { useRouter } from 'next/router';
+import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 
-type CustomHeaderProps = {};
+const useStyles = createStyles((theme) => ({
+  headerTitle: {
+    cursor: 'pointer',
+    fontSize: '32px',
+    fontWeight: 'normal',
+    transition: 'all ease-in-out 150ms',
 
-const CustomHeader: React.FC<CustomHeaderProps> = ({}: CustomHeaderProps) => {
+    '&:hover': {
+      scale: '1.02',
+      color: theme.colors.orange[3],
+      transition: 'all ease-in-out 150ms',
+    },
+  },
+}));
+
+type CustomHeaderProps = {
+  session: any;
+};
+
+const CustomHeader: React.FC<CustomHeaderProps> = ({
+  session,
+}: CustomHeaderProps) => {
   const router = useRouter();
+  const { classes } = useStyles();
   const theme = useMantineTheme();
+
+  const handleSignInClick = () => {
+    signIn(undefined, {
+      callbackUrl: '/',
+    });
+  };
 
   return (
     <Header
@@ -17,27 +51,37 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({}: CustomHeaderProps) => {
       style={{ borderColor: theme.colors.dark[9] }}
     >
       <Group position="apart">
-        <Title size={32} fw="normal">
-          Recipe Book
-        </Title>
-        <Group position="right">
-          <CustomNavLink
-            label="Browse"
-            linkTo="/browse"
-            active={router.pathname === '/browse'}
+        <Link href="/">
+          <Title className={classes.headerTitle}>Recipe Book</Title>
+        </Link>
+        {!session ? (
+          <CustomButton
+            label="Sign In"
+            active
+            onClickHandler={handleSignInClick}
           />
-          <CustomNavLink
-            label="My Shelf"
-            linkTo="/my-shelf"
-            active={router.pathname === '/my-shelf'}
-          />
-          <CustomNavLink
-            label="My Pantry"
-            linkTo="/my-pantry"
-            active={router.pathname === '/my-pantry'}
-          />
-          <AvatarMenu menuPosition="bottom-end" />
-        </Group>
+        ) : (
+          <Group position="right">
+            <CustomNavLink
+              label="Browse"
+              linkTo="/browse"
+              disabled
+              active={router.pathname === '/browse'}
+            />
+            <CustomNavLink
+              label="My Shelf"
+              linkTo="/my-shelf"
+              active={router.pathname === '/my-shelf'}
+            />
+            <CustomNavLink
+              label="My Pantry"
+              linkTo="/my-pantry"
+              disabled
+              active={router.pathname === '/my-pantry'}
+            />
+            <AvatarMenu menuPosition="bottom-end" />
+          </Group>
+        )}
       </Group>
     </Header>
   );

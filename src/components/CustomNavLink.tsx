@@ -74,12 +74,14 @@ type CustomNavLinkProps = {
   label: string;
   linkTo: string;
   active: boolean;
+  disabled?: boolean;
 };
 
 const CustomNavLink: React.FC<CustomNavLinkProps> = ({
   label,
   linkTo,
   active,
+  disabled,
 }: CustomNavLinkProps) => {
   const { classes, cx } = useStyles();
 
@@ -87,6 +89,7 @@ const CustomNavLink: React.FC<CustomNavLinkProps> = ({
     <Link className={classes.navLink} href={linkTo}>
       <Button
         radius="xl"
+        disabled={disabled}
         className={cx(classes.navLinkButton, {
           [classes.navLinkButtonActive]: active === true,
         })}

@@ -15,7 +15,7 @@ const MyShelf: NextPage = () => {
     <div>Please sign in to view this page</div>
   ) : (
     <Layout
-      header={<CustomHeader />}
+      header={<CustomHeader session={session} />}
       navbar={<CustomNavbar userId={session.id as string} />}
       footer={<></>}
     >

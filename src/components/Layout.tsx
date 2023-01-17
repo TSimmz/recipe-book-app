@@ -1,5 +1,4 @@
 import { AppShell, useMantineTheme } from '@mantine/core';
-import { DefaultHeader, DefaultNavbar, DefaultFooter } from './defaults';
 
 type LayoutProps = {
   header?: JSX.Element;
@@ -23,10 +22,10 @@ const Layout: React.FC<LayoutProps> = ({
           background: theme.colors.dark[7],
         },
       }}
-      header={header !== undefined ? header : <DefaultHeader />}
-      navbar={navbar !== undefined ? navbar : <DefaultNavbar />}
+      header={header}
+      navbar={navbar}
       navbarOffsetBreakpoint="sm"
-      footer={footer !== undefined ? footer : <DefaultFooter />}
+      footer={footer}
     >
       {children}
     </AppShell>
