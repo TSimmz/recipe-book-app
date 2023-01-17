@@ -103,10 +103,26 @@ const RecipeDisplayCard: React.FC<
           </Text>
           <Group>
             <Text fz={12} c={theme.colors.orange[3]}>
-              {`Prep Time: ${recipe.data.cookTime.hours}h ${recipe.data.cookTime.minutes}m`}
+              {`Prep Time: ${
+                recipe.data.prepTime.hours
+                  ? `${recipe.data.prepTime.hours}h`
+                  : ''
+              } ${
+                recipe.data.prepTime.minutes
+                  ? `${recipe.data.prepTime.minutes}m`
+                  : ''
+              }`}
             </Text>
             <Text fz={12} c={theme.colors.orange[3]}>
-              {`Cook Time: ${recipe.data.cookTime.hours}h ${recipe.data.cookTime.minutes}m`}
+              {`Cook Time: ${
+                recipe.data.cookTime.hours
+                  ? `${recipe.data.cookTime.hours}h`
+                  : ''
+              } ${
+                recipe.data.cookTime.minutes
+                  ? `${recipe.data.cookTime.minutes}m`
+                  : ''
+              }`}
             </Text>
           </Group>
 

@@ -68,11 +68,20 @@ const DisplayRecipe: React.FC<
     </Group>
   ));
 
-  const steps = recipe.data?.steps.map((step) => (
-    <Group key={step?.key} mb={theme.spacing.md}>
-      <Text>{`${step.stepNumber})`}</Text>
-      <Text>{step.description}</Text>
-    </Group>
+  const steps = recipe.data?.steps.map((step, index) => (
+    <div
+      key={step?.key}
+      style={{
+        marginBottom: theme.spacing.md,
+        display: 'flex',
+        alignItems: 'flex-start',
+      }}
+    >
+      <Text>{`${index + 1})`}</Text>
+      <Text style={{ flexGrow: 1, marginLeft: theme.spacing.sm }}>
+        {step.description}
+      </Text>
+    </div>
   ));
 
   const handleBackClick = (
@@ -123,16 +132,30 @@ const DisplayRecipe: React.FC<
       >
         <div className={classes.cardGrid}>
           <Group w="100%" mb={theme.spacing.xl}>
-            <Text
-              size={14}
-              fs="italic"
-              mr={32}
-            >{`Prep Time: ${recipe.data?.cookTime.hours}hr ${recipe.data?.cookTime.minutes}min`}</Text>
-            <Text
-              size={14}
-              fs="italic"
-              mr={32}
-            >{`Cook Time: ${recipe.data?.cookTime.hours}hr ${recipe.data?.cookTime.minutes}min`}</Text>
+            <Text size={14} fs="italic" mr={32}>
+              {' '}
+              {`Prep Time: ${
+                recipe.data.prepTime.hours
+                  ? `${recipe.data.prepTime.hours}h`
+                  : ''
+              } ${
+                recipe.data.prepTime.minutes
+                  ? `${recipe.data.prepTime.minutes}m`
+                  : ''
+              }`}
+            </Text>
+            <Text size={14} fs="italic" mr={32}>
+              {' '}
+              {`Cook Time: ${
+                recipe.data.cookTime.hours
+                  ? `${recipe.data.cookTime.hours}h`
+                  : ''
+              } ${
+                recipe.data.cookTime.minutes
+                  ? `${recipe.data.cookTime.minutes}m`
+                  : ''
+              }`}
+            </Text>
             <Group position="left">
               <Text size={14} mr={-10} fs="italic">
                 Servings:

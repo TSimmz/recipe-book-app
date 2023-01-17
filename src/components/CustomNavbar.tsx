@@ -34,15 +34,17 @@ const CustomNavbar: React.FC<CustomNavbarProps> = ({
   return (
     <Navbar className={classes.navbar} width={{ base: 350 }}>
       <ScrollArea.Autosize maxHeight={'90vh'} offsetScrollbars>
-        <Navbar.Section mb={theme.spacing.lg} className={classes.navbarCard}>
-          <UserCard userId={userId} />
-        </Navbar.Section>
-        <Navbar.Section className={classes.navbarCard}>
-          <RecipeDisplayCard />
-        </Navbar.Section>
-        <Navbar.Section className={classes.navbarCard}>
-          <RecipeBookDisplayCard />
-        </Navbar.Section>
+        <div style={{ paddingRight: theme.spacing.sm }}>
+          <Navbar.Section mb={theme.spacing.lg} className={classes.navbarCard}>
+            <UserCard userId={userId} />
+          </Navbar.Section>
+          <Navbar.Section className={classes.navbarCard}>
+            <RecipeDisplayCard />
+          </Navbar.Section>
+          <Navbar.Section className={classes.navbarCard}>
+            <RecipeBookDisplayCard />
+          </Navbar.Section>
+        </div>
       </ScrollArea.Autosize>
     </Navbar>
   );

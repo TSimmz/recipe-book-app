@@ -68,10 +68,18 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
           </Title>
           <Group position="apart" w="100%">
             <Text fz={12} italic c={theme.colors.orange[3]}>
-              {'Prep Time: 1h 25m'}
+              {`Prep Time: ${
+                recipe.prepTime.hours ? `${recipe.prepTime.hours}h` : ''
+              } ${
+                recipe.prepTime.minutes ? `${recipe.prepTime.minutes}m` : ''
+              }`}
             </Text>
             <Text fz={12} italic c={theme.colors.orange[3]}>
-              {`Cook Time: ${recipe.cookTime.hours}h ${recipe.cookTime.minutes}m`}
+              {`Cook Time: ${
+                recipe.cookTime.hours ? `${recipe.cookTime.hours}h` : ''
+              } ${
+                recipe.cookTime.minutes ? `${recipe.cookTime.minutes}m` : ''
+              }`}
             </Text>
           </Group>
           <Text fz={12} italic lineClamp={3}>
