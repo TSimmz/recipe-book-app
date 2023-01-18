@@ -73,11 +73,11 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
 
   // If selected book is opened, show cards container with that book's recipes
   if (activeRecipeBook !== '') {
+    const activeRecipeBookTitle = recipeBooks?.data.find(
+      (book) => book.id === activeRecipeBook,
+    )?.title;
     return (
-      <CardsContainer
-        title={`${user.data?.name}'s Recipes`}
-        cards={recipeCards}
-      />
+      <CardsContainer title={`${activeRecipeBookTitle}`} cards={recipeCards} />
     );
   }
   // If recipe selected, show cards container with book's recipes with selected recipe card above
