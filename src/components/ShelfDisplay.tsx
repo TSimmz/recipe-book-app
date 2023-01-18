@@ -8,11 +8,11 @@ import {
 import { useSelector } from 'react-redux';
 import {
   CardsContainer,
+  CustomLoader,
   DisplayRecipe,
   RecipeBookCard,
   RecipeCard,
 } from '@/components';
-import { Text } from '@mantine/core';
 
 type ShelfDisplayProps = {
   userId: string;
@@ -65,14 +65,22 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
         ))
       : null;
 
-  // If nothing selected, show cards container with user's books
+  // If any data is loading, display loader
+  if (
+    user.status === 'loading' ||
+    recipeBooks.status === 'loading' ||
+    recipes.status === 'loading'
+  ) {
+    return <CustomLoader />;
+  }
+
+  // If selected recipe is opened, show recipe display
   if (activeRecipe !== '') {
     return <DisplayRecipe />;
   }
-  // If book selected, show cards container with user's books, with selected book card above
 
   // If selected book is opened, show cards container with that book's recipes
-  if (activeRecipeBook !== '') {
+  if (activeRecipeBook !== '' && recipeBooks.data) {
     const activeRecipeBookTitle = recipeBooks?.data.find(
       (book) => book.id === activeRecipeBook,
     )?.title;
@@ -80,10 +88,8 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
       <CardsContainer title={`${activeRecipeBookTitle}`} cards={recipeCards} />
     );
   }
-  // If recipe selected, show cards container with book's recipes with selected recipe card above
 
-  // If selected recipe is opened, show recipe display
-
+  // If nothing selected, show cards container with user's books
   return (
     <CardsContainer
       title={`${user.data?.name}'s Books`}
