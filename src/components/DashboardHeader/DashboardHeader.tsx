@@ -7,7 +7,6 @@ import {
   Breadcrumbs,
   Group,
   useMantineTheme,
-  Avatar,
   Text,
 } from '@mantine/core';
 import useStyles from './styles';
@@ -18,7 +17,7 @@ import {
   IconSettings,
   IconArrowRight,
 } from '@tabler/icons';
-import { DeleteRecipeModal, IconButton, AvatarMenu } from '@/components';
+import { IconButton, AvatarMenu } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
   selectNavbarOpened,
@@ -34,20 +33,16 @@ type DashboardHeaderProps = {
   recipes: any;
 };
 
-const DashboardHeader: React.FC<DashboardHeaderProps> = ({
-  recipeBooks,
-  recipes,
-}: DashboardHeaderProps) => {
+const DashboardHeader: React.FC<
+  DashboardHeaderProps
+> = ({}: DashboardHeaderProps) => {
   const dispatch = useAppDispatch();
 
   const navbarOpened = useSelector(selectNavbarOpened);
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
 
-  const [isDeleteRecipeModalOpened, setDeleteRecipeModalOpened] =
-    useState(false);
-
-  const { classes, cx } = useStyles();
+  const { classes } = useStyles();
   const theme = useMantineTheme();
 
   const recipeBook = trpc.useQuery([
@@ -63,15 +58,6 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   ].map((item) => item.crumb && <Text key={item.crumb}>{item.crumb}</Text>);
 
   const disabledRecipeButtons = activeRecipe === '';
-
-  const handleDeleteRecipe = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    if (activeRecipe === '') return;
-
-    setDeleteRecipeModalOpened(true);
-  };
 
   return (
     <Header className={classes.header} height={85}>
@@ -115,18 +101,6 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             </Breadcrumbs>
           </Flex>
           <Flex gap={8}>
-            <IconButton
-              label="Delete Recipe"
-              tooltipPosition="bottom"
-              icon={<IconTrash />}
-              disabled={disabledRecipeButtons}
-              handleClick={handleDeleteRecipe}
-            />
-            <DeleteRecipeModal
-              activeRecipe={activeRecipe}
-              isDeleteRecipeModalOpened={isDeleteRecipeModalOpened}
-              setDeleteRecipeModalOpened={setDeleteRecipeModalOpened}
-            />
             <IconButton
               label="Edit Recipe"
               tooltipPosition="bottom"

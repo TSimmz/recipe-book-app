@@ -6,12 +6,14 @@ import CustomButton from './CustomButton';
 
 type DeleteRecipeModalProps = {
   activeRecipe: string;
+  recipeTitle: string;
   isDeleteRecipeModalOpened: boolean;
   setDeleteRecipeModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const DeleteRecipeModal: React.FC<DeleteRecipeModalProps> = ({
   activeRecipe,
+  recipeTitle,
   isDeleteRecipeModalOpened,
   setDeleteRecipeModalOpened,
 }: DeleteRecipeModalProps) => {
@@ -26,6 +28,7 @@ const DeleteRecipeModal: React.FC<DeleteRecipeModalProps> = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
+    event.stopPropagation();
     deleteRecipe.mutate({ id: activeRecipe });
 
     dispatch(clearActiveRecipe());
@@ -37,6 +40,7 @@ const DeleteRecipeModal: React.FC<DeleteRecipeModalProps> = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
+    event.stopPropagation();
     setDeleteRecipeModalOpened(false);
   };
 
@@ -44,13 +48,14 @@ const DeleteRecipeModal: React.FC<DeleteRecipeModalProps> = ({
     <Modal
       centered
       size="sm"
-      title="Delete Recipe"
+      radius={'lg'}
+      title={`Delete ${recipeTitle}`}
       opened={isDeleteRecipeModalOpened}
       onClose={() => setDeleteRecipeModalOpened(false)}
     >
       <Stack align={'center'}>
-        <Text size={18} mb="lg">
-          Are you sure?
+        <Text size={16} mb="lg" ta={'center'}>
+          {`Are you sure?`}
         </Text>
         <Group position="apart" style={{ gap: theme.spacing.xl }}>
           <CustomButton label="Yes" active onClickHandler={handleYesClick} />

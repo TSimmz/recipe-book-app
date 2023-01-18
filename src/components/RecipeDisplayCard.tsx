@@ -2,22 +2,16 @@ import { trpc } from '@/utils/trpc';
 import {
   Card,
   BackgroundImage,
-  List,
   Stack,
   Title,
   Text,
   Group,
-  ScrollArea,
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
-import { useAppDispatch } from '@/features/store';
 import { useSelector } from 'react-redux';
-import {
-  selectSelectedRecipe,
-  setActiveRecipe,
-} from '@/features/dashboard/dashboardSlice';
-import { CustomButton, CustomLoader } from '@/components';
+import { selectSelectedRecipe } from '@/features/dashboard/dashboardSlice';
+import { CustomLoader } from '@/components';
 
 const useStyles = createStyles((theme) => ({
   background: {
@@ -46,8 +40,6 @@ type RecipeDisplayCardProps = {};
 const RecipeDisplayCard: React.FC<
   RecipeDisplayCardProps
 > = ({}: RecipeDisplayCardProps) => {
-  const dispatch = useAppDispatch();
-
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
@@ -57,22 +49,6 @@ const RecipeDisplayCard: React.FC<
     'recipe.getRecipeById',
     { id: selectedRecipe },
   ]);
-
-  // const recipesList =
-  //   recipeBook.status === 'success' && recipeBook.data
-  //     ? recipeBook?.data.recipes.map((recipe: any) => (
-  //         <List.Item key={recipe.id} c={theme.white}>
-  //           {recipe.title}
-  //         </List.Item>
-  //       ))
-  //     : null;
-
-  const handleRecipeOpen = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    dispatch(setActiveRecipe(selectedRecipe));
-  };
 
   if (recipe.status === 'loading') {
     return (
@@ -125,12 +101,6 @@ const RecipeDisplayCard: React.FC<
               }`}
             </Text>
           </Group>
-
-          <CustomButton
-            label={'Open Recipe'}
-            active
-            onClickHandler={handleRecipeOpen}
-          />
         </Stack>
       </BackgroundImage>
     </Card>

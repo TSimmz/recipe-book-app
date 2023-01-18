@@ -77,6 +77,20 @@ export const dashboardSlice = createSlice({
     clearSelectedRecipe: (state: DashboardSliceState) => {
       state.selectedRecipe = '';
     },
+    setSelectAndActiveRecipeBook: (
+      state: DashboardSliceState,
+      action: PayloadAction<string>,
+    ) => {
+      state.selectedRecipeBook = action.payload;
+      state.activeRecipeBook = action.payload;
+    },
+    setSelectAndActiveRecipe: (
+      state: DashboardSliceState,
+      action: PayloadAction<string>,
+    ) => {
+      state.selectedRecipe = action.payload;
+      state.activeRecipe = action.payload;
+    },
   },
 });
 
@@ -91,6 +105,8 @@ export const {
   setSelectedRecipe,
   clearSelectedRecipeBook,
   clearSelectedRecipe,
+  setSelectAndActiveRecipeBook,
+  setSelectAndActiveRecipe,
   setNavbarWidth,
 } = dashboardSlice.actions;
 

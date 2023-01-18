@@ -11,8 +11,11 @@ import {
 } from '@mantine/core';
 import { CustomCard, IconButton, DeleteRecipeModal } from '@/components';
 import { useAppDispatch } from '@/features/store';
-import { setSelectedRecipe } from '@/features/dashboard/dashboardSlice';
-import { IconTrash } from '@tabler/icons';
+import {
+  setSelectedRecipe,
+  setSelectAndActiveRecipe,
+} from '@/features/dashboard/dashboardSlice';
+import { IconTrash, IconArrowUpRightCircle } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
   image: {
@@ -64,6 +67,17 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
     setDeleteRecipeModalOpened(true);
   };
 
+  const handleOpenRecipe = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    dispatch(setSelectAndActiveRecipe(recipeId));
+  };
+
+  const recipeTitle = recipe.title;
+
   return (
     <CustomCard
       active={active}
@@ -81,7 +95,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
           <Title order={1} fw="normal" fz={16} ff={theme.fontFamily} underline>
             {recipe.title}
           </Title>
-          <Group position="apart" w="100%">
+          <Group position="apart">
             <Text fz={12} italic c={theme.colors.orange[3]}>
               {`Prep Time: ${
                 recipe.prepTime.hours ? `${recipe.prepTime.hours}h` : ''
@@ -105,7 +119,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
         </Stack>
       }
       footer={
-        <>
+        <Group style={{ gap: theme.spacing.xs }}>
           <IconButton
             label="Delete Recipe"
             tooltipPosition={'top'}
@@ -114,10 +128,22 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
           />
           <DeleteRecipeModal
             activeRecipe={recipeId}
+            recipeTitle={recipeTitle}
             isDeleteRecipeModalOpened={isDeleteRecipeModalOpened}
             setDeleteRecipeModalOpened={setDeleteRecipeModalOpened}
           />
-        </>
+          <IconButton
+            label="Open Recipe"
+            tooltipPosition={'top'}
+            icon={
+              <IconArrowUpRightCircle
+                color={theme.colors.orange[3]}
+                size={20}
+              />
+            }
+            handleClick={handleOpenRecipe}
+          />
+        </Group>
       }
     />
   );
