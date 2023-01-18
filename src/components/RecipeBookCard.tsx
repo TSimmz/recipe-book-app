@@ -3,12 +3,17 @@ import {
   Title,
   Text,
   Image,
+  Group,
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
-import { CustomCard } from '@/components';
+import { CustomCard, IconButton } from '@/components';
 import { useAppDispatch } from '@/features/store';
-import { setSelectedRecipeBook } from '@/features/dashboard/dashboardSlice';
+import {
+  setSelectedRecipeBook,
+  setSelectAndActiveRecipeBook,
+} from '@/features/dashboard/dashboardSlice';
+import { IconTrash, IconArrowUpRightCircle } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
   image: {
@@ -47,6 +52,15 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
     dispatch(setSelectedRecipeBook(bookId));
   };
 
+  const handleOpenBook = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    dispatch(setSelectAndActiveRecipeBook(bookId));
+  };
+
   return (
     <CustomCard
       active={active}
@@ -76,7 +90,21 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
           </Text>
         </Stack>
       }
-      footer={<></>}
+      footer={
+        <Group style={{ gap: theme.spacing.xs }}>
+          <IconButton
+            label="Open Book"
+            tooltipPosition={'top'}
+            icon={
+              <IconArrowUpRightCircle
+                color={theme.colors.orange[3]}
+                size={20}
+              />
+            }
+            handleClick={handleOpenBook}
+          />
+        </Group>
+      }
     />
   );
 };

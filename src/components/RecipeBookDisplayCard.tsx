@@ -10,13 +10,9 @@ import {
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
-import { useAppDispatch } from '@/features/store';
 import { useSelector } from 'react-redux';
-import {
-  selectSelectedRecipeBook,
-  setActiveRecipeBook,
-} from '@/features/dashboard/dashboardSlice';
-import { CustomButton, CustomLoader } from '@/components';
+import { selectSelectedRecipeBook } from '@/features/dashboard/dashboardSlice';
+import { CustomLoader } from '@/components';
 
 const useStyles = createStyles((theme) => ({
   background: {
@@ -45,8 +41,6 @@ type RecipeBookDisplayCardProps = {};
 const RecipeBookDisplayCard: React.FC<
   RecipeBookDisplayCardProps
 > = ({}: RecipeBookDisplayCardProps) => {
-  const dispatch = useAppDispatch();
-
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
@@ -65,13 +59,6 @@ const RecipeBookDisplayCard: React.FC<
           </List.Item>
         ))
       : null;
-
-  const handleRecipeBookOpen = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    dispatch(setActiveRecipeBook(selectedRecipeBook));
-  };
 
   if (recipeBook.status === 'loading') {
     return (
@@ -106,11 +93,6 @@ const RecipeBookDisplayCard: React.FC<
           <ScrollArea style={{ height: 150 }} offsetScrollbars>
             <List size="xs">{recipesList}</List>
           </ScrollArea>
-          <CustomButton
-            label={'Open Book'}
-            active
-            onClickHandler={handleRecipeBookOpen}
-          />
         </Stack>
       </BackgroundImage>
     </Card>
