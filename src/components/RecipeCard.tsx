@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Stack,
   Title,
@@ -8,9 +9,10 @@ import {
   Divider,
   createStyles,
 } from '@mantine/core';
-import { CustomCard } from '@/components';
+import { CustomCard, IconButton, DeleteRecipeModal } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import { setSelectedRecipe } from '@/features/dashboard/dashboardSlice';
+import { IconTrash } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
   image: {
@@ -44,9 +46,22 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
+  const [isDeleteRecipeModalOpened, setDeleteRecipeModalOpened] =
+    useState(false);
+
   const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     dispatch(setSelectedRecipe(recipeId));
+  };
+
+  const handleDeleteRecipe = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (recipeId === '') return;
+
+    setDeleteRecipeModalOpened(true);
   };
 
   return (
@@ -88,6 +103,21 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
           <Divider color={theme.white} size={2} />
           {/** TODO: Recipe tags will go here */}
         </Stack>
+      }
+      footer={
+        <>
+          <IconButton
+            label="Delete Recipe"
+            tooltipPosition={'top'}
+            icon={<IconTrash color={theme.colors.red[5]} size={20} />}
+            handleClick={handleDeleteRecipe}
+          />
+          <DeleteRecipeModal
+            activeRecipe={recipeId}
+            isDeleteRecipeModalOpened={isDeleteRecipeModalOpened}
+            setDeleteRecipeModalOpened={setDeleteRecipeModalOpened}
+          />
+        </>
       }
     />
   );

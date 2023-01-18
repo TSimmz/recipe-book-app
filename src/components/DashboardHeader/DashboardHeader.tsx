@@ -124,7 +124,6 @@ const DashboardHeader: React.FC<DashboardHeaderProps> = ({
             />
             <DeleteRecipeModal
               activeRecipe={activeRecipe}
-              recipes={recipes}
               isDeleteRecipeModalOpened={isDeleteRecipeModalOpened}
               setDeleteRecipeModalOpened={setDeleteRecipeModalOpened}
             />

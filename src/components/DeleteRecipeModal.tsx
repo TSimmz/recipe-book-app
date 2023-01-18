@@ -1,28 +1,25 @@
 import { trpc } from '@/utils/trpc';
-import { useSelector } from 'react-redux';
 import { clearActiveRecipe } from '@/features/dashboard/dashboardSlice';
-import { Modal, Flex, Text, Group, Button } from '@mantine/core';
+import { Modal, Stack, Text, Group, useMantineTheme } from '@mantine/core';
 import { useAppDispatch } from '@/features/store';
+import CustomButton from './CustomButton';
 
 type DeleteRecipeModalProps = {
   activeRecipe: string;
-  recipes: any;
   isDeleteRecipeModalOpened: boolean;
   setDeleteRecipeModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const DeleteRecipeModal: React.FC<DeleteRecipeModalProps> = ({
   activeRecipe,
-  recipes,
   isDeleteRecipeModalOpened,
   setDeleteRecipeModalOpened,
 }: DeleteRecipeModalProps) => {
   const dispatch = useAppDispatch();
+  const theme = useMantineTheme();
 
   const deleteRecipe = trpc.useMutation(['recipe.deleteRecipe'], {
-    onSuccess: () => {
-      recipes?.refetch();
-    },
+    onSuccess: () => {},
   });
 
   const handleYesClick = (
@@ -51,31 +48,15 @@ const DeleteRecipeModal: React.FC<DeleteRecipeModalProps> = ({
       opened={isDeleteRecipeModalOpened}
       onClose={() => setDeleteRecipeModalOpened(false)}
     >
-      <Flex w={'100%'} direction="column" justify="center" align="center">
+      <Stack align={'center'}>
         <Text size={18} mb="lg">
           Are you sure?
         </Text>
-        <Group position="apart">
-          <Button
-            color="yellow"
-            radius="md"
-            w={100}
-            h={40}
-            onClick={handleYesClick}
-          >
-            Yes
-          </Button>
-          <Button
-            color="yellow"
-            radius="md"
-            w={100}
-            h={40}
-            onClick={handleNoClick}
-          >
-            No
-          </Button>
+        <Group position="apart" style={{ gap: theme.spacing.xl }}>
+          <CustomButton label="Yes" active onClickHandler={handleYesClick} />
+          <CustomButton label="No" active onClickHandler={handleNoClick} />
         </Group>
-      </Flex>
+      </Stack>
     </Modal>
   );
 };

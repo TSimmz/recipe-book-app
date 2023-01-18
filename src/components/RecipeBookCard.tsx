@@ -76,6 +76,7 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
           </Text>
         </Stack>
       }
+      footer={<></>}
     />
   );
 };

@@ -21,6 +21,7 @@ type CustomCardProps = {
   onClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
   image: React.ReactNode;
   body: React.ReactNode;
+  footer: React.ReactNode;
 };
 
 const CustomCard: React.FC<CustomCardProps> = ({
@@ -28,6 +29,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
   onClickHandler,
   image,
   body,
+  footer,
 }: CustomCardProps) => {
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
@@ -43,6 +45,14 @@ const CustomCard: React.FC<CustomCardProps> = ({
       <Card.Section>{image}</Card.Section>
 
       <Card.Section p={theme.spacing.md}>{body}</Card.Section>
+      <Card.Section
+        h={30}
+        pos="absolute"
+        bottom={theme.spacing.lg}
+        right={theme.spacing.xl}
+      >
+        {footer}
+      </Card.Section>
     </Card>
   );
 };
