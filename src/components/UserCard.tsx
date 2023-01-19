@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { trpc } from '@/utils/trpc';
 import {
   Title,
@@ -11,16 +10,7 @@ import {
   useMantineTheme,
   Avatar,
 } from '@mantine/core';
-import { useRouter } from 'next/router';
-import {
-  IconButton,
-  CreateRecipeBookModal,
-  CreateRecipeModal,
-  CustomLoader,
-} from '@/components';
-import { selectActiveRecipeBook } from '@/features/dashboard/dashboardSlice';
-import { useSelector } from 'react-redux';
-import { IconCirclePlus } from '@tabler/icons';
+import { CustomLoader } from '@/components';
 
 const useStyles = createStyles((theme) => ({
   bioBorder: {
@@ -34,31 +24,10 @@ type UserCardProps = {
 };
 
 const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
-  const router = useRouter();
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const activeRecipeBook = useSelector(selectActiveRecipeBook);
 
   const user = trpc.useQuery(['user.getUserById', { id: userId }]);
-
-  const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
-  const [openCreateRecipe, setOpenCreateRecipe] = useState(false);
-
-  const handleOpenRecipeBookModal = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-
-    setOpenCreateRecipeBook(true);
-  };
-
-  const handleOpenRecipeModal = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-
-    setOpenCreateRecipe(true);
-  };
 
   if (user.status === 'loading')
     return (
@@ -117,14 +86,6 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
                   Books
                 </Text>
               </Stack>
-              {router.pathname === '/my-shelf' ? (
-                <IconButton
-                  label="Create Book"
-                  tooltipPosition="top"
-                  icon={<IconCirclePlus color={theme.colors.orange[4]} />}
-                  handleClick={handleOpenRecipeBookModal}
-                />
-              ) : null}
             </Group>
             <Group>
               <Stack align="center">
@@ -133,32 +94,10 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
                   Recipes
                 </Text>
               </Stack>
-              {router.pathname === '/my-shelf' && activeRecipeBook !== '' ? (
-                <IconButton
-                  label="Create Recipe"
-                  tooltipPosition="top"
-                  icon={<IconCirclePlus color={theme.colors.orange[4]} />}
-                  handleClick={handleOpenRecipeModal}
-                />
-              ) : null}
             </Group>
           </Group>
         </Stack>
       </Card.Section>
-      {router.pathname === '/my-shelf' ? (
-        <>
-          <CreateRecipeBookModal
-            userId={userId}
-            modalState={openCreateRecipeBook}
-            closeModal={() => setOpenCreateRecipeBook(false)}
-          />
-          <CreateRecipeModal
-            bookId={activeRecipeBook}
-            modalState={openCreateRecipe}
-            closeModal={() => setOpenCreateRecipe(false)}
-          />
-        </>
-      ) : null}
     </Card>
   );
 };

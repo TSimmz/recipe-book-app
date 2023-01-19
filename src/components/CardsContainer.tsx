@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Title,
   Divider,
@@ -6,7 +7,12 @@ import {
   Group,
   createStyles,
 } from '@mantine/core';
-import { CustomButton } from '@/components';
+import { useRouter } from 'next/router';
+import {
+  CustomButton,
+  CreateRecipeBookModal,
+  CreateRecipeModal,
+} from '@/components';
 import { useSelector } from 'react-redux';
 import {
   selectActiveRecipeBook,
@@ -17,6 +23,7 @@ import {
   selectSelectedRecipe,
 } from '@/features/dashboard/dashboardSlice';
 import { useAppDispatch } from '@/features/store';
+import { IconCirclePlus } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
   cardContainer: {
@@ -50,13 +57,33 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
   title,
   cards,
 }: CardsContainerProps) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
   const selectedRecipe = useSelector(selectSelectedRecipe);
 
+  const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
+  const [openCreateRecipe, setOpenCreateRecipe] = useState(false);
+
   const { classes } = useStyles();
   const theme = useMantineTheme();
+
+  const handleOpenRecipeBookModal = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+
+    setOpenCreateRecipeBook(true);
+  };
+
+  const handleOpenRecipeModal = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+
+    setOpenCreateRecipe(true);
+  };
 
   const handleBackClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -77,15 +104,61 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
     }
   };
 
+  const renderCreateBookButton = () => {
+    if (router.pathname === '/my-shelf' && activeRecipeBook === '')
+      return (
+        <>
+          <CustomButton
+            active
+            label="Add New Book"
+            rightIcon={<IconCirclePlus color={theme.black} />}
+            onClickHandler={handleOpenRecipeBookModal}
+          />
+          <CreateRecipeBookModal
+            userId={''}
+            modalState={openCreateRecipeBook}
+            closeModal={() => setOpenCreateRecipeBook(false)}
+          />
+        </>
+      );
+  };
+
+  const renderCreateRecipeButton = () => {
+    if (
+      router.pathname === '/my-shelf' &&
+      activeRecipeBook !== '' &&
+      activeRecipe === ''
+    )
+      return (
+        <>
+          <CustomButton
+            active
+            label="Add New Recipe"
+            rightIcon={<IconCirclePlus color={theme.black} />}
+            onClickHandler={handleOpenRecipeModal}
+          />
+          <CreateRecipeModal
+            bookId={activeRecipeBook}
+            modalState={openCreateRecipe}
+            closeModal={() => setOpenCreateRecipe(false)}
+          />
+        </>
+      );
+  };
+
   return (
     <div className={classes.cardContainer}>
       <Group position="apart" mb={theme.spacing.sm}>
         <Title fz={24} fw={'normal'} c={theme.white} ff={theme.fontFamily}>
           {title}
         </Title>
-        {activeRecipeBook !== '' ? (
-          <CustomButton label="Back" onClickHandler={handleBackClick} />
-        ) : null}
+        <Group>
+          {renderCreateBookButton()}
+          {renderCreateRecipeButton()}
+          {activeRecipeBook !== '' ? (
+            <CustomButton label="Back" onClickHandler={handleBackClick} />
+          ) : null}
+        </Group>
       </Group>
       <Divider color={theme.white} size={2} />
       <ScrollArea.Autosize
