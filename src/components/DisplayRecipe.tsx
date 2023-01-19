@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { trpc } from '@/utils/trpc';
 import {
@@ -15,7 +16,7 @@ import {
   Stack,
   createStyles,
 } from '@mantine/core';
-import { CustomButton } from '@/components';
+import { CustomButton, EditRecipe } from '@/components';
 import { IconUser } from '@tabler/icons';
 import { useAppDispatch } from '@/features/store';
 import {
@@ -48,6 +49,9 @@ const DisplayRecipe: React.FC<
   const dispatch = useAppDispatch();
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
+
+  const [editRecipeActive, setEditRecipeActive] = useState(false);
+
   const recipe = trpc.useQuery(['recipe.getRecipeById', { id: activeRecipe }]);
 
   const { classes } = useStyles();
@@ -84,12 +88,22 @@ const DisplayRecipe: React.FC<
     </div>
   ));
 
+  const toggleEditClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    setEditRecipeActive((editRecipeActive) => !editRecipeActive);
+  };
+
   const handleBackClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
     return dispatch(clearActiveRecipe());
   };
+
+  if (editRecipeActive)
+    return <EditRecipe recipeId={activeRecipe} recipeData={recipe.data} />;
 
   if (recipe.status === 'loading') {
     return (
@@ -116,6 +130,9 @@ const DisplayRecipe: React.FC<
         <Title fz={32} fw={'normal'} c={theme.white} ff={theme.fontFamily}>
           {recipe.data.title}
         </Title>
+        {!editRecipeActive ? (
+          <CustomButton label="Edit" onClickHandler={toggleEditClick} />
+        ) : null}
         {activeRecipeBook !== '' ? (
           <CustomButton label="Back" onClickHandler={handleBackClick} />
         ) : null}

@@ -2,6 +2,7 @@ export { default as Metadata } from './Metadata';
 export { default as CreateRecipeModal } from './CreateRecipeModal';
 export { default as CreateRecipeBookModal } from './CreateRecipeBookModal';
 export { default as Layout } from './Layout';
+export { default as EditRecipe } from './EditRecipe';
 export { default as DisplayRecipe } from './DisplayRecipe';
 export { default as IconButton } from './IconButton';
 export { default as DeleteRecipeModal } from './DeleteRecipeModal';
