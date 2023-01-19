@@ -166,6 +166,13 @@ const DisplayRecipe: React.FC<
 
           <Stack mb={theme.spacing.xl} style={{ gap: theme.spacing.xs }}>
             <Text size={24} mb={theme.spacing.xs} td="underline">
+              Description
+            </Text>
+            <Text italic>{recipe.data.description}</Text>
+          </Stack>
+
+          <Stack mb={theme.spacing.xl} style={{ gap: theme.spacing.xs }}>
+            <Text size={24} mb={theme.spacing.xs} td="underline">
               Ingredients
             </Text>
             {ingredients}
