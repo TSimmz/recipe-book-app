@@ -16,7 +16,7 @@ import { CustomButton, IconButton } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import { clearActiveRecipe } from '@/features/dashboard/dashboardSlice';
 import { useForm, zodResolver } from '@mantine/form';
-import { IconTrash } from '@tabler/icons';
+import { IconTrash, IconCirclePlus } from '@tabler/icons';
 import { randomId } from '@mantine/hooks';
 import { z } from 'zod';
 import { useEffect } from 'react';
@@ -130,14 +130,28 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     if (editForm.isDirty()) editForm.resetDirty();
   }, []);
 
-  const ingredients = recipeData.ingredients.map(
+  const handleAddIngredient = () => {
+    editForm.insertListItem('ingredients', {
+      key: randomId(),
+      value: 0,
+      unit: '',
+      name: '',
+    });
+  };
+
+  const ingredients = editForm.values.ingredients.map(
     (ingredient: any, index: number) => (
-      <Group key={ingredient.key} mb={theme.spacing.xs}>
+      <Group
+        key={ingredient.key}
+        mb={theme.spacing.xs}
+        style={{ alignItems: 'flex-end' }}
+      >
         <NumberInput
           label="Value"
           stepHoldDelay={500}
           stepHoldInterval={100}
           min={0}
+          w={100}
           required
           {...editForm.getInputProps(`ingredients.${index}.value`)}
         />
@@ -145,6 +159,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
           placeholder="Unit"
           label="Unit"
           required
+          w={100}
           {...editForm.getInputProps(`ingredients.${index}.unit`)}
         />
         <TextInput
@@ -163,7 +178,16 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     ),
   );
 
-  const steps = recipeData.steps.map((step: any, index: number) => (
+  const handleAddStep = () => {
+    editForm.insertListItem('steps', {
+      key: randomId(),
+      stepNumber: 1,
+      description: '',
+      note: '',
+    });
+  };
+
+  const steps = editForm.values.steps.map((step: any, index: number) => (
     <div
       key={step.key}
       style={{
@@ -193,10 +217,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     </div>
   ));
 
-  const handleSaveClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
+  const handleSaveClick = (values: typeof editForm.values) => {
+    console.log('EDIT VALUES: ', values);
   };
 
   const handleCancelClick = (
@@ -215,123 +237,158 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
           alt="Recipe"
         />
       </Card.Section>
-      <Group position="apart" mt={theme.spacing.md} mb={theme.spacing.sm}>
-        <TextInput
-          fz={32}
-          fw={'normal'}
-          c={theme.white}
-          ff={theme.fontFamily}
-          placeholder="Recipe Title"
-          label="Recipe Title"
-          required
-          {...editForm.getInputProps('title')}
-        />
-        <Group>
-          <CustomButton
-            label="Save"
-            active
-            disabled={!editForm.isDirty()}
-            onClickHandler={handleSaveClick}
-          />
-          <CustomButton label="Cancel" onClickHandler={handleCancelClick} />
-        </Group>
-      </Group>
-
-      <Divider color={theme.white} size={2} />
-
-      <ScrollArea.Autosize
-        offsetScrollbars
-        scrollHideDelay={150}
-        mt={theme.spacing.xs}
-        maxHeight={'82vh'}
-        style={{ width: '100%' }}
+      <form
+        className={classes.form}
+        onSubmit={editForm.onSubmit(handleSaveClick)}
       >
-        <div className={classes.cardGrid}>
-          <Group w="100%" mb={theme.spacing.xl}>
-            <Text size={14} fs="italic" mr={32}>
-              {'Prep Time: '}
-            </Text>
-            <NumberInput
-              label="Hours"
-              stepHoldDelay={500}
-              stepHoldInterval={100}
-              min={0}
-              required
-              {...editForm.getInputProps('prepTime.hours')}
+        <Group
+          grow
+          position="apart"
+          mt={theme.spacing.md}
+          mb={theme.spacing.sm}
+        >
+          <TextInput
+            fw={'normal'}
+            size={'lg'}
+            c={theme.white}
+            ff={theme.fontFamily}
+            placeholder="Recipe Title"
+            aria-label="Recipe Title"
+            required
+            {...editForm.getInputProps('title')}
+          />
+          <Group position="right">
+            <CustomButton
+              label="Save"
+              active
+              disabled={!editForm.isDirty()}
+              type="submit"
             />
-            <NumberInput
-              label="Minutes"
-              stepHoldDelay={500}
-              stepHoldInterval={100}
-              required
-              min={0}
-              max={59}
-              {...editForm.getInputProps('prepTime.minutes')}
-            />
+            <CustomButton label="Cancel" onClickHandler={handleCancelClick} />
+          </Group>
+        </Group>
 
-            <Text size={14} fs="italic" mr={32}>
-              {'Cook Time: '}
-            </Text>
-            <NumberInput
-              label="Hours"
-              stepHoldDelay={500}
-              stepHoldInterval={100}
-              min={0}
-              required
-              {...editForm.getInputProps('cookTime.hours')}
-            />
-            <NumberInput
-              label="Minutes"
-              stepHoldDelay={500}
-              stepHoldInterval={100}
-              required
-              min={0}
-              max={59}
-              {...editForm.getInputProps('cookTime.minutes')}
-            />
+        <Divider color={theme.white} size={2} />
 
-            <Group position="left">
-              <Text size={14} mr={-10} fs="italic">
+        <ScrollArea.Autosize
+          offsetScrollbars
+          scrollHideDelay={150}
+          mt={theme.spacing.xs}
+          maxHeight={'82vh'}
+          style={{ width: '100%' }}
+        >
+          <div className={classes.cardGrid}>
+            <Group w="100%" mb={theme.spacing.xl}>
+              <Text size={14} fs="italic">
+                {'Prep Time: '}
+              </Text>
+              <NumberInput
+                aria-label="Hours"
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                min={0}
+                w={100}
+                required
+                {...editForm.getInputProps('prepTime.hours')}
+              />
+              <Text size={14} fs="italic" ml={-theme.spacing.sm}>
+                {'h'}
+              </Text>
+              <NumberInput
+                aria-label="Minutes"
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                required
+                min={0}
+                max={59}
+                w={100}
+                {...editForm.getInputProps('prepTime.minutes')}
+              />
+              <Text size={14} fs="italic" ml={-theme.spacing.sm}>
+                {'m'}
+              </Text>
+              <Text size={14} fs="italic" ml={theme.spacing.md}>
+                {'Cook Time: '}
+              </Text>
+              <NumberInput
+                aria-label="Hours"
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                min={0}
+                w={100}
+                required
+                {...editForm.getInputProps('cookTime.hours')}
+              />
+              <Text size={14} fs="italic" ml={-theme.spacing.sm}>
+                {'h'}
+              </Text>
+              <NumberInput
+                aria-label="Minutes"
+                stepHoldDelay={500}
+                stepHoldInterval={100}
+                required
+                min={0}
+                max={59}
+                w={100}
+                {...editForm.getInputProps('cookTime.minutes')}
+              />{' '}
+              <Text size={14} fs="italic" ml={-theme.spacing.sm}>
+                {'m'}
+              </Text>
+              <Text size={14} ml={theme.spacing.md} fs="italic">
                 Servings:
               </Text>
               <NumberInput
-                label="Number of Servings"
+                aria-label="Number of Servings"
                 stepHoldDelay={500}
                 stepHoldInterval={100}
                 required
                 min={0}
                 max={100}
+                w={100}
                 {...editForm.getInputProps('numberOfServings')}
               />
             </Group>
-          </Group>
 
-          <Stack mb={theme.spacing.xl} style={{ gap: theme.spacing.xs }}>
-            <Text size={24} mb={theme.spacing.xs} td="underline">
-              Description
-            </Text>
-            <Textarea
-              placeholder="Description"
-              label="Description"
-              required
-              {...editForm.getInputProps('description')}
-            />
-          </Stack>
+            <Stack mb={theme.spacing.xl} style={{ gap: theme.spacing.xs }}>
+              <Text size={24} mb={theme.spacing.xs} td="underline">
+                Description
+              </Text>
+              <Textarea
+                placeholder="Description"
+                aria-label="Description"
+                required
+                {...editForm.getInputProps('description')}
+              />
+            </Stack>
 
-          <Stack mb={theme.spacing.xl} style={{ gap: theme.spacing.xs }}>
-            <Text size={24} mb={theme.spacing.xs} td="underline">
-              Ingredients
-            </Text>
-            {ingredients}
-          </Stack>
-          <Stack style={{ gap: theme.spacing.xs }}>
-            <Text size={24} my={theme.spacing.md} td="underline">
-              Directions
-            </Text>
-            {steps}
-          </Stack>
-        </div>
-      </ScrollArea.Autosize>
+            <Stack mb={theme.spacing.xl} style={{ gap: theme.spacing.xs }}>
+              <Text size={24} mb={theme.spacing.xs} td="underline">
+                Ingredients
+              </Text>
+              {ingredients}
+              <CustomButton
+                active
+                label={'Add Ingredient'}
+                rightIcon={<IconCirclePlus size={16} />}
+                onClickHandler={handleAddIngredient}
+              />
+            </Stack>
+            <Stack style={{ gap: theme.spacing.xs }}>
+              <Text size={24} my={theme.spacing.md} td="underline">
+                Directions
+              </Text>
+              {steps}
+              <CustomButton
+                active
+                label={'Add Step'}
+                rightIcon={<IconCirclePlus size={16} />}
+                onClickHandler={handleAddStep}
+              />
+            </Stack>
+          </div>
+        </ScrollArea.Autosize>
+      </form>
     </Card>
   );
 };
