@@ -91,11 +91,15 @@ const editRecipeSchema = z.object({
 type EditRecipeProps = {
   recipeId: string;
   recipeData: any;
+  editRecipeActive: boolean;
+  setEditRecipeActive: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const EditRecipe: React.FC<EditRecipeProps> = ({
   recipeId,
   recipeData,
+  editRecipeActive,
+  setEditRecipeActive,
 }: EditRecipeProps) => {
   const dispatch = useAppDispatch();
 
@@ -123,6 +127,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
 
   useEffect(() => {
     editForm.setValues(recipeData);
+    if (editForm.isDirty()) editForm.resetDirty();
   }, []);
 
   const ingredients = recipeData.ingredients.map(
@@ -188,11 +193,17 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     </div>
   ));
 
-  const handleBackClick = (
+  const handleSaveClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    return dispatch(clearActiveRecipe());
+  };
+
+  const handleCancelClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    setEditRecipeActive(false);
   };
 
   return (
@@ -215,7 +226,15 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
           required
           {...editForm.getInputProps('title')}
         />
-        <CustomButton label="Save" onClickHandler={handleBackClick} />
+        <Group>
+          <CustomButton
+            label="Save"
+            active
+            disabled={!editForm.isDirty()}
+            onClickHandler={handleSaveClick}
+          />
+          <CustomButton label="Cancel" onClickHandler={handleCancelClick} />
+        </Group>
       </Group>
 
       <Divider color={theme.white} size={2} />
@@ -286,6 +305,18 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
               />
             </Group>
           </Group>
+
+          <Stack mb={theme.spacing.xl} style={{ gap: theme.spacing.xs }}>
+            <Text size={24} mb={theme.spacing.xs} td="underline">
+              Description
+            </Text>
+            <Textarea
+              placeholder="Description"
+              label="Description"
+              required
+              {...editForm.getInputProps('description')}
+            />
+          </Stack>
 
           <Stack mb={theme.spacing.xl} style={{ gap: theme.spacing.xs }}>
             <Text size={24} mb={theme.spacing.xs} td="underline">

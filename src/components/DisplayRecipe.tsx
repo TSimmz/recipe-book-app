@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { trpc } from '@/utils/trpc';
 import {
@@ -16,7 +15,7 @@ import {
   Stack,
   createStyles,
 } from '@mantine/core';
-import { CustomButton, EditRecipe } from '@/components';
+import { CustomButton } from '@/components';
 import { IconUser } from '@tabler/icons';
 import { useAppDispatch } from '@/features/store';
 import {
@@ -41,16 +40,18 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type DisplayRecipeProps = {};
+type DisplayRecipeProps = {
+  editRecipeActive: boolean;
+  setEditRecipeActive: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-const DisplayRecipe: React.FC<
-  DisplayRecipeProps
-> = ({}: DisplayRecipeProps) => {
+const DisplayRecipe: React.FC<DisplayRecipeProps> = ({
+  editRecipeActive,
+  setEditRecipeActive,
+}: DisplayRecipeProps) => {
   const dispatch = useAppDispatch();
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
-
-  const [editRecipeActive, setEditRecipeActive] = useState(false);
 
   const recipe = trpc.useQuery(['recipe.getRecipeById', { id: activeRecipe }]);
 
@@ -88,22 +89,12 @@ const DisplayRecipe: React.FC<
     </div>
   ));
 
-  const toggleEditClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    setEditRecipeActive((editRecipeActive) => !editRecipeActive);
-  };
-
   const handleBackClick = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
     return dispatch(clearActiveRecipe());
   };
-
-  if (editRecipeActive)
-    return <EditRecipe recipeId={activeRecipe} recipeData={recipe.data} />;
 
   if (recipe.status === 'loading') {
     return (
@@ -130,12 +121,16 @@ const DisplayRecipe: React.FC<
         <Title fz={32} fw={'normal'} c={theme.white} ff={theme.fontFamily}>
           {recipe.data.title}
         </Title>
-        {!editRecipeActive ? (
-          <CustomButton label="Edit" onClickHandler={toggleEditClick} />
-        ) : null}
-        {activeRecipeBook !== '' ? (
-          <CustomButton label="Back" onClickHandler={handleBackClick} />
-        ) : null}
+        <Group>
+          <CustomButton
+            label="Edit Recipe"
+            active
+            onClickHandler={() => setEditRecipeActive(true)}
+          />
+          {activeRecipeBook !== '' ? (
+            <CustomButton label="Back" onClickHandler={handleBackClick} />
+          ) : null}
+        </Group>
       </Group>
 
       <Divider color={theme.white} size={2} />

@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { trpc } from '@/utils/trpc';
 import {
   selectActiveRecipeBook,
@@ -12,6 +13,7 @@ import {
   DisplayRecipe,
   RecipeBookCard,
   RecipeCard,
+  EditRecipe,
 } from '@/components';
 
 type ShelfDisplayProps = {
@@ -26,6 +28,8 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
   const activeRecipe = useSelector(selectActiveRecipe);
   const selectedRecipeBook = useSelector(selectSelectedRecipeBook);
   const selectedRecipe = useSelector(selectSelectedRecipe);
+
+  const [editRecipeActive, setEditRecipeActive] = useState(false);
 
   // Get data from DB
   const user = trpc.useQuery(['user.getUserById', { id: userId }]);
@@ -65,6 +69,13 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
         ))
       : null;
 
+  const toggleEditClick = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    setEditRecipeActive((editRecipeActive) => !editRecipeActive);
+  };
+
   // If any data is loading, display loader
   if (
     user.status === 'loading' ||
@@ -74,9 +85,28 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
     return <CustomLoader />;
   }
 
-  // If selected recipe is opened, show recipe display
   if (activeRecipe !== '') {
-    return <DisplayRecipe />;
+    // If selected recipe is opened, show recipe display
+    if (editRecipeActive) {
+      const recipeData =
+        recipes.data &&
+        recipes.data.find((recipe) => recipe.id === activeRecipe);
+      return (
+        <EditRecipe
+          recipeId={activeRecipe}
+          recipeData={recipeData}
+          editRecipeActive={editRecipeActive}
+          setEditRecipeActive={setEditRecipeActive}
+        />
+      );
+    }
+
+    return (
+      <DisplayRecipe
+        editRecipeActive={editRecipeActive}
+        setEditRecipeActive={setEditRecipeActive}
+      />
+    );
   }
 
   // If selected book is opened, show cards container with that book's recipes
