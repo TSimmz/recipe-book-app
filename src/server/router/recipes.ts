@@ -117,6 +117,62 @@ export const recipesRouter = createRouter()
       return recipe;
     },
   })
+  .mutation('updateRecipe', {
+    input: z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string(),
+      prepTime: z.object({
+        hours: z.number().nonnegative().int(),
+        minutes: z.number().nonnegative().int().max(59),
+      }),
+      cookTime: z.object({
+        hours: z.number().nonnegative().int(),
+        minutes: z.number().nonnegative().int().max(59),
+      }),
+      numberOfServings: z.number().int().positive().min(1),
+      ingredients: z
+        .object({
+          key: z.string(),
+          value: z.number(),
+          unit: z.string(),
+          name: z.string(),
+        })
+        .array(),
+      steps: z
+        .object({
+          key: z.string(),
+          stepNumber: z.number().positive().int(),
+          description: z.string(),
+          note: z.string(),
+        })
+        .array(),
+    }),
+    async resolve({ input, ctx }) {
+      const recipe = await ctx.prisma.recipe.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          description: input.description,
+          prepTime: input.prepTime,
+          cookTime: input.cookTime,
+          numberOfServings: input.numberOfServings,
+          ingredients: input.ingredients,
+          steps: input.steps,
+        },
+      });
+
+      if (!recipe)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Failed to find recipe',
+        });
+
+      return recipe;
+    },
+  })
   .mutation('deleteRecipe', {
     input: z.object({
       id: z.string(),

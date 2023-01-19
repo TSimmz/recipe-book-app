@@ -1,3 +1,4 @@
+import { trpc } from '@/utils/trpc';
 import {
   Group,
   Image,
@@ -105,6 +106,10 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
 
   const { classes } = useStyles();
   const theme = useMantineTheme();
+
+  const editRecipeMutation = trpc.useMutation(['recipe.updateRecipe'], {
+    onSuccess: () => {},
+  });
 
   const editForm = useForm({
     validate: zodResolver(editRecipeSchema),
@@ -218,7 +223,20 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
   ));
 
   const handleSaveClick = (values: typeof editForm.values) => {
-    console.log('EDIT VALUES: ', values);
+    if (editForm.isDirty()) {
+      editRecipeMutation.mutate({
+        id: recipeId,
+        title: values.title,
+        description: values.description,
+        prepTime: values.prepTime,
+        cookTime: values.cookTime,
+        numberOfServings: values.numberOfServings,
+        ingredients: values.ingredients,
+        steps: values.steps,
+      });
+
+      setEditRecipeActive(false);
+    }
   };
 
   const handleCancelClick = (
