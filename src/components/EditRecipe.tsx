@@ -8,6 +8,7 @@ import {
   ScrollArea,
   Stack,
   Text,
+  Modal,
   TextInput,
   Textarea,
   NumberInput,
@@ -20,7 +21,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { IconTrash, IconCirclePlus } from '@tabler/icons';
 import { randomId } from '@mantine/hooks';
 import { z } from 'zod';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
   cardContainer: {
@@ -107,6 +108,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
+  const [isCancelModalOpened, setIsCancelModalOpened] = useState(false);
+
   const editRecipeMutation = trpc.useMutation(['recipe.updateRecipe'], {
     onSuccess: () => {},
   });
@@ -128,17 +131,6 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
       ingredients: [{ key: randomId(), value: 0, unit: '', name: '' }],
       steps: [{ key: randomId(), stepNumber: 1, description: '', note: '' }],
     },
-    // initialDirty: {
-    //   title: false,
-    //   description: false,
-    //   'prepTime.hours': false,
-    //   'prepTime.minutes': false,
-    //   'cookTime.hours': false,
-    //   'cookTime.minutes': false,
-    //   numberOfServings: false,
-    //   ingredients: false,
-    //   steps: false,
-    // },
   });
 
   let initialDataSet = useRef(false);
@@ -263,7 +255,8 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
-    setEditRecipeActive(false);
+    if (!editForm.isDirty()) setEditRecipeActive(false);
+    else setIsCancelModalOpened(true);
   };
 
   return (
@@ -427,6 +420,32 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
           </div>
         </ScrollArea.Autosize>
       </form>
+      <Modal
+        centered
+        size="sm"
+        radius={'lg'}
+        title={`Cancel Recipe Edit`}
+        opened={isCancelModalOpened}
+        onClose={() => setIsCancelModalOpened(false)}
+      >
+        <Stack align={'center'}>
+          <Text size={16} mb="lg" ta={'center'}>
+            {`All changes will be lost. Are you sure?`}
+          </Text>
+          <Group position="apart" style={{ gap: theme.spacing.xl }}>
+            <CustomButton
+              label="Yes"
+              active
+              onClickHandler={() => setEditRecipeActive(false)}
+            />
+            <CustomButton
+              label="No"
+              active
+              onClickHandler={() => setIsCancelModalOpened(false)}
+            />
+          </Group>
+        </Stack>
+      </Modal>
     </Card>
   );
 };
