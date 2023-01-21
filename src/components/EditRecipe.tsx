@@ -20,7 +20,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { IconTrash, IconCirclePlus } from '@tabler/icons';
 import { randomId } from '@mantine/hooks';
 import { z } from 'zod';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 const useStyles = createStyles((theme) => ({
   cardContainer: {
@@ -128,12 +128,32 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
       ingredients: [{ key: randomId(), value: 0, unit: '', name: '' }],
       steps: [{ key: randomId(), stepNumber: 1, description: '', note: '' }],
     },
+    // initialDirty: {
+    //   title: false,
+    //   description: false,
+    //   'prepTime.hours': false,
+    //   'prepTime.minutes': false,
+    //   'cookTime.hours': false,
+    //   'cookTime.minutes': false,
+    //   numberOfServings: false,
+    //   ingredients: false,
+    //   steps: false,
+    // },
   });
 
+  let initialDataSet = useRef(false);
   useEffect(() => {
     editForm.setValues(recipeData);
-    if (editForm.isDirty()) editForm.resetDirty();
+    initialDataSet.current = true;
   }, []);
+
+  useEffect(() => {
+    editForm.resetDirty();
+  }, [initialDataSet.current]);
+
+  console.log(
+    `Touched: ${editForm.isTouched()} | Dirty: ${editForm.isDirty()}`,
+  );
 
   const handleAddIngredient = () => {
     editForm.insertListItem('ingredients', {

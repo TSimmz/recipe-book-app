@@ -15,6 +15,7 @@ import {
   Stack,
   createStyles,
 } from '@mantine/core';
+import { randomId } from '@mantine/hooks';
 import { CustomButton } from '@/components';
 import { IconUser } from '@tabler/icons';
 import { useAppDispatch } from '@/features/store';
@@ -61,7 +62,9 @@ const DisplayRecipe: React.FC<DisplayRecipeProps> = ({
   let servingSizeField = [];
   if (typeof recipe.data?.numberOfServings === 'number') {
     for (let i = 0; i < recipe.data?.numberOfServings; ++i) {
-      servingSizeField.push(<IconUser size={16} style={{ margin: 0 }} />);
+      servingSizeField.push(
+        <IconUser key={randomId()} size={16} style={{ margin: 0 }} />,
+      );
     }
   }
 
