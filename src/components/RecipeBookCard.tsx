@@ -8,13 +8,18 @@ import {
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
-import { CustomCard, IconButton, DeleteBookModal } from '@/components';
+import {
+  CustomCard,
+  IconButton,
+  EditBookModal,
+  DeleteBookModal,
+} from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
   setSelectedRecipeBook,
   setSelectAndActiveRecipeBook,
 } from '@/features/dashboard/dashboardSlice';
-import { IconTrash, IconArrowUpRightCircle } from '@tabler/icons';
+import { IconTrash, IconEdit, IconArrowUpRightCircle } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
   image: {
@@ -49,6 +54,7 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
   const theme = useMantineTheme();
 
   const [isDeleteBookModalOpened, setDeleteBookModalOpened] = useState(false);
+  const [isEditBookModalOpened, setEditBookModalOpened] = useState(false);
 
   const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
@@ -63,6 +69,16 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
     if (bookId === '') return;
 
     setDeleteBookModalOpened(true);
+  };
+
+  const handleEditBook = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (bookId === '') return;
+
+    setEditBookModalOpened(true);
   };
 
   const handleOpenBook = (
@@ -119,6 +135,19 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
             isDeleteBookModalOpened={isDeleteBookModalOpened}
             setDeleteBookModalOpened={setDeleteBookModalOpened}
           />
+          <IconButton
+            label="Edit Book"
+            tooltipPosition={'top'}
+            icon={<IconEdit color={theme.colors.orange[3]} size={20} />}
+            handleClick={handleEditBook}
+          />
+          <EditBookModal
+            bookId={bookId}
+            bookData={recipeBook}
+            modalState={isEditBookModalOpened}
+            closeModal={() => setEditBookModalOpened(false)}
+          />
+
           <IconButton
             label="Open Book"
             tooltipPosition={'top'}
