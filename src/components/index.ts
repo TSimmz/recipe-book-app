@@ -5,6 +5,7 @@ export { default as Layout } from './Layout';
 export { default as EditRecipe } from './EditRecipe';
 export { default as DisplayRecipe } from './DisplayRecipe';
 export { default as IconButton } from './IconButton';
+export { default as DeleteBookModal } from './DeleteBookModal';
 export { default as DeleteRecipeModal } from './DeleteRecipeModal';
 export { default as AvatarMenu } from './AvatarMenu';
 export { default as CustomHeader } from './CustomHeader';

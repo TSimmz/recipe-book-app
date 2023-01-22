@@ -100,10 +100,10 @@ model RecipeBook {
     title       String
     description String?
     image       String? 
-    recipes     Recipe[]
+    recipes     Recipe[] 
 
     userId      String  @db.ObjectId
-    user        User    @relation(fields: [userId], references: [id])
+    user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("recipeBooks")
 }
@@ -121,7 +121,7 @@ model Recipe {
     steps            Step[]
 
     recipeBookId     String @db.ObjectId
-    recipeBook       RecipeBook @relation(fields: [recipeBookId], references: [id])
+    recipeBook       RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
 
     @@map("recipes")
 }

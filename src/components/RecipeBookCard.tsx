@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Stack,
   Title,
@@ -7,7 +8,7 @@ import {
   useMantineTheme,
   createStyles,
 } from '@mantine/core';
-import { CustomCard, IconButton } from '@/components';
+import { CustomCard, IconButton, DeleteBookModal } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
   setSelectedRecipeBook,
@@ -47,9 +48,21 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
+  const [isDeleteBookModalOpened, setDeleteBookModalOpened] = useState(false);
+
   const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
     dispatch(setSelectedRecipeBook(bookId));
+  };
+
+  const handleDeleteBook = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (bookId === '') return;
+
+    setDeleteBookModalOpened(true);
   };
 
   const handleOpenBook = (
@@ -60,6 +73,8 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
 
     dispatch(setSelectAndActiveRecipeBook(bookId));
   };
+
+  const bookTitle = recipeBook.title;
 
   return (
     <CustomCard
@@ -92,6 +107,18 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
       }
       footer={
         <Group style={{ gap: theme.spacing.xs }}>
+          <IconButton
+            label="Delete Book"
+            tooltipPosition={'top'}
+            icon={<IconTrash color={theme.colors.red[5]} size={20} />}
+            handleClick={handleDeleteBook}
+          />
+          <DeleteBookModal
+            activeBook={bookId}
+            bookTitle={bookTitle}
+            isDeleteBookModalOpened={isDeleteBookModalOpened}
+            setDeleteBookModalOpened={setDeleteBookModalOpened}
+          />
           <IconButton
             label="Open Book"
             tooltipPosition={'top'}
