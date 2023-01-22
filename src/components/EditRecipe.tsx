@@ -133,6 +133,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
     },
   });
 
+  //== Feels a little janky =====
   let initialDataSet = useRef(false);
   useEffect(() => {
     editForm.setValues(recipeData);
@@ -142,10 +143,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
   useEffect(() => {
     editForm.resetDirty();
   }, [initialDataSet.current]);
-
-  console.log(
-    `Touched: ${editForm.isTouched()} | Dirty: ${editForm.isDirty()}`,
-  );
+  //=============================
 
   const handleAddIngredient = () => {
     editForm.insertListItem('ingredients', {

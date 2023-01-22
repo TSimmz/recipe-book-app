@@ -97,4 +97,51 @@ export const recipeBooksRouter = createRouter()
 
       return recipeBook;
     },
+  })
+  .mutation('editBook', {
+    input: z.object({
+      id: z.string(),
+      title: z.string(),
+      description: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      const book = await ctx.prisma.recipeBook.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          description: input.description,
+        },
+      });
+
+      if (!book)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Failed to find recipe book',
+        });
+
+      return book;
+    },
+  })
+  .mutation('deleteBook', {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      if (input.id === '') return;
+      const book = await ctx.prisma.recipeBook.delete({
+        where: {
+          id: input.id,
+        },
+      });
+
+      if (!book)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Failed to find recipe book',
+        });
+
+      return book;
+    },
   });
