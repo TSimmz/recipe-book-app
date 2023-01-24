@@ -65,7 +65,6 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
             <CustomNavLink
               label="Browse"
               linkTo="/browse"
-              disabled
               active={router.pathname === '/browse'}
             />
             <CustomNavLink
