@@ -3,7 +3,7 @@ import { trpc } from '@/utils/trpc';
 import { Layout, Metadata, CustomHeader, CustomNavbar } from '@/components';
 import { Highlight, Text, useMantineTheme } from '@mantine/core';
 
-const Browse: NextPage = () => {
+const Profile: NextPage = () => {
   const { data: session } = trpc.useQuery(['auth.getSession']);
   const theme = useMantineTheme();
 
@@ -15,7 +15,7 @@ const Browse: NextPage = () => {
       navbar={<CustomNavbar userId={session.id as string} />}
       footer={<></>}
     >
-      <Metadata title="Browse Recipe Book" />
+      <Metadata title="Profile" />
       <div
         style={{
           width: '100%',
@@ -43,12 +43,11 @@ const Browse: NextPage = () => {
           Coming soon!
         </Highlight>
         <Text w="50%" mt={theme.spacing.md} ta="center">
-          Browse will allow you to search any and all public users, books, and
-          recipes!
+          The Profile page will allow you to edit your username, bio, and image.
         </Text>
       </div>
     </Layout>
   );
 };
 
-export default Browse;
+export default Profile;
