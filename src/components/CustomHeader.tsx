@@ -76,7 +76,6 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
             <CustomNavLink
               label="My Pantry"
               linkTo="/my-pantry"
-              disabled
               active={router.pathname === '/my-pantry'}
             />
             <AvatarMenu menuPosition="bottom-end" />
