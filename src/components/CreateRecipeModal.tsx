@@ -71,17 +71,17 @@ const createRecipeSchema = z.object({
     .array(),
 });
 
-type CreateRecipeModalProps = {
+interface ICreateRecipeModal extends React.PropsWithChildren<any> {
   bookId: string;
   modalState: boolean;
   closeModal: () => void;
-};
+}
 
-const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
+const CreateRecipeModal: React.FC<ICreateRecipeModal> = ({
   bookId,
   modalState,
   closeModal,
-}: CreateRecipeModalProps) => {
+}) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
@@ -144,7 +144,7 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
         label="Delete"
         tooltipPosition={'top'}
         icon={<IconTrash color={theme.colors.red[5]} size={20} />}
-        handleClick={() => form.removeListItem('ingredients', index)}
+        onClick={() => form.removeListItem('ingredients', index)}
       />
     </div>
   ));
@@ -176,7 +176,7 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
         label="Delete"
         tooltipPosition={'top'}
         icon={<IconTrash color={theme.colors.red[5]} size={20} />}
-        handleClick={() => form.removeListItem('steps', index)}
+        onClick={() => form.removeListItem('steps', index)}
       />
     </div>
   ));
@@ -285,7 +285,7 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                 active
                 label={'Add Ingredient'}
                 rightIcon={<IconCirclePlus size={16} />}
-                onClickHandler={handleAddIngredient}
+                onClick={handleAddIngredient}
               />
             </Stack>
             <Stack mt={theme.spacing.md}>
@@ -297,7 +297,7 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
                 active
                 label={'Add Step'}
                 rightIcon={<IconCirclePlus size={16} />}
-                onClickHandler={handleAddStep}
+                onClick={handleAddStep}
               />
             </Stack>
 
@@ -306,7 +306,7 @@ const CreateRecipeModal: React.FC<CreateRecipeModalProps> = ({
               <CustomButton
                 label="Cancel"
                 active
-                onClickHandler={() => closeModal()}
+                onClick={() => closeModal()}
               />
             </Group>
           </Stack>

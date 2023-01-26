@@ -12,9 +12,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type CustomLoaderProps = {};
+interface ICustomLoader extends React.PropsWithChildren<any> {}
 
-const CustomLoader: React.FC<CustomLoaderProps> = ({}: CustomLoaderProps) => {
+const CustomLoader: React.FC<ICustomLoader> = ({}) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 

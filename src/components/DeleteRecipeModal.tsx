@@ -4,19 +4,19 @@ import { Modal, Stack, Text, Group, useMantineTheme } from '@mantine/core';
 import { useAppDispatch } from '@/features/store';
 import CustomButton from './CustomButton';
 
-type DeleteRecipeModalProps = {
+interface IDeleteRecipeModal extends React.PropsWithChildren<any> {
   activeRecipe: string;
   recipeTitle: string;
   isDeleteRecipeModalOpened: boolean;
   setDeleteRecipeModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
 
-const DeleteRecipeModal: React.FC<DeleteRecipeModalProps> = ({
+const DeleteRecipeModal: React.FC<IDeleteRecipeModal> = ({
   activeRecipe,
   recipeTitle,
   isDeleteRecipeModalOpened,
   setDeleteRecipeModalOpened,
-}: DeleteRecipeModalProps) => {
+}) => {
   const dispatch = useAppDispatch();
   const theme = useMantineTheme();
 
@@ -58,8 +58,8 @@ const DeleteRecipeModal: React.FC<DeleteRecipeModalProps> = ({
           {`Are you sure?`}
         </Text>
         <Group position="apart" style={{ gap: theme.spacing.xl }}>
-          <CustomButton label="Yes" active onClickHandler={handleYesClick} />
-          <CustomButton label="No" active onClickHandler={handleNoClick} />
+          <CustomButton label="Yes" active onClick={handleYesClick} />
+          <CustomButton label="No" active onClick={handleNoClick} />
         </Group>
       </Stack>
     </Modal>

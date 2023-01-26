@@ -32,19 +32,19 @@ const editRecipeBookSchema = z.object({
   description: z.string(),
 });
 
-type EditRecipeBookModalProps = {
+interface IEditBookModal extends React.PropsWithChildren<any> {
   bookId: string;
   bookData: any;
   modalState: boolean;
   closeModal: () => void;
-};
+}
 
-const EditRecipeBookModal: React.FC<EditRecipeBookModalProps> = ({
+const EditRecipeBookModal: React.FC<IEditBookModal> = ({
   bookId,
   bookData,
   modalState,
   closeModal,
-}: EditRecipeBookModalProps) => {
+}) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
@@ -118,11 +118,7 @@ const EditRecipeBookModal: React.FC<EditRecipeBookModalProps> = ({
               label="Save New Book"
               active
             />
-            <CustomButton
-              label="Cancel"
-              active
-              onClickHandler={handleCancelClick}
-            />
+            <CustomButton label="Cancel" active onClick={handleCancelClick} />
           </Group>
         </Stack>
       </form>

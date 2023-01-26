@@ -22,23 +22,6 @@ const useStyles = createStyles((theme) => ({
       transform: 'scale(1.05)',
       transition: 'all ease-in-out 250ms',
     },
-
-    // '&::before': {
-    //   content: '""',
-    //   position: 'absolute',
-    //   display: 'block',
-
-    //   borderRadius: '32px',
-    //   inset: 0,
-    //   zIndex: -1,
-    //   backgroundColor: theme.colors.dark[3],
-    //   transform: 'scale(0)',
-    //   transition: 'all ease-in-out 250ms',
-    // },
-
-    // '&:hover::before': {
-    //   transform: 'scale(1)',
-    // },
   },
 
   buttonActive: {
@@ -50,57 +33,34 @@ const useStyles = createStyles((theme) => ({
       transform: 'scale(1.05)',
       transition: 'all ease-in-out 250ms',
     },
-
-    // '&::before': {
-    //   content: '""',
-    //   position: 'absolute',
-    //   display: 'block',
-
-    //   borderRadius: '32px',
-    //   inset: 0,
-    //   zIndex: -1,
-    //   backgroundColor: theme.colors.orange[5],
-    //   transform: 'scale(0)',
-    //   transition: 'all ease-in-out 250ms',
-    // },
-
-    // '&:hover::before': {
-    //   transform: 'scale(1)',
-    // },
   },
 }));
 
-type CustomButtonProps = {
+interface ICustomButton extends React.PropsWithChildren<any> {
   label: string;
-  active?: boolean;
-  type?: 'submit' | 'button' | 'reset';
-  disabled?: boolean;
   rightIcon?: React.ReactNode;
-  onClickHandler?: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => void;
-};
+}
 
-const CustomButton: React.FC<CustomButtonProps> = ({
+const CustomButton: React.FC<ICustomButton> = ({
   label,
+  rightIcon,
   active,
   type,
   disabled,
-  rightIcon,
-  onClickHandler,
-}: CustomButtonProps) => {
+  onClick,
+}) => {
   const { classes, cx } = useStyles();
 
   return (
     <Button
+      rightIcon={rightIcon}
       type={type}
       radius="xl"
       className={cx(classes.button, {
         [classes.buttonActive]: active === true,
       })}
       disabled={disabled}
-      rightIcon={rightIcon}
-      onClick={onClickHandler}
+      onClick={onClick}
     >
       {label}
     </Button>

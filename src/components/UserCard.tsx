@@ -19,15 +19,17 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type UserCardProps = {
+interface IUserCard extends React.PropsWithChildren<any> {
   userId: string;
-};
+}
 
-const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
+const UserCard: React.FC<IUserCard> = ({ userId }) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
   const user = trpc.useQuery(['user.getUserById', { id: userId }]);
+
+  console.log('USER: ', user);
 
   if (user.status === 'loading')
     return (
@@ -36,7 +38,7 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
       </Card>
     );
 
-  return (
+  return user.data ? (
     <Card radius={24} c={theme.white} bg={theme.colors.dark[6]}>
       <Card.Section>
         {' '}
@@ -54,9 +56,10 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
             mb={theme.spacing.md}
             bg={theme.colors.dark[3]}
             radius="xl"
-          ></Avatar>
+            src={user?.data.image}
+          />
           <Title order={1} fw="normal" fz={20} ff={theme.fontFamily}>
-            Tyler Simoni
+            {user?.data.name}
           </Title>
           <Title
             order={2}
@@ -99,7 +102,7 @@ const UserCard: React.FC<UserCardProps> = ({ userId }: UserCardProps) => {
         </Stack>
       </Card.Section>
     </Card>
-  );
+  ) : null;
 };
 
 export default UserCard;

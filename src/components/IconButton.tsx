@@ -40,20 +40,18 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type IconButtonProps = {
+interface IconButtonProps extends React.PropsWithChildren<any> {
   label: string;
   tooltipPosition: Position;
   icon: React.ReactNode;
-  disabled?: boolean;
-  handleClick?: React.MouseEventHandler<HTMLButtonElement>;
-};
+}
 
 const IconButton: React.FC<IconButtonProps> = ({
   label,
   tooltipPosition,
   icon,
   disabled,
-  handleClick,
+  onClick,
 }: IconButtonProps) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -73,7 +71,7 @@ const IconButton: React.FC<IconButtonProps> = ({
         color="dark"
         disabled={disabled}
         radius="md"
-        onClick={handleClick}
+        onClick={onClick}
       >
         {icon}
       </ActionIcon>

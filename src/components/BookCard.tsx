@@ -38,17 +38,13 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type RecipeBookCardProps = {
+interface IBookCard extends React.PropsWithChildren<any> {
   bookId: string;
   active: boolean;
   recipeBook: any;
-};
+}
 
-const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
-  bookId,
-  active,
-  recipeBook,
-}: RecipeBookCardProps) => {
+const BookCard: React.FC<IBookCard> = ({ bookId, active, recipeBook }) => {
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -95,7 +91,7 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
   return (
     <CustomCard
       active={active}
-      onClickHandler={handleCardClick}
+      onClick={handleCardClick}
       image={
         <Image
           className={classes.image}
@@ -127,7 +123,7 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
             label="Delete Book"
             tooltipPosition={'top'}
             icon={<IconTrash color={theme.colors.red[5]} size={20} />}
-            handleClick={handleDeleteBook}
+            onClick={handleDeleteBook}
           />
           <DeleteBookModal
             activeBook={bookId}
@@ -139,7 +135,7 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
             label="Edit Book"
             tooltipPosition={'top'}
             icon={<IconEdit color={theme.colors.orange[3]} size={20} />}
-            handleClick={handleEditBook}
+            onClick={handleEditBook}
           />
           <EditBookModal
             bookId={bookId}
@@ -157,7 +153,7 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
                 size={20}
               />
             }
-            handleClick={handleOpenBook}
+            onClick={handleOpenBook}
           />
         </Group>
       }
@@ -165,4 +161,4 @@ const RecipeBookCard: React.FC<RecipeBookCardProps> = ({
   );
 };
 
-export default RecipeBookCard;
+export default BookCard;

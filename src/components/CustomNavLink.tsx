@@ -72,19 +72,17 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type CustomNavLinkProps = {
+interface ICustomNavLink extends React.PropsWithChildren<any> {
   label: string;
   linkTo: string;
-  active: boolean;
-  disabled?: boolean;
-};
+}
 
-const CustomNavLink: React.FC<CustomNavLinkProps> = ({
+const CustomNavLink: React.FC<ICustomNavLink> = ({
   label,
   linkTo,
   active,
   disabled,
-}: CustomNavLinkProps) => {
+}) => {
   const { classes, cx } = useStyles();
 
   return (

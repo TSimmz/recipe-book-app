@@ -23,19 +23,19 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type DeleteBookModalProps = {
+interface IDeleteBookModal extends React.PropsWithChildren<any> {
   activeBook: string;
   bookTitle: string;
   isDeleteBookModalOpened: boolean;
   setDeleteBookModalOpened: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
 
-const DeleteBookModal: React.FC<DeleteBookModalProps> = ({
+const DeleteBookModal: React.FC<IDeleteBookModal> = ({
   activeBook,
   bookTitle,
   isDeleteBookModalOpened,
   setDeleteBookModalOpened,
-}: DeleteBookModalProps) => {
+}) => {
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -116,7 +116,7 @@ const DeleteBookModal: React.FC<DeleteBookModalProps> = ({
             label="Delete this recipe book"
             active
             disabled={deleteBookTitleText !== bookTitle}
-            onClickHandler={handleYesClick}
+            onClick={handleYesClick}
           />
         </Group>
       </Stack>

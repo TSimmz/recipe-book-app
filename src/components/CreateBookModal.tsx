@@ -31,17 +31,17 @@ const createRecipeBookSchema = z.object({
   description: z.string(),
 });
 
-type CreateRecipeBookModalProps = {
+interface ICreateBookModal extends React.PropsWithChildren<any> {
   userId: string;
   modalState: boolean;
   closeModal: () => void;
-};
+}
 
-const CreateRecipeBookModal: React.FC<CreateRecipeBookModalProps> = ({
+const CreateBookModal: React.FC<ICreateBookModal> = ({
   userId,
   modalState,
   closeModal,
-}: CreateRecipeBookModalProps) => {
+}) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
@@ -91,11 +91,7 @@ const CreateRecipeBookModal: React.FC<CreateRecipeBookModalProps> = ({
           />
           <Group mt={theme.spacing.xl} position="apart">
             <CustomButton type="submit" label="Save New Book" active />
-            <CustomButton
-              label="Cancel"
-              active
-              onClickHandler={() => closeModal()}
-            />
+            <CustomButton label="Cancel" active onClick={() => closeModal()} />
           </Group>
         </Stack>
       </form>
@@ -103,4 +99,4 @@ const CreateRecipeBookModal: React.FC<CreateRecipeBookModalProps> = ({
   );
 };
 
-export default CreateRecipeBookModal;
+export default CreateBookModal;

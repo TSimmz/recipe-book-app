@@ -1,4 +1,3 @@
-import { useSelector } from 'react-redux';
 import { trpc } from '@/utils/trpc';
 import {
   Container,
@@ -18,6 +17,7 @@ import {
 import { randomId } from '@mantine/hooks';
 import { CustomButton } from '@/components';
 import { IconUser } from '@tabler/icons';
+import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/features/store';
 import {
   clearActiveRecipe,
@@ -41,15 +41,15 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type DisplayRecipeProps = {
+interface IDisplayRecipe extends React.PropsWithChildren<any> {
   editRecipeActive: boolean;
   setEditRecipeActive: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
 
-const DisplayRecipe: React.FC<DisplayRecipeProps> = ({
+const DisplayRecipe: React.FC<IDisplayRecipe> = ({
   editRecipeActive,
   setEditRecipeActive,
-}: DisplayRecipeProps) => {
+}) => {
   const dispatch = useAppDispatch();
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
@@ -128,10 +128,10 @@ const DisplayRecipe: React.FC<DisplayRecipeProps> = ({
           <CustomButton
             label="Edit Recipe"
             active
-            onClickHandler={() => setEditRecipeActive(true)}
+            onClick={() => setEditRecipeActive(true)}
           />
           {activeRecipeBook !== '' ? (
-            <CustomButton label="Back" onClickHandler={handleBackClick} />
+            <CustomButton label="Back" onClick={handleBackClick} />
           ) : null}
         </Group>
       </Group>

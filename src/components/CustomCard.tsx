@@ -16,21 +16,20 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type CustomCardProps = {
+interface ICustomCard extends React.PropsWithChildren<any> {
   active: boolean;
-  onClickHandler: (event: React.MouseEvent<HTMLElement>) => void;
   image: React.ReactNode;
   body: React.ReactNode;
   footer: React.ReactNode;
-};
+}
 
-const CustomCard: React.FC<CustomCardProps> = ({
+const CustomCard: React.FC<ICustomCard> = ({
   active,
-  onClickHandler,
   image,
   body,
   footer,
-}: CustomCardProps) => {
+  onClick,
+}) => {
   const { classes, cx } = useStyles();
   const theme = useMantineTheme();
   return (
@@ -39,7 +38,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
       radius={24}
       c={theme.white}
       bg={theme.colors.dark[7]}
-      onClick={onClickHandler}
+      onClick={onClick}
       className={cx(classes.card, { [classes.cardActive]: active === true })}
     >
       <Card.Section>{image}</Card.Section>

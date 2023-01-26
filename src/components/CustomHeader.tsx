@@ -39,13 +39,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type CustomHeaderProps = {
-  session: any;
-};
+interface ICustomHeader extends React.PropsWithChildren<any> {}
 
-const CustomHeader: React.FC<CustomHeaderProps> = ({
-  session,
-}: CustomHeaderProps) => {
+const CustomHeader: React.FC<ICustomHeader> = ({ session }) => {
   const router = useRouter();
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -91,11 +87,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
 
         <Group position="right">
           {!session ? (
-            <CustomButton
-              label="Sign In"
-              active
-              onClickHandler={handleSignInClick}
-            />
+            <CustomButton label="Sign In" active onClick={handleSignInClick} />
           ) : (
             <>
               <CustomNavLink

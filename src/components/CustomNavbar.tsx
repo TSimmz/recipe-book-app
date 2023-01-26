@@ -4,11 +4,7 @@ import {
   useMantineTheme,
   ScrollArea,
 } from '@mantine/core';
-import {
-  RecipeBookDisplayCard,
-  RecipeDisplayCard,
-  UserCard,
-} from '@/components';
+import { BookDisplayCard, RecipeDisplayCard, UserCard } from '@/components';
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -42,7 +38,7 @@ const CustomNavbar: React.FC<CustomNavbarProps> = ({
             <RecipeDisplayCard />
           </Navbar.Section>
           <Navbar.Section className={classes.navbarCard}>
-            <RecipeBookDisplayCard />
+            <BookDisplayCard />
           </Navbar.Section>
         </div>
       </ScrollArea.Autosize>

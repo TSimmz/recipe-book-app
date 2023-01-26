@@ -34,17 +34,13 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type RecipeCardProps = {
+interface IRecipeCard extends React.PropsWithChildren<any> {
   recipeId: string;
   active: boolean;
   recipe: any;
-};
+}
 
-const RecipeCard: React.FC<RecipeCardProps> = ({
-  recipeId,
-  active,
-  recipe,
-}: RecipeCardProps) => {
+const RecipeCard: React.FC<IRecipeCard> = ({ recipeId, active, recipe }) => {
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -81,7 +77,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
   return (
     <CustomCard
       active={active}
-      onClickHandler={handleCardClick}
+      onClick={handleCardClick}
       image={
         <Image
           className={classes.image}
@@ -124,7 +120,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
             label="Delete Recipe"
             tooltipPosition={'top'}
             icon={<IconTrash color={theme.colors.red[5]} size={20} />}
-            handleClick={handleDeleteRecipe}
+            onClick={handleDeleteRecipe}
           />
           <DeleteRecipeModal
             activeRecipe={recipeId}
@@ -141,7 +137,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({
                 size={20}
               />
             }
-            handleClick={handleOpenRecipe}
+            onClick={handleOpenRecipe}
           />
         </Group>
       }

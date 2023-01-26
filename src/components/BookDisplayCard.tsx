@@ -36,11 +36,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type RecipeBookDisplayCardProps = {};
+interface IBookDisplayCard extends React.PropsWithChildren<any> {}
 
-const RecipeBookDisplayCard: React.FC<
-  RecipeBookDisplayCardProps
-> = ({}: RecipeBookDisplayCardProps) => {
+const BookDisplayCard: React.FC<IBookDisplayCard> = ({}) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
@@ -99,4 +97,4 @@ const RecipeBookDisplayCard: React.FC<
   ) : null;
 };
 
-export default RecipeBookDisplayCard;
+export default BookDisplayCard;

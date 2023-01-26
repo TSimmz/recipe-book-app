@@ -1,18 +1,12 @@
 import { AppShell, useMantineTheme } from '@mantine/core';
 
-type LayoutProps = {
+interface ILayout extends React.PropsWithChildren<any> {
   header?: JSX.Element;
   navbar?: JSX.Element;
   footer?: JSX.Element;
-  children: React.ReactNode;
-};
+}
 
-const Layout: React.FC<LayoutProps> = ({
-  navbar,
-  header,
-  footer,
-  children,
-}: LayoutProps) => {
+const Layout: React.FC<ILayout> = ({ navbar, header, footer, children }) => {
   const theme = useMantineTheme();
   return (
     <AppShell

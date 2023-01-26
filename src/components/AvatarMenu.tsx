@@ -10,13 +10,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type AvatarMenuProps = {
+interface IAvatarMenu extends React.PropsWithChildren<any> {
   menuPosition?: Position;
-};
+}
 
-const AvatarMenu: React.FC<AvatarMenuProps> = ({
-  menuPosition,
-}: AvatarMenuProps) => {
+const AvatarMenu: React.FC<IAvatarMenu> = ({ menuPosition }) => {
   const { classes } = useStyles();
 
   return (

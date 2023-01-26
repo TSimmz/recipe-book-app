@@ -8,11 +8,7 @@ import {
   createStyles,
 } from '@mantine/core';
 import { useRouter } from 'next/router';
-import {
-  CustomButton,
-  CreateRecipeBookModal,
-  CreateRecipeModal,
-} from '@/components';
+import { CustomButton, CreateBookModal, CreateRecipeModal } from '@/components';
 import { useSelector } from 'react-redux';
 import {
   selectActiveRecipeBook,
@@ -112,9 +108,9 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
             active
             label="Add New Book"
             rightIcon={<IconCirclePlus color={theme.black} />}
-            onClickHandler={handleOpenRecipeBookModal}
+            onClick={handleOpenRecipeBookModal}
           />
-          <CreateRecipeBookModal
+          <CreateBookModal
             userId={''}
             modalState={openCreateRecipeBook}
             closeModal={() => setOpenCreateRecipeBook(false)}
@@ -135,7 +131,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
             active
             label="Add New Recipe"
             rightIcon={<IconCirclePlus color={theme.black} />}
-            onClickHandler={handleOpenRecipeModal}
+            onClick={handleOpenRecipeModal}
           />
           <CreateRecipeModal
             bookId={activeRecipeBook}
@@ -156,7 +152,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
           {renderCreateBookButton()}
           {renderCreateRecipeButton()}
           {activeRecipeBook !== '' ? (
-            <CustomButton label="Back" onClickHandler={handleBackClick} />
+            <CustomButton label="Back" onClick={handleBackClick} />
           ) : null}
         </Group>
       </Group>

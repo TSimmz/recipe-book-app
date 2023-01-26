@@ -1,10 +1,10 @@
 import Head from 'next/head';
 
-type MetadataProps = {
+interface IMetadata extends React.PropsWithChildren<any> {
   title: string;
-};
+}
 
-const Metadata: React.FC<MetadataProps> = ({ title }: MetadataProps) => {
+const Metadata: React.FC<IMetadata> = ({ title }) => {
   return (
     <Head>
       <title>{title}</title>

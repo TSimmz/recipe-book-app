@@ -35,11 +35,9 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-type RecipeDisplayCardProps = {};
+interface IRecipeDisplayCard extends React.PropsWithChildren<any> {}
 
-const RecipeDisplayCard: React.FC<
-  RecipeDisplayCardProps
-> = ({}: RecipeDisplayCardProps) => {
+const RecipeDisplayCard: React.FC<IRecipeDisplayCard> = ({}) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 

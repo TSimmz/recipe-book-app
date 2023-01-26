@@ -11,18 +11,16 @@ import {
   CardsContainer,
   CustomLoader,
   DisplayRecipe,
-  RecipeBookCard,
+  BookCard,
   RecipeCard,
   EditRecipe,
 } from '@/components';
 
-type ShelfDisplayProps = {
+interface IShelf extends React.PropsWithChildren<any> {
   userId: string;
-};
+}
 
-const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
-  userId,
-}: ShelfDisplayProps) => {
+const Shelf: React.FC<IShelf> = ({ userId }) => {
   // Shelf state stored in redux for page changes.
   const activeRecipeBook = useSelector(selectActiveRecipeBook);
   const activeRecipe = useSelector(selectActiveRecipe);
@@ -48,7 +46,7 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
   const recipeBooksCards =
     recipeBooks.status === 'success' && recipeBooks.data
       ? recipeBooks?.data.map((recipeBook: any) => (
-          <RecipeBookCard
+          <BookCard
             key={recipeBook.id}
             bookId={recipeBook.id}
             active={recipeBook.id === selectedRecipeBook}
@@ -128,4 +126,4 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({
   );
 };
 
-export default ShelfDisplay;
+export default Shelf;

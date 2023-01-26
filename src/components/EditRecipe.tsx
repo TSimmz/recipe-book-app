@@ -15,8 +15,6 @@ import {
   createStyles,
 } from '@mantine/core';
 import { CustomButton, IconButton } from '@/components';
-import { useAppDispatch } from '@/features/store';
-import { clearActiveRecipe } from '@/features/dashboard/dashboardSlice';
 import { useForm, zodResolver } from '@mantine/form';
 import { IconTrash, IconCirclePlus } from '@tabler/icons';
 import { randomId } from '@mantine/hooks';
@@ -90,21 +88,19 @@ const editRecipeSchema = z.object({
     .array(),
 });
 
-type EditRecipeProps = {
+interface IEditRecipe extends React.PropsWithChildren<any> {
   recipeId: string;
   recipeData: any;
   editRecipeActive: boolean;
   setEditRecipeActive: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}
 
-const EditRecipe: React.FC<EditRecipeProps> = ({
+const EditRecipe: React.FC<IEditRecipe> = ({
   recipeId,
   recipeData,
   editRecipeActive,
   setEditRecipeActive,
-}: EditRecipeProps) => {
-  const dispatch = useAppDispatch();
-
+}) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
@@ -187,7 +183,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
           label="Delete"
           tooltipPosition={'top'}
           icon={<IconTrash color={theme.colors.red[5]} size={20} />}
-          handleClick={() => editForm.removeListItem('ingredients', index)}
+          onClick={() => editForm.removeListItem('ingredients', index)}
         />
       </Group>
     ),
@@ -227,7 +223,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
         label="Delete"
         tooltipPosition={'top'}
         icon={<IconTrash color={theme.colors.red[5]} size={20} />}
-        handleClick={() => editForm.removeListItem('steps', index)}
+        onClick={() => editForm.removeListItem('steps', index)}
       />
     </div>
   ));
@@ -293,7 +289,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
               disabled={!editForm.isDirty()}
               type="submit"
             />
-            <CustomButton label="Cancel" onClickHandler={handleCancelClick} />
+            <CustomButton label="Cancel" onClick={handleCancelClick} />
           </Group>
         </Group>
 
@@ -400,7 +396,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
                 active
                 label={'Add Ingredient'}
                 rightIcon={<IconCirclePlus size={16} />}
-                onClickHandler={handleAddIngredient}
+                onClick={handleAddIngredient}
               />
             </Stack>
             <Stack style={{ gap: theme.spacing.xs }}>
@@ -412,7 +408,7 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
                 active
                 label={'Add Step'}
                 rightIcon={<IconCirclePlus size={16} />}
-                onClickHandler={handleAddStep}
+                onClick={handleAddStep}
               />
             </Stack>
           </div>
@@ -434,12 +430,12 @@ const EditRecipe: React.FC<EditRecipeProps> = ({
             <CustomButton
               label="Yes"
               active
-              onClickHandler={() => setEditRecipeActive(false)}
+              onClick={() => setEditRecipeActive(false)}
             />
             <CustomButton
               label="No"
               active
-              onClickHandler={() => setIsCancelModalOpened(false)}
+              onClick={() => setIsCancelModalOpened(false)}
             />
           </Group>
         </Stack>
