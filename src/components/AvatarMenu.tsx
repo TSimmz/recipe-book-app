@@ -22,8 +22,9 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
   return (
     <Menu position={menuPosition} width={200} withArrow arrowPosition="center">
       <Menu.Target>
-        <Avatar size={32} radius="xl" style={{ cursor: 'pointer' }} />
+        <Avatar size={40} radius="xl" style={{ cursor: 'pointer' }} />
       </Menu.Target>
+
       <Menu.Dropdown>
         <Menu.Label>Application</Menu.Label>
         <Menu.Item icon={<IconUser size={14} />}>
@@ -31,6 +32,8 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
             <Text className={classes.menuLink}>Profile</Text>
           </Link>
         </Menu.Item>
+        <Menu.Divider />
+        <Menu.Label>Settings</Menu.Label>
         <Menu.Item icon={<IconLogout size={14} />} onClick={() => signOut()}>
           {' '}
           Logout

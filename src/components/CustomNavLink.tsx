@@ -20,26 +20,27 @@ const useStyles = createStyles((theme) => ({
     transition: 'all ease-in-out 250ms',
 
     '&:hover': {
-      backgroundColor: 'transparent',
-      transition: 'all ease-in-out 250ms',
-    },
-
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      display: 'block',
-
-      borderRadius: '32px',
-      inset: 0,
-      zIndex: -1,
       backgroundColor: theme.colors.dark[3],
-      transform: 'scale(0)',
+      transform: 'scale(1.05)',
       transition: 'all ease-in-out 250ms',
     },
 
-    '&:hover::before': {
-      transform: 'scale(1)',
-    },
+    // '&::before': {
+    //   content: '""',
+    //   position: 'absolute',
+    //   display: 'block',
+
+    //   borderRadius: '32px',
+    //   inset: 0,
+    //   zIndex: -1,
+    //   backgroundColor: theme.colors.dark[3],
+    //   transform: 'scale(0)',
+    //   transition: 'all ease-in-out 250ms',
+    // },
+
+    // '&:hover::before': {
+    //   transform: 'scale(1)',
+    // },
   },
 
   navLinkButtonActive: {
@@ -47,26 +48,27 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: theme.colors.orange[3],
 
     '&:hover': {
-      backgroundColor: 'transparent',
-      transition: 'all ease-in-out 250ms',
-    },
-
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      display: 'block',
-
-      borderRadius: '32px',
-      inset: 0,
-      zIndex: -1,
       backgroundColor: theme.colors.orange[5],
-      transform: 'scale(0)',
+      transform: 'scale(1.05)',
       transition: 'all ease-in-out 250ms',
     },
 
-    '&:hover::before': {
-      transform: 'scale(1)',
-    },
+    // '&::before': {
+    //   content: '""',
+    //   position: 'absolute',
+    //   display: 'block',
+
+    //   borderRadius: '32px',
+    //   inset: 0,
+    //   zIndex: -1,
+    //   backgroundColor: theme.colors.orange[5],
+    //   transform: 'scale(0)',
+    //   transition: 'all ease-in-out 250ms',
+    // },
+
+    // '&:hover::before': {
+    //   transform: 'scale(1)',
+    // },
   },
 }));
 

@@ -33,8 +33,8 @@ const useStyles = createStyles((theme) => ({
     },
   },
   searchBar: {
-    '&:focus, &:active': {
-      outlineColor: theme.colors.orange[4],
+    '& input:focus': {
+      borderColor: theme.colors.orange[4],
     },
   },
 }));
@@ -50,6 +50,11 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
+  const handleSearch = (event: any) => {
+    if (event.key === 'Enter')
+      alert(`YOU JUST SEARCHED: ${event.currentTarget.value}`);
+  };
+
   const handleSignInClick = () => {
     signIn(undefined, {
       callbackUrl: '/',
@@ -63,7 +68,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
           <Link href="/">
             <Avatar
               className={classes.headerLogo}
-              alt="brand-logo"
+              alt="Recipe Book Home"
               color="orange"
               radius="xl"
               ff={theme.fontFamily}
@@ -80,6 +85,7 @@ const CustomHeader: React.FC<CustomHeaderProps> = ({
             size={'md'}
             radius="xl"
             rightSection={<IconSearch size={12} stroke={1.5} />}
+            onKeyDown={handleSearch}
           />
         </Group>
 
