@@ -69,9 +69,7 @@ const DashboardHeader: React.FC<
           py={7}
           px={24}
         >
-          <Title size={24} fw={'normal'} ff={theme.fontFamily}>
-            Recipe Book
-          </Title>
+          <Title size={24}>Recipe Book</Title>
 
           <AvatarMenu menuPosition="bottom-end" />
         </Group>

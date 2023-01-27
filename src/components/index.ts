@@ -10,7 +10,6 @@ export { default as DeleteBookModal } from './DeleteBookModal';
 export { default as DeleteRecipeModal } from './DeleteRecipeModal';
 export { default as AvatarMenu } from './AvatarMenu';
 export { default as CustomHeader } from './CustomHeader';
-export { default as CustomNavLink } from './CustomNavLink';
 export { default as CustomNavbar } from './CustomNavbar';
 export { default as CustomCard } from './CustomCard';
 export { default as CustomButton } from './CustomButton';

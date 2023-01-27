@@ -121,7 +121,7 @@ const DisplayRecipe: React.FC<IDisplayRecipe> = ({
         />
       </Card.Section>
       <Group position="apart" mt={theme.spacing.md} mb={theme.spacing.sm}>
-        <Title fz={32} fw={'normal'} c={theme.white} ff={theme.fontFamily}>
+        <Title fz={32} c={theme.white}>
           {recipe.data.title}
         </Title>
         <Group>

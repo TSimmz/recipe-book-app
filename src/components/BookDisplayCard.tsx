@@ -73,13 +73,7 @@ const BookDisplayCard: React.FC<IBookDisplayCard> = ({}) => {
         className={classes.background}
       >
         <Stack p={16} className={classes.stack}>
-          <Title
-            order={1}
-            fw="normal"
-            fz={20}
-            c={theme.white}
-            ff={theme.fontFamily}
-          >
+          <Title order={1} fz={20} c={theme.white}>
             {recipeBook?.data.title}
           </Title>
           <Text fz={12} italic lineClamp={4} c={theme.white}>

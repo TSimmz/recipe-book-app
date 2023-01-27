@@ -102,14 +102,7 @@ const BookCard: React.FC<IBookCard> = ({ bookId, active, recipeBook }) => {
       }
       body={
         <Stack align="flex-start" spacing="xs">
-          <Title
-            order={1}
-            fw="normal"
-            fz={16}
-            ff={theme.fontFamily}
-            mb={theme.spacing.sm}
-            underline
-          >
+          <Title order={1} fz={16} mb={theme.spacing.sm} underline>
             {recipeBook.title}
           </Title>
           <Text fz={12} italic mb={theme.spacing.sm} lineClamp={4}>

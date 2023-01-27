@@ -18,18 +18,6 @@ import { randomId } from '@mantine/hooks';
 import { z } from 'zod';
 
 const useStyles = createStyles((theme) => ({
-  form: {
-    '& .mantine-TextInput-label, .mantine-Textarea-label, .mantine-NumberInput-label':
-      {
-        marginBottom: theme.spacing.xs,
-      },
-
-    '& .mantine-TextInput-required, .mantine-Textarea-required, .mantine-NumberInput-required':
-      {
-        color: theme.colors.orange[3],
-      },
-  },
-
   stack: {
     paddingRight: theme.spacing.md,
   },
@@ -198,7 +186,7 @@ const CreateRecipeModal: React.FC<ICreateRecipeModal> = ({
       onClose={() => closeModal()}
       size="lg"
     >
-      <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <ScrollArea.Autosize maxHeight={800} offsetScrollbars>
           <Stack className={classes.stack}>
             <TextInput
@@ -213,12 +201,7 @@ const CreateRecipeModal: React.FC<ICreateRecipeModal> = ({
               required
               {...form.getInputProps('description')}
             />
-            <Title
-              order={5}
-              mb={-theme.spacing.md}
-              ff={theme.fontFamily}
-              mt={theme.spacing.md}
-            >
+            <Title order={5} mb={-theme.spacing.md} mt={theme.spacing.md}>
               Prep Time
             </Title>
             <Group grow>
@@ -240,12 +223,7 @@ const CreateRecipeModal: React.FC<ICreateRecipeModal> = ({
                 {...form.getInputProps('prepTime.minutes')}
               />
             </Group>
-            <Title
-              order={5}
-              mb={-theme.spacing.md}
-              ff={theme.fontFamily}
-              mt={theme.spacing.md}
-            >
+            <Title order={5} mb={-theme.spacing.md} mt={theme.spacing.md}>
               Cook Time
             </Title>
             <Group grow>
@@ -277,7 +255,7 @@ const CreateRecipeModal: React.FC<ICreateRecipeModal> = ({
               {...form.getInputProps('numberOfServings')}
             />
             <Stack mt={theme.spacing.md}>
-              <Title order={5} mb={-theme.spacing.md} ff={theme.fontFamily}>
+              <Title order={5} mb={-theme.spacing.md}>
                 Ingredients
               </Title>
               {ingredientFields}
@@ -289,7 +267,7 @@ const CreateRecipeModal: React.FC<ICreateRecipeModal> = ({
               />
             </Stack>
             <Stack mt={theme.spacing.md}>
-              <Title order={5} mb={-theme.spacing.md} ff={theme.fontFamily}>
+              <Title order={5} mb={-theme.spacing.md}>
                 Directions
               </Title>
               {stepsFields}

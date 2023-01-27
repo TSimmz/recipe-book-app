@@ -3,11 +3,10 @@ import { createStyles, Card, useMantineTheme } from '@mantine/core';
 const useStyles = createStyles((theme) => ({
   card: {
     cursor: 'pointer',
-    transform: 'scale(1)',
     transition: 'all ease-in-out 150ms',
 
     '&:hover': {
-      transform: 'scale(1.02)',
+      transform: 'scale(1.01)',
       transition: 'all ease-in-out 150ms',
     },
   },

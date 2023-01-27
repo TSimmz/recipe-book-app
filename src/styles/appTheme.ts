@@ -25,6 +25,61 @@ const appTheme: MantineThemeOverride = {
   },
   fontFamily:
     'Poppins, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
+  components: {
+    Title: {
+      styles: (theme) => ({
+        root: {
+          fontFamily: theme.fontFamily,
+          fontWeight: 'normal',
+        },
+      }),
+    },
+    TextInput: {
+      styles: (theme) => ({
+        input: {
+          '&:focus-visible': {
+            borderColor: theme.colors.orange[3],
+          },
+        },
+        label: {
+          marginBottom: theme.spacing.xs,
+        },
+        required: {
+          color: theme.colors.orange[3],
+        },
+      }),
+    },
+    Textarea: {
+      styles: (theme) => ({
+        input: {
+          '&:focus-visible': {
+            borderColor: theme.colors.orange[3],
+          },
+        },
+        label: {
+          marginBottom: theme.spacing.xs,
+        },
+        required: {
+          color: theme.colors.orange[3],
+        },
+      }),
+    },
+    NumberInput: {
+      styles: (theme) => ({
+        input: {
+          '&:focus-visible': {
+            borderColor: theme.colors.orange[3],
+          },
+        },
+        label: {
+          marginBottom: theme.spacing.xs,
+        },
+        required: {
+          color: theme.colors.orange[3],
+        },
+      }),
+    },
+  },
 };
 
 export default appTheme;

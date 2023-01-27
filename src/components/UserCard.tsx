@@ -58,16 +58,14 @@ const UserCard: React.FC<IUserCard> = ({ userId }) => {
             radius="xl"
             src={user?.data.image}
           />
-          <Title order={1} fw="normal" fz={20} ff={theme.fontFamily}>
+          <Title order={1} fz={20}>
             {user?.data.name}
           </Title>
           <Title
             order={2}
-            fw="normal"
             fz={16}
             mb={theme.spacing.sm}
             c={theme.colors.orange[3]}
-            ff={theme.fontFamily}
           >
             @TSimmz
           </Title>

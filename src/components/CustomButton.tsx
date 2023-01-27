@@ -4,23 +4,17 @@ const useStyles = createStyles((theme) => ({
   button: {
     fontFamily: theme.fontFamily,
     fontWeight: 'normal',
-    fontSize: '16px',
+    fontSize: theme.fontSizes.md,
     textAlign: 'center',
-    textDecoration: 'none',
-    lineHeight: '22px',
-    padding: `2px ${theme.spacing.md} `,
-    cursor: 'pointer',
+    padding: `2px ${theme.spacing.md}px`,
     color: theme.white,
     backgroundColor: theme.colors.dark[4],
-    position: 'relative',
-    transition: 'all ease-in-out 250ms',
-
-    zIndex: 2,
+    transition: 'all ease-in-out 150ms',
 
     '&:hover': {
       backgroundColor: theme.colors.dark[3],
-      transform: 'scale(1.05)',
-      transition: 'all ease-in-out 250ms',
+      transform: 'scale(1.01)',
+      transition: 'all ease-in-out 150ms',
     },
   },
 
@@ -30,8 +24,8 @@ const useStyles = createStyles((theme) => ({
 
     '&:hover': {
       backgroundColor: theme.colors.orange[5],
-      transform: 'scale(1.05)',
-      transition: 'all ease-in-out 250ms',
+      transform: 'scale(1.01)',
+      transition: 'all ease-in-out 150ms',
     },
   },
 }));

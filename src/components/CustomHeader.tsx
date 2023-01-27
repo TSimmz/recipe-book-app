@@ -5,9 +5,8 @@ import {
   useMantineTheme,
   createStyles,
   Avatar,
-  Code,
 } from '@mantine/core';
-import { AvatarMenu, CustomButton, CustomNavLink } from '@/components';
+import { AvatarMenu, CustomButton } from '@/components';
 import { useRouter } from 'next/router';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
@@ -30,11 +29,6 @@ const useStyles = createStyles((theme) => ({
       scale: '1.1',
       color: theme.colors.orange[3],
       transition: 'all ease-in-out 200ms',
-    },
-  },
-  searchBar: {
-    '& input:focus': {
-      borderColor: theme.colors.orange[4],
     },
   },
 }));
@@ -75,7 +69,6 @@ const CustomHeader: React.FC<ICustomHeader> = ({ session }) => {
             </Avatar>
           </Link>
           <TextInput
-            className={classes.searchBar}
             aria-label="Search Recipe Book App"
             placeholder="Search"
             size={'md'}
@@ -85,26 +78,29 @@ const CustomHeader: React.FC<ICustomHeader> = ({ session }) => {
           />
         </Group>
 
-        <Group position="right">
+        <Group position="right" spacing={theme.spacing.sm}>
           {!session ? (
             <CustomButton label="Sign In" active onClick={handleSignInClick} />
           ) : (
             <>
-              <CustomNavLink
-                label="Browse"
-                linkTo="/browse"
-                active={router.pathname === '/browse'}
-              />
-              <CustomNavLink
-                label="My Shelf"
-                linkTo="/my-shelf"
-                active={router.pathname === '/my-shelf'}
-              />
-              <CustomNavLink
-                label="My Pantry"
-                linkTo="/my-pantry"
-                active={router.pathname === '/my-pantry'}
-              />
+              <Link href={'/browse'}>
+                <CustomButton
+                  label="Browse"
+                  active={router.pathname === '/browse'}
+                />
+              </Link>
+              <Link href={'/my-shelf'}>
+                <CustomButton
+                  label="My Shelf"
+                  active={router.pathname === '/my-shelf'}
+                />
+              </Link>
+              <Link href={'/my-pantry'}>
+                <CustomButton
+                  label="My Pantry"
+                  active={router.pathname === '/my-pantry'}
+                />
+              </Link>
               <AvatarMenu menuPosition="bottom-end" />
             </>
           )}

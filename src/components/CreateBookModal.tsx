@@ -2,7 +2,6 @@ import { trpc } from '@/utils/trpc';
 import {
   TextInput,
   Textarea,
-  createStyles,
   Stack,
   Group,
   Modal,
@@ -11,18 +10,6 @@ import {
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { CustomButton } from '@/components';
-
-const useStyles = createStyles((theme) => ({
-  form: {
-    '& .mantine-TextInput-label, .mantine-Textarea-label': {
-      marginBottom: theme.spacing.xs,
-    },
-
-    '& .mantine-TextInput-required, .mantine-Textarea-required': {
-      color: theme.colors.orange[3],
-    },
-  },
-}));
 
 const createRecipeBookSchema = z.object({
   title: z
@@ -42,7 +29,6 @@ const CreateBookModal: React.FC<ICreateBookModal> = ({
   modalState,
   closeModal,
 }) => {
-  const { classes } = useStyles();
   const theme = useMantineTheme();
 
   const createRecipeBook = trpc.useMutation(['recipebook.createRecipeBook'], {
@@ -73,7 +59,7 @@ const CreateBookModal: React.FC<ICreateBookModal> = ({
       onClose={() => closeModal()}
       size="md"
     >
-      <form className={classes.form} onSubmit={form.onSubmit(handleSubmit)}>
+      <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack>
           <TextInput
             placeholder="Enter a title..."

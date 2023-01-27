@@ -145,7 +145,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
   return (
     <div className={classes.cardContainer}>
       <Group position="apart" mb={theme.spacing.sm}>
-        <Title fz={24} fw={'normal'} c={theme.white} ff={theme.fontFamily}>
+        <Title fz={24} c={theme.white}>
           {title}
         </Title>
         <Group>

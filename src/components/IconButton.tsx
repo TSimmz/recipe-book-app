@@ -7,7 +7,6 @@ import {
 import { Position } from '@/utils/types';
 
 const useStyles = createStyles((theme) => ({
-  tooltip: {},
   button: {
     color: theme.black,
     position: 'relative',
@@ -18,7 +17,7 @@ const useStyles = createStyles((theme) => ({
     '&:hover': {
       color: theme.black,
       backgroundColor: 'transparent',
-      scale: 1.01,
+      transform: 'scale(1.1)',
       transition: 'all ease-in-out 150ms',
     },
 

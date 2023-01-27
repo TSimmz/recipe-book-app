@@ -88,7 +88,7 @@ const RecipeCard: React.FC<IRecipeCard> = ({ recipeId, active, recipe }) => {
       }
       body={
         <Stack align="flex-start" spacing="xs">
-          <Title order={1} fw="normal" fz={16} ff={theme.fontFamily} underline>
+          <Title order={1} fz={16} underline>
             {recipe.title}
           </Title>
           <Group position="apart">
