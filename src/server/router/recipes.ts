@@ -85,7 +85,7 @@ export const recipesRouter = createRouter()
         })
         .array(),
 
-      recipeBookId: z.string(),
+      bookId: z.string(),
     }),
     async resolve({ input, ctx }) {
       const recipe = await ctx.prisma.recipe.create({
@@ -97,14 +97,14 @@ export const recipesRouter = createRouter()
           numberOfServings: input.numberOfServings,
           ingredients: input.ingredients,
           steps: input.steps,
-          recipeBook: {
+          book: {
             connect: {
-              id: input.recipeBookId,
+              id: input.bookId,
             },
           },
         },
         include: {
-          recipeBook: true,
+          book: true,
         },
       });
 

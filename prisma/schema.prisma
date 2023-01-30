@@ -66,18 +66,22 @@ model Session {
 
 model User {
     id            String    @id @default(auto()) @map("_id") @db.ObjectId
-
     createdAt     DateTime  @default(now())
+
+    accounts      Account[]
+    sessions      Session[]
+
     name          String?
     email         String?   
     emailVerified DateTime?
     username      String?   
     birthdate     DateTime?
     image         String?
+
     profile       Profile?
-    recipeBooks   RecipeBook[]
-    accounts      Account[]
-    sessions      Session[]
+    books         Book[]
+    recipes       Recipe[]
+    
 
     @@unique([email])
     @@map("users")
@@ -85,6 +89,7 @@ model User {
 
 model Profile {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  
   name        String? 
   username    String?
   bio         String?
@@ -110,19 +115,21 @@ model VerificationToken {
     @@map("verificationTokens")
 }
 
-model RecipeBook {
+model Book {
     id          String  @id @default(auto()) @map("_id") @db.ObjectId
     createdAt   DateTime  @default(now())
 
     title       String
     description String?
     image       String? 
-    recipes     Recipe[] 
+
+    recipeIds   String[] @db.ObjectId
+    recipes     Recipe[] @relation(fields: [recipeIds], references: [id])
 
     userId      String  @db.ObjectId
     user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@map("recipeBooks")
+    @@map("books")
 }
 
 model Recipe {
@@ -137,8 +144,11 @@ model Recipe {
     ingredients      Ingredient[]
     steps            Step[]
 
-    recipeBookId     String @db.ObjectId
-    recipeBook       RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
+    bookIds          String[] @db.ObjectId
+    books            Book[] @relation(fields: [bookIds], references: [id])
+
+    userId           String  @db.ObjectId
+    user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@map("recipes")
 }

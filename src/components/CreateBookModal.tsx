@@ -11,7 +11,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { CustomButton } from '@/components';
 
-const createRecipeBookSchema = z.object({
+const createBookSchema = z.object({
   title: z
     .string()
     .min(3, { message: 'Title should have at least 3 characters' }),
@@ -31,20 +31,20 @@ const CreateBookModal: React.FC<ICreateBookModal> = ({
 }) => {
   const theme = useMantineTheme();
 
-  const createRecipeBook = trpc.useMutation(['recipebook.createRecipeBook'], {
+  const createBook = trpc.useMutation(['book.createBook'], {
     onSuccess: () => {},
   });
 
   // Form set up
   const form = useForm({
-    validate: zodResolver(createRecipeBookSchema),
+    validate: zodResolver(createBookSchema),
     initialValues: { title: '', description: '' },
   });
 
   // Submit
   const handleSubmit = (values: typeof form.values) => {
     // Create a recipe book
-    createRecipeBook.mutate({ userId, ...values });
+    createBook.mutate({ userId, ...values });
 
     // Close modal
     closeModal();

@@ -2,34 +2,34 @@ import { TRPCError } from '@trpc/server';
 import { createRouter } from './context';
 import { z } from 'zod';
 
-export const recipeBooksRouter = createRouter()
-  .query('getRecipeBookById', {
+export const booksRouter = createRouter()
+  .query('getBookById', {
     input: z.object({
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
       if (input.id === '') return;
-      const recipeBook = await ctx.prisma.recipeBook.findUnique({
+      const book = await ctx.prisma.book.findUnique({
         where: { id: input.id },
       });
 
-      if (!recipeBook)
+      if (!book)
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Failed to find user',
         });
 
-      return recipeBook;
+      return book;
     },
   })
-  .query('getRecipeBookWithRecipesById', {
+  .query('getBookWithRecipesById', {
     input: z.object({
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
       if (input.id === '') return;
 
-      const recipes = await ctx.prisma.recipeBook.findUnique({
+      const recipes = await ctx.prisma.book.findUnique({
         where: { id: input.id },
         include: {
           recipes: true,
@@ -52,7 +52,7 @@ export const recipeBooksRouter = createRouter()
     async resolve({ input, ctx }) {
       if (input.id === '') return;
 
-      const recipes = await ctx.prisma.recipeBook
+      const recipes = await ctx.prisma.book
         .findUnique({
           where: { id: input.id },
         })
@@ -67,14 +67,14 @@ export const recipeBooksRouter = createRouter()
       return recipes;
     },
   })
-  .mutation('createRecipeBook', {
+  .mutation('createBook', {
     input: z.object({
       userId: z.string(),
       title: z.string(),
       description: z.string(),
     }),
     async resolve({ input, ctx }) {
-      const recipeBook = await ctx.prisma.recipeBook.create({
+      const book = await ctx.prisma.book.create({
         data: {
           title: input.title,
           description: input.description,
@@ -89,13 +89,13 @@ export const recipeBooksRouter = createRouter()
         },
       });
 
-      if (!recipeBook)
+      if (!book)
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'Failed to find recipe book',
         });
 
-      return recipeBook;
+      return book;
     },
   })
   .mutation('editBook', {
@@ -105,7 +105,7 @@ export const recipeBooksRouter = createRouter()
       description: z.string(),
     }),
     async resolve({ input, ctx }) {
-      const book = await ctx.prisma.recipeBook.update({
+      const book = await ctx.prisma.book.update({
         where: {
           id: input.id,
         },
@@ -130,7 +130,7 @@ export const recipeBooksRouter = createRouter()
     }),
     async resolve({ input, ctx }) {
       if (input.id === '') return;
-      const book = await ctx.prisma.recipeBook.delete({
+      const book = await ctx.prisma.book.delete({
         where: {
           id: input.id,
         },

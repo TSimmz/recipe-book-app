@@ -22,7 +22,7 @@ import { useAppDispatch } from '@/features/store';
 import {
   clearActiveRecipe,
   selectActiveRecipe,
-  selectActiveRecipeBook,
+  selectActiveBook,
 } from '@/features/dashboard/dashboardSlice';
 
 const useStyles = createStyles((theme) => ({
@@ -51,7 +51,7 @@ const DisplayRecipe: React.FC<IDisplayRecipe> = ({
   setEditRecipeActive,
 }) => {
   const dispatch = useAppDispatch();
-  const activeRecipeBook = useSelector(selectActiveRecipeBook);
+  const activeBook = useSelector(selectActiveBook);
   const activeRecipe = useSelector(selectActiveRecipe);
 
   const recipe = trpc.useQuery(['recipe.getRecipeById', { id: activeRecipe }]);
@@ -130,7 +130,7 @@ const DisplayRecipe: React.FC<IDisplayRecipe> = ({
             active
             onClick={() => setEditRecipeActive(true)}
           />
-          {activeRecipeBook !== '' ? (
+          {activeBook !== '' ? (
             <CustomButton label="Back" onClick={handleBackClick} />
           ) : null}
         </Group>

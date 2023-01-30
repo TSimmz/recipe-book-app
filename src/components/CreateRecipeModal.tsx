@@ -171,7 +171,7 @@ const CreateRecipeModal: React.FC<ICreateRecipeModal> = ({
 
   const handleSubmit = (values: typeof form.values) => {
     // Create the recipe
-    createRecipe.mutate({ recipeBookId: bookId, ...values });
+    createRecipe.mutate({ bookId: bookId, ...values });
 
     // Close the modal
     closeModal();

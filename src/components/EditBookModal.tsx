@@ -25,7 +25,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-const editRecipeBookSchema = z.object({
+const editBookSchema = z.object({
   title: z
     .string()
     .min(3, { message: 'Title should have at least 3 characters' }),
@@ -39,7 +39,7 @@ interface IEditBookModal extends React.PropsWithChildren<any> {
   closeModal: () => void;
 }
 
-const EditRecipeBookModal: React.FC<IEditBookModal> = ({
+const EditBookModal: React.FC<IEditBookModal> = ({
   bookId,
   bookData,
   modalState,
@@ -48,13 +48,13 @@ const EditRecipeBookModal: React.FC<IEditBookModal> = ({
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
-  const editBookMutation = trpc.useMutation(['recipebook.editBook'], {
+  const editBookMutation = trpc.useMutation(['book.editBook'], {
     onSuccess: () => {},
   });
 
   // Form set up
   const editForm = useForm({
-    validate: zodResolver(editRecipeBookSchema),
+    validate: zodResolver(editBookSchema),
     initialValues: { title: '', description: '' },
   });
 
@@ -126,4 +126,4 @@ const EditRecipeBookModal: React.FC<IEditBookModal> = ({
   );
 };
 
-export default EditRecipeBookModal;
+export default EditBookModal;

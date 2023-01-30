@@ -16,8 +16,8 @@ import {
 } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
-  setSelectedRecipeBook,
-  setSelectAndActiveRecipeBook,
+  setSelectedBook,
+  setSelectAndActiveBook,
 } from '@/features/dashboard/dashboardSlice';
 import { IconTrash, IconEdit, IconArrowUpRightCircle } from '@tabler/icons';
 
@@ -41,10 +41,10 @@ const useStyles = createStyles((theme) => ({
 interface IBookCard extends React.PropsWithChildren<any> {
   bookId: string;
   active: boolean;
-  recipeBook: any;
+  book: any;
 }
 
-const BookCard: React.FC<IBookCard> = ({ bookId, active, recipeBook }) => {
+const BookCard: React.FC<IBookCard> = ({ bookId, active, book }) => {
   const dispatch = useAppDispatch();
   const { classes } = useStyles();
   const theme = useMantineTheme();
@@ -54,7 +54,7 @@ const BookCard: React.FC<IBookCard> = ({ bookId, active, recipeBook }) => {
 
   const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
     event.preventDefault();
-    dispatch(setSelectedRecipeBook(bookId));
+    dispatch(setSelectedBook(bookId));
   };
 
   const handleDeleteBook = (
@@ -83,10 +83,10 @@ const BookCard: React.FC<IBookCard> = ({ bookId, active, recipeBook }) => {
     event.preventDefault();
     event.stopPropagation();
 
-    dispatch(setSelectAndActiveRecipeBook(bookId));
+    dispatch(setSelectAndActiveBook(bookId));
   };
 
-  const bookTitle = recipeBook.title;
+  const bookTitle = book.title;
 
   return (
     <CustomCard
@@ -103,10 +103,10 @@ const BookCard: React.FC<IBookCard> = ({ bookId, active, recipeBook }) => {
       body={
         <Stack align="flex-start" spacing="xs">
           <Title order={1} fz={16} mb={theme.spacing.sm} underline>
-            {recipeBook.title}
+            {book.title}
           </Title>
           <Text fz={12} italic mb={theme.spacing.sm} lineClamp={4}>
-            {recipeBook.description}
+            {book.description}
           </Text>
         </Stack>
       }
@@ -132,7 +132,7 @@ const BookCard: React.FC<IBookCard> = ({ bookId, active, recipeBook }) => {
           />
           <EditBookModal
             bookId={bookId}
-            bookData={recipeBook}
+            bookData={book}
             modalState={isEditBookModalOpened}
             closeModal={() => setEditBookModalOpened(false)}
           />

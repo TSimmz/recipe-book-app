@@ -21,7 +21,7 @@ import { IconButton, AvatarMenu } from '@/components';
 import { useAppDispatch } from '@/features/store';
 import {
   selectNavbarOpened,
-  selectActiveRecipeBook,
+  selectActiveBook,
   selectActiveRecipe,
   toggleNavbar,
   setNavbarWidth,
@@ -29,7 +29,7 @@ import {
 import { useSelector } from 'react-redux';
 
 type DashboardHeaderProps = {
-  recipeBooks: any;
+  books: any;
   recipes: any;
 };
 
@@ -39,21 +39,18 @@ const DashboardHeader: React.FC<
   const dispatch = useAppDispatch();
 
   const navbarOpened = useSelector(selectNavbarOpened);
-  const activeRecipeBook = useSelector(selectActiveRecipeBook);
+  const activeBook = useSelector(selectActiveBook);
   const activeRecipe = useSelector(selectActiveRecipe);
 
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
-  const recipeBook = trpc.useQuery([
-    'recipebook.getRecipeBookById',
-    { id: activeRecipeBook },
-  ]);
+  const book = trpc.useQuery(['book.getBookById', { id: activeBook }]);
   const recipe = trpc.useQuery(['recipe.getRecipeById', { id: activeRecipe }]);
 
   const breadCrumbs = [
     { crumb: 'My Books' },
-    { crumb: recipeBook.data?.title },
+    { crumb: book.data?.title },
     { crumb: recipe.data?.title },
   ].map((item) => item.crumb && <Text key={item.crumb}>{item.crumb}</Text>);
 

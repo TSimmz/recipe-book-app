@@ -21,24 +21,24 @@ export const usersRouter = createRouter()
       return user;
     },
   })
-  .query('getUsersRecipeBooks', {
+  .query('getUsersBooks', {
     input: z.object({
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
       if (input.id === '') return;
-      const recipeBooks = await ctx.prisma.user
+      const books = await ctx.prisma.user
         .findUnique({
           where: { id: input.id },
         })
-        .recipeBooks();
+        .books();
 
-      if (!recipeBooks)
+      if (!books)
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: "Failed to find user's recipe books",
         });
-      return recipeBooks;
+      return books;
     },
   })
   .query('getUserByEmail', {

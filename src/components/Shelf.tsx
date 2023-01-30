@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { trpc } from '@/utils/trpc';
 import {
-  selectActiveRecipeBook,
+  selectActiveBook,
   selectActiveRecipe,
-  selectSelectedRecipeBook,
+  selectSelectedBook,
   selectSelectedRecipe,
 } from '@/features/dashboard/dashboardSlice';
 import { useSelector } from 'react-redux';
@@ -22,9 +22,9 @@ interface IShelf extends React.PropsWithChildren<any> {
 
 const Shelf: React.FC<IShelf> = ({ userId }) => {
   // Shelf state stored in redux for page changes.
-  const activeRecipeBook = useSelector(selectActiveRecipeBook);
+  const activeBook = useSelector(selectActiveBook);
   const activeRecipe = useSelector(selectActiveRecipe);
-  const selectedRecipeBook = useSelector(selectSelectedRecipeBook);
+  const selectedBook = useSelector(selectSelectedBook);
   const selectedRecipe = useSelector(selectSelectedRecipe);
 
   const [editRecipeActive, setEditRecipeActive] = useState(false);
@@ -32,25 +32,22 @@ const Shelf: React.FC<IShelf> = ({ userId }) => {
   // Get data from DB
   const user = trpc.useQuery(['user.getUserById', { id: userId }]);
 
-  const recipeBooks = trpc.useQuery([
-    'user.getUsersRecipeBooks',
-    { id: userId },
-  ]);
+  const books = trpc.useQuery(['user.getUsersBooks', { id: userId }]);
 
   const recipes = trpc.useQuery([
-    'recipebook.getAllRecipesInBook',
-    { id: activeRecipeBook },
+    'book.getAllRecipesInBook',
+    { id: activeBook },
   ]);
 
   // Map data from DB
-  const recipeBooksCards =
-    recipeBooks.status === 'success' && recipeBooks.data
-      ? recipeBooks?.data.map((recipeBook: any) => (
+  const booksCards =
+    books.status === 'success' && books.data
+      ? books?.data.map((book: any) => (
           <BookCard
-            key={recipeBook.id}
-            bookId={recipeBook.id}
-            active={recipeBook.id === selectedRecipeBook}
-            recipeBook={recipeBook}
+            key={book.id}
+            bookId={book.id}
+            active={book.id === selectedBook}
+            book={book}
           />
         ))
       : null;
@@ -77,7 +74,7 @@ const Shelf: React.FC<IShelf> = ({ userId }) => {
   // If any data is loading, display loader
   if (
     user.status === 'loading' ||
-    recipeBooks.status === 'loading' ||
+    books.status === 'loading' ||
     recipes.status === 'loading'
   ) {
     return <CustomLoader />;
@@ -88,7 +85,7 @@ const Shelf: React.FC<IShelf> = ({ userId }) => {
     if (editRecipeActive) {
       const recipeData =
         recipes.data &&
-        recipes.data.find((recipe) => recipe.id === activeRecipe);
+        recipes.data.find((recipe: any) => recipe.id === activeRecipe);
       return (
         <EditRecipe
           recipeId={activeRecipe}
@@ -108,21 +105,16 @@ const Shelf: React.FC<IShelf> = ({ userId }) => {
   }
 
   // If selected book is opened, show cards container with that book's recipes
-  if (activeRecipeBook !== '' && recipeBooks.data) {
-    const activeRecipeBookTitle = recipeBooks?.data.find(
-      (book) => book.id === activeRecipeBook,
+  if (activeBook !== '' && books.data) {
+    const activeBookTitle = books?.data.find(
+      (book: any) => book.id === activeBook,
     )?.title;
-    return (
-      <CardsContainer title={`${activeRecipeBookTitle}`} cards={recipeCards} />
-    );
+    return <CardsContainer title={`${activeBookTitle}`} cards={recipeCards} />;
   }
 
   // If nothing selected, show cards container with user's books
   return (
-    <CardsContainer
-      title={`${user.data?.name}'s Books`}
-      cards={recipeBooksCards}
-    />
+    <CardsContainer title={`${user.data?.name}'s Books`} cards={booksCards} />
   );
 };
 

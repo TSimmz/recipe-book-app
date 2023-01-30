@@ -11,9 +11,9 @@ import { useRouter } from 'next/router';
 import { CustomButton, CreateBookModal, CreateRecipeModal } from '@/components';
 import { useSelector } from 'react-redux';
 import {
-  selectActiveRecipeBook,
+  selectActiveBook,
   selectActiveRecipe,
-  clearActiveRecipeBook,
+  clearActiveBook,
   clearActiveRecipe,
   clearSelectedRecipe,
   selectSelectedRecipe,
@@ -55,22 +55,22 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
 }: CardsContainerProps) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const activeRecipeBook = useSelector(selectActiveRecipeBook);
+  const activeBook = useSelector(selectActiveBook);
   const activeRecipe = useSelector(selectActiveRecipe);
   const selectedRecipe = useSelector(selectSelectedRecipe);
 
-  const [openCreateRecipeBook, setOpenCreateRecipeBook] = useState(false);
+  const [openCreateBook, setOpenCreateBook] = useState(false);
   const [openCreateRecipe, setOpenCreateRecipe] = useState(false);
 
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
-  const handleOpenRecipeBookModal = (
+  const handleOpenBookModal = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     event.preventDefault();
 
-    setOpenCreateRecipeBook(true);
+    setOpenCreateBook(true);
   };
 
   const handleOpenRecipeModal = (
@@ -87,7 +87,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
     event.preventDefault();
     if (selectedRecipe && !activeRecipe) {
       dispatch(clearSelectedRecipe());
-      return dispatch(clearActiveRecipeBook());
+      return dispatch(clearActiveBook());
     }
 
     if (activeRecipe) {
@@ -95,25 +95,25 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
       return dispatch(clearActiveRecipe());
     }
 
-    if (!activeRecipe && activeRecipeBook) {
-      return dispatch(clearActiveRecipeBook());
+    if (!activeRecipe && activeBook) {
+      return dispatch(clearActiveBook());
     }
   };
 
   const renderCreateBookButton = () => {
-    if (router.pathname === '/my-shelf' && activeRecipeBook === '')
+    if (router.pathname === '/my-shelf' && activeBook === '')
       return (
         <>
           <CustomButton
             active
             label="Add New Book"
             rightIcon={<IconCirclePlus color={theme.black} />}
-            onClick={handleOpenRecipeBookModal}
+            onClick={handleOpenBookModal}
           />
           <CreateBookModal
             userId={''}
-            modalState={openCreateRecipeBook}
-            closeModal={() => setOpenCreateRecipeBook(false)}
+            modalState={openCreateBook}
+            closeModal={() => setOpenCreateBook(false)}
           />
         </>
       );
@@ -122,7 +122,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
   const renderCreateRecipeButton = () => {
     if (
       router.pathname === '/my-shelf' &&
-      activeRecipeBook !== '' &&
+      activeBook !== '' &&
       activeRecipe === ''
     )
       return (
@@ -134,7 +134,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
             onClick={handleOpenRecipeModal}
           />
           <CreateRecipeModal
-            bookId={activeRecipeBook}
+            bookId={activeBook}
             modalState={openCreateRecipe}
             closeModal={() => setOpenCreateRecipe(false)}
           />
@@ -151,7 +151,7 @@ const CardsContainer: React.FC<CardsContainerProps> = ({
         <Group>
           {renderCreateBookButton()}
           {renderCreateRecipeButton()}
-          {activeRecipeBook !== '' ? (
+          {activeBook !== '' ? (
             <CustomButton label="Back" onClick={handleBackClick} />
           ) : null}
         </Group>

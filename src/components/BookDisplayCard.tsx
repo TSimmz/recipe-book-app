@@ -11,7 +11,7 @@ import {
   createStyles,
 } from '@mantine/core';
 import { useSelector } from 'react-redux';
-import { selectSelectedRecipeBook } from '@/features/dashboard/dashboardSlice';
+import { selectSelectedBook } from '@/features/dashboard/dashboardSlice';
 import { CustomLoader } from '@/components';
 
 const useStyles = createStyles((theme) => ({
@@ -42,23 +42,23 @@ const BookDisplayCard: React.FC<IBookDisplayCard> = ({}) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
-  const selectedRecipeBook = useSelector(selectSelectedRecipeBook);
+  const selectedBook = useSelector(selectSelectedBook);
 
-  const recipeBook = trpc.useQuery([
-    'recipebook.getRecipeBookWithRecipesById',
-    { id: selectedRecipeBook },
+  const book = trpc.useQuery([
+    'book.getBookWithRecipesById',
+    { id: selectedBook },
   ]);
 
   const recipesList =
-    recipeBook.status === 'success' && recipeBook.data
-      ? recipeBook?.data.recipes.map((recipe: any) => (
+    book.status === 'success' && book.data
+      ? book?.data.recipes.map((recipe: any) => (
           <List.Item key={recipe.id} c={theme.white}>
             {recipe.title}
           </List.Item>
         ))
       : null;
 
-  if (recipeBook.status === 'loading') {
+  if (book.status === 'loading') {
     return (
       <Card radius={24} c={theme.white} bg={theme.colors.dark[9]} p={0}>
         <CustomLoader />
@@ -66,7 +66,7 @@ const BookDisplayCard: React.FC<IBookDisplayCard> = ({}) => {
     );
   }
 
-  return recipeBook.status === 'success' && recipeBook.data ? (
+  return book.status === 'success' && book.data ? (
     <Card radius={24} c={theme.white} bg={theme.colors.dark[9]} p={0}>
       <BackgroundImage
         src="https://images.unsplash.com/photo-1542010589005-d1eacc3918f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1784&q=80"
@@ -74,10 +74,10 @@ const BookDisplayCard: React.FC<IBookDisplayCard> = ({}) => {
       >
         <Stack p={16} className={classes.stack}>
           <Title order={1} fz={20} c={theme.white}>
-            {recipeBook?.data.title}
+            {book?.data.title}
           </Title>
           <Text fz={12} italic lineClamp={4} c={theme.white}>
-            {`"${recipeBook?.data.description}"`}
+            {`"${book?.data.description}"`}
           </Text>
           <Text fz={14} underline c={theme.white}>
             {'Recipes'}
