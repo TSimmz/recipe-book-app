@@ -29,8 +29,6 @@ const UserCard: React.FC<IUserCard> = ({ userId }) => {
 
   const user = trpc.useQuery(['user.getUserById', { id: userId }]);
 
-  console.log('USER: ', user);
-
   if (user.status === 'loading')
     return (
       <Card radius={24} c={theme.white} bg={theme.colors.dark[6]}>

@@ -2,20 +2,6 @@ import { MantineThemeOverride } from '@mantine/core';
 
 const appTheme: MantineThemeOverride = {
   colorScheme: 'dark',
-  colors: {
-    appOrange: [
-      '#FEF9F2', // Base background
-      '#FAEAD2',
-      '#FFD9A0', // Recipe Navbar
-      '#FFCB7D', // Recipebook Navbar
-      '#FFC163', // Main Header
-      '#FEB344', // Sub-header
-      '#C3811F',
-      '#A06E21',
-      '#845D22',
-      '#6E4F22',
-    ],
-  },
   spacing: {
     xs: 4,
     sm: 8,
@@ -25,6 +11,21 @@ const appTheme: MantineThemeOverride = {
   },
   fontFamily:
     'Poppins, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
+  other: {
+    remSizing: {
+      xs: '0.25rem',
+      sm: '0.5rem',
+      md: '1rem',
+      lg: '1.5rem',
+      xl: '2rem',
+      xxl: '2.5rem',
+      xxxl: '3rem',
+    },
+    minShelfHeight: '300px',
+    grid: {
+      gap: '1.5rem',
+    },
+  },
   components: {
     Title: {
       styles: (theme) => ({

@@ -6,6 +6,7 @@ import {
   CustomHeader,
   CustomNavbar,
   Shelf,
+  BooksView,
 } from '@/components';
 
 const MyShelf: NextPage = () => {
@@ -20,7 +21,8 @@ const MyShelf: NextPage = () => {
       footer={<></>}
     >
       <Metadata title="Recipe Book Dashboard" />
-      <Shelf userId={session.id as string} />
+      {/* <Shelf userId={session.id as string} /> */}
+      <BooksView userId={session.id as string} />
     </Layout>
   );
 };
