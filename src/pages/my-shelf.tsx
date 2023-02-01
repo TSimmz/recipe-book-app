@@ -17,7 +17,7 @@ const MyShelf: NextPage = () => {
   ) : (
     <Layout
       header={<CustomHeader session={session} />}
-      navbar={<CustomNavbar userId={session.id as string} />}
+      navbar={false ? <CustomNavbar userId={session?.id as string} /> : <></>}
       footer={<></>}
     >
       <Metadata title="Recipe Book Dashboard" />

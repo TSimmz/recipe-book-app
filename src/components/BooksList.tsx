@@ -1,39 +1,29 @@
-import { trpc } from '@/utils/trpc';
 import { BookCard } from '@/components';
-import {
-  useMantineTheme,
-  createStyles,
-  ScrollArea,
-  Group,
-} from '@mantine/core';
+import { ScrollArea, createStyles } from '@mantine/core';
 
 const useStyles = createStyles((theme) => ({
   gridContainer: {
     display: 'grid',
-    gridTemplateColumns: `repeat(${theme.other.grid.columnCount}, minmax(0, 1fr))`,
-    gridGap: theme.other.grid.gap,
+    gap: theme.other.remSizing.md,
+    gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 220px))',
+    gridTemplateRows: '1fr',
   },
 }));
 
 interface IBooksList extends React.PropsWithChildren<any> {
-  userId: string;
+  booksData: any;
 }
 
-const BooksList: React.FC<IBooksList> = ({ userId }) => {
+const BooksList: React.FC<IBooksList> = ({ booksData }) => {
   const { classes } = useStyles();
-  const theme = useMantineTheme();
 
-  const books = trpc.useQuery(['user.getUsersBooks', { id: userId }]);
-  const booksList =
-    books.status === 'success' && books.data
-      ? books.data.map((book: any) => (
-          <BookCard key={book.title} title={book.title} />
-        ))
-      : null;
+  const booksList = booksData.map((book: any) => (
+    <BookCard key={book.id} bookId={book.id} title={book.title} />
+  ));
 
   return (
-    <ScrollArea style={{ minWidth: '100%' }}>
-      <Group spacing={theme.other.remSizing.md}>{booksList}</Group>
+    <ScrollArea style={{ minWidth: '200px' }}>
+      <div className={classes.gridContainer}>{booksList}</div>
     </ScrollArea>
   );
 };

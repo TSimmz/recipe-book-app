@@ -26,3 +26,4 @@ export { default as ComponentShelf } from './ComponentShelf';
 export { default as BooksView } from './BooksView';
 export { default as BooksList } from './BooksList';
 export { default as BookCard } from './BookCard';
+export { default as SelectedBook } from './SelectedBook';

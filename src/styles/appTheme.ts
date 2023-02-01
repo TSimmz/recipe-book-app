@@ -13,8 +13,8 @@ const appTheme: MantineThemeOverride = {
     'Poppins, -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
   other: {
     remSizing: {
-      xs: '0.25rem',
-      sm: '0.5rem',
+      xs: '0.5rem',
+      sm: '0.75rem',
       md: '1rem',
       lg: '1.5rem',
       xl: '2rem',
@@ -32,6 +32,16 @@ const appTheme: MantineThemeOverride = {
         root: {
           fontFamily: theme.fontFamily,
           fontWeight: 'normal',
+          color: theme.white,
+        },
+      }),
+    },
+    Text: {
+      styles: (theme) => ({
+        root: {
+          fontFamily: theme.fontFamily,
+          fontWeight: 'normal',
+          color: theme.white,
         },
       }),
     },

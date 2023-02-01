@@ -31,12 +31,8 @@ const ComponentShelf: React.FC<IComponentShelf> = ({
 
   return (
     <section className={classes.componentShelf}>
-      <Group>
-        <Title
-          fz={theme.other.remSizing.md}
-          c={theme.white}
-          mb={theme.spacing.xs}
-        >
+      <Group position="apart">
+        <Title fz={theme.other.remSizing.lg} mb={theme.spacing.xs}>
           {title}
         </Title>
         {toolbar}
