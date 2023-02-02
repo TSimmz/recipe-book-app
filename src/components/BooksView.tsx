@@ -1,17 +1,15 @@
 import { trpc } from '@/utils/trpc';
 import { useSelector } from 'react-redux';
-import { createStyles, useMantineTheme } from '@mantine/core';
-import { ComponentShelf, BooksList, SelectedBook } from '@/components';
+import { createStyles, useMantineTheme, ScrollArea } from '@mantine/core';
+import { ComponentShelf, BookCard, SelectedBook } from '@/components';
 import { selectSelectedBook } from '@/features/dashboard/dashboardSlice';
 
 const useStyles = createStyles((theme) => ({
-  gridContainer: {
-    display: 'flex',
-    gap: theme.other.remSizing.lg,
-  },
-
-  hidden: {
-    display: 'none',
+  gridList: {
+    display: 'grid',
+    gap: theme.other.remSizing.md,
+    gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 220px))',
+    gridTemplateRows: '1fr',
   },
 }));
 interface IBooksView extends React.PropsWithChildren<any> {
@@ -25,16 +23,22 @@ const BooksView: React.FC<IBooksView> = ({ userId }) => {
 
   const selectedBook = useSelector(selectSelectedBook);
 
-  const gridStyles = {
+  const gridContainer = {
     display: 'grid',
     gridTemplateColumns: `${selectedBook ? '1fr 220px' : '1fr'}`,
     gap: theme.other.remSizing.lg,
   };
 
   return books.data && books.data.length !== 0 ? (
-    <div style={gridStyles}>
-      <ComponentShelf style={{ flexGrow: 1 }} title="My Books">
-        <BooksList userId={userId} booksData={books.data} />
+    <div style={gridContainer}>
+      <ComponentShelf title="My Books">
+        <ScrollArea style={{ minWidth: '200px' }}>
+          <div className={classes.gridList}>
+            {books.data.map((book: any) => (
+              <BookCard key={book.id} bookId={book.id} title={book.title} />
+            ))}
+          </div>
+        </ScrollArea>
       </ComponentShelf>
 
       <SelectedBook
