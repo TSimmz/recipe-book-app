@@ -8,140 +8,78 @@ import {
   useMantineTheme,
   Divider,
   createStyles,
+  Card,
+  CardSection,
 } from '@mantine/core';
-import { CustomCard, IconButton, DeleteRecipeModal } from '@/components';
-import { useAppDispatch } from '@/features/store';
-import {
-  setSelectedRecipe,
-  setSelectAndActiveRecipe,
-} from '@/features/dashboard/dashboardSlice';
-import { IconTrash, IconArrowUpRightCircle } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
-  image: {
-    position: 'relative',
+  card: {
+    display: 'flex',
+    gap: theme.other.remSizing.md,
+    cursor: 'pointer',
+    transition: 'transform ease-in-out 150ms',
 
-    '&::before': {
-      position: 'absolute',
-      content: '""',
-      display: 'block',
-      inset: 0,
-      border: 'none',
-      background: `linear-gradient(180deg, transparent, ${theme.colors.dark[7]})`,
-      opacity: '90%',
-      zIndex: 1,
+    '&:hover': {
+      transform: 'scale(1.02)',
     },
+  },
+  cardActive: {
+    border: `4px solid ${theme.colors.orange[3]}`,
   },
 }));
 
 interface IRecipeCard extends React.PropsWithChildren<any> {
-  recipeId: string;
-  active: boolean;
-  recipe: any;
+  recipeData?: any;
 }
 
-const RecipeCard: React.FC<IRecipeCard> = ({ recipeId, active, recipe }) => {
-  const dispatch = useAppDispatch();
-  const { classes } = useStyles();
+const RecipeCard: React.FC<IRecipeCard> = ({ recipeData }) => {
+  const { classes, cx } = useStyles();
   const theme = useMantineTheme();
 
-  const [isDeleteRecipeModalOpened, setDeleteRecipeModalOpened] =
-    useState(false);
-
-  const handleCardClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.preventDefault();
-    dispatch(setSelectedRecipe(recipeId));
-  };
-
-  const handleDeleteRecipe = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    event.stopPropagation();
-    if (recipeId === '') return;
-
-    setDeleteRecipeModalOpened(true);
-  };
-
-  const handleOpenRecipe = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    dispatch(setSelectAndActiveRecipe(recipeId));
-  };
-
-  const recipeTitle = recipe.title;
-
   return (
-    <CustomCard
-      active={active}
-      onClick={handleCardClick}
-      image={
+    <Card radius={'lg'} mih={'200px'} className={classes.card}>
+      <div
+        style={{
+          height: 180,
+          marginTop: -1 * theme.spacing.md,
+          marginBottom: -1 * theme.spacing.md,
+          marginLeft: -1 * theme.spacing.md,
+        }}
+      >
         <Image
-          className={classes.image}
           src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1453&q=80"
-          height={110}
           alt="Recipe"
+          height={200}
+          width={150}
         />
-      }
-      body={
-        <Stack align="flex-start" spacing="xs">
-          <Title order={1} fz={16} underline>
-            {recipe.title}
-          </Title>
-          <Group position="apart">
-            <Text fz={12} italic c={theme.colors.orange[3]}>
-              {`Prep Time: ${
-                recipe.prepTime.hours ? `${recipe.prepTime.hours}h` : ''
-              } ${
-                recipe.prepTime.minutes ? `${recipe.prepTime.minutes}m` : ''
-              }`}
-            </Text>
-            <Text fz={12} italic c={theme.colors.orange[3]}>
-              {`Cook Time: ${
-                recipe.cookTime.hours ? `${recipe.cookTime.hours}h` : ''
-              } ${
-                recipe.cookTime.minutes ? `${recipe.cookTime.minutes}m` : ''
-              }`}
-            </Text>
-          </Group>
-          <Text fz={12} italic lineClamp={3}>
-            {recipe.description}
+      </div>
+      <Stack spacing="xs">
+        <Text>{recipeData.title}</Text>
+        <Group>
+          <Text fz={12} italic c={theme.colors.orange[3]}>
+            {`Prep Time: ${
+              recipeData.prepTime.hours ? `${recipeData.prepTime.hours}h` : ''
+            } ${
+              recipeData.prepTime.minutes
+                ? `${recipeData.prepTime.minutes}m`
+                : ''
+            }`}
           </Text>
-          <Divider color={theme.white} size={2} />
-          {/** TODO: Recipe tags will go here */}
-        </Stack>
-      }
-      footer={
-        <Group style={{ gap: theme.spacing.xs }}>
-          <IconButton
-            label="Delete Recipe"
-            tooltipPosition={'top'}
-            icon={<IconTrash color={theme.colors.red[5]} size={20} />}
-            onClick={handleDeleteRecipe}
-          />
-          <DeleteRecipeModal
-            activeRecipe={recipeId}
-            recipeTitle={recipeTitle}
-            isDeleteRecipeModalOpened={isDeleteRecipeModalOpened}
-            setDeleteRecipeModalOpened={setDeleteRecipeModalOpened}
-          />
-          <IconButton
-            label="Open Recipe"
-            tooltipPosition={'top'}
-            icon={
-              <IconArrowUpRightCircle
-                color={theme.colors.orange[3]}
-                size={20}
-              />
-            }
-            onClick={handleOpenRecipe}
-          />
+          <Text fz={12} italic c={theme.colors.orange[3]}>
+            {`Cook Time: ${
+              recipeData.cookTime.hours ? `${recipeData.cookTime.hours}h` : ''
+            } ${
+              recipeData.cookTime.minutes
+                ? `${recipeData.cookTime.minutes}m`
+                : ''
+            }`}
+          </Text>
         </Group>
-      }
-    />
+        <Text fz={12} italic lineClamp={3}>
+          {recipeData.description}
+        </Text>
+      </Stack>
+    </Card>
   );
 };
 

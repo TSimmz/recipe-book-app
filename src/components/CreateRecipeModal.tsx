@@ -60,21 +60,25 @@ const createRecipeSchema = z.object({
 });
 
 interface ICreateRecipeModal extends React.PropsWithChildren<any> {
-  bookId: string;
+  userId: string;
   modalState: boolean;
   closeModal: () => void;
+  fetchRecipes: () => void;
 }
 
 const CreateRecipeModal: React.FC<ICreateRecipeModal> = ({
-  bookId,
+  userId,
   modalState,
   closeModal,
+  fetchRecipes,
 }) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
   const createRecipe = trpc.useMutation(['recipe.createRecipe'], {
-    onSuccess: () => {},
+    onSuccess: () => {
+      fetchRecipes();
+    },
   });
 
   // Form set up
@@ -171,7 +175,7 @@ const CreateRecipeModal: React.FC<ICreateRecipeModal> = ({
 
   const handleSubmit = (values: typeof form.values) => {
     // Create the recipe
-    createRecipe.mutate({ bookId: bookId, ...values });
+    createRecipe.mutate({ userId: userId, ...values });
 
     // Close the modal
     closeModal();

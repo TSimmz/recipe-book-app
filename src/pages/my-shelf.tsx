@@ -7,7 +7,9 @@ import {
   CustomNavbar,
   Shelf,
   BooksView,
+  RecipesView,
 } from '@/components';
+import { Stack } from '@mantine/core';
 
 const MyShelf: NextPage = () => {
   const { data: session } = trpc.useQuery(['auth.getSession']);
@@ -22,7 +24,10 @@ const MyShelf: NextPage = () => {
     >
       <Metadata title="Recipe Book Dashboard" />
       {/* <Shelf userId={session.id as string} /> */}
-      <BooksView userId={session.id as string} />
+      <Stack>
+        <BooksView userId={session.id as string} />
+        <RecipesView userId={session.id as string} />
+      </Stack>
     </Layout>
   );
 };

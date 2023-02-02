@@ -10,11 +10,11 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface IBooksList extends React.PropsWithChildren<any> {
+interface IReviewsList extends React.PropsWithChildren<any> {
   booksData: any;
 }
 
-const BooksList: React.FC<IBooksList> = ({ booksData }) => {
+const RecipesList: React.FC<IReviewsList> = ({ booksData }) => {
   const { classes } = useStyles();
 
   const booksList = booksData.map((book: any) => (
@@ -28,4 +28,4 @@ const BooksList: React.FC<IBooksList> = ({ booksData }) => {
   );
 };
 
-export default BooksList;
+export default RecipesList;

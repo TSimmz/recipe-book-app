@@ -84,8 +84,8 @@ export const recipesRouter = createRouter()
           note: z.string(),
         })
         .array(),
-
-      bookId: z.string(),
+      userId: z.string(),
+      bookId: z.string().optional(),
     }),
     async resolve({ input, ctx }) {
       const recipe = await ctx.prisma.recipe.create({
@@ -97,16 +97,23 @@ export const recipesRouter = createRouter()
           numberOfServings: input.numberOfServings,
           ingredients: input.ingredients,
           steps: input.steps,
-          book: {
-            connect: {
-              id: input.bookId,
-            },
+          user: {
+            connect: { id: input.userId },
           },
         },
-        include: {
-          book: true,
-        },
       });
+
+      if (input.bookId)
+        await ctx.prisma.recipe.update({
+          where: {
+            id: recipe.id,
+          },
+          data: {
+            books: {
+              connect: [{ id: input.bookId }],
+            },
+          },
+        });
 
       if (!recipe)
         throw new TRPCError({
