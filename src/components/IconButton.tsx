@@ -32,8 +32,8 @@ const useStyles = createStyles((theme) => ({
     },
 
     '&:disabled': {
-      borderColor: theme.colors.appOrange[4],
-      backgroundColor: theme.colors.appOrange[4],
+      borderColor: theme.colors.orange[4],
+      backgroundColor: theme.colors.orange[4],
       color: theme.colors.gray[5],
     },
   },

@@ -21,26 +21,6 @@ export const usersRouter = createRouter()
       return user;
     },
   })
-  .query('getUsersBooks', {
-    input: z.object({
-      id: z.string(),
-    }),
-    async resolve({ input, ctx }) {
-      if (input.id === '') return;
-      const books = await ctx.prisma.user
-        .findUnique({
-          where: { id: input.id },
-        })
-        .books();
-
-      if (!books)
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: "Failed to find user's recipe books",
-        });
-      return books;
-    },
-  })
   .query('getUserByEmail', {
     input: z.object({
       email: z.string(),
@@ -75,5 +55,46 @@ export const usersRouter = createRouter()
           message: 'Failed to find users',
         });
       return users;
+    },
+  })
+  .query('getUserBooks', {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      if (input.id === '') return;
+      const books = await ctx.prisma.user
+        .findUnique({
+          where: { id: input.id },
+        })
+        .books();
+
+      if (!books)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: "Failed to find user's recipe books",
+        });
+      return books;
+    },
+  })
+  .query('getUserRecipes', {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      if (input.id === '') return;
+      const recipes = await ctx.prisma.user
+        .findUnique({
+          where: { id: input.id },
+        })
+        .recipes();
+
+      if (!recipes)
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: "Failed to find user's recipe books",
+        });
+
+      return recipes;
     },
   });

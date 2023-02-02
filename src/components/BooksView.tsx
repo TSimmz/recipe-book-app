@@ -1,8 +1,17 @@
+import { useState } from 'react';
 import { trpc } from '@/utils/trpc';
 import { useSelector } from 'react-redux';
 import { createStyles, useMantineTheme, ScrollArea } from '@mantine/core';
-import { ComponentShelf, BookCard, SelectedBook } from '@/components';
+import {
+  ComponentShelf,
+  BookCard,
+  SelectedBook,
+  CustomButton,
+  CreateBookModal,
+} from '@/components';
 import { selectSelectedBook } from '@/features/dashboard/dashboardSlice';
+
+import { IconCirclePlus } from '@tabler/icons';
 
 const useStyles = createStyles((theme) => ({
   gridList: {
@@ -19,9 +28,19 @@ interface IBooksView extends React.PropsWithChildren<any> {
 const BooksView: React.FC<IBooksView> = ({ userId }) => {
   const { classes } = useStyles();
   const theme = useMantineTheme();
-  const books = trpc.useQuery(['user.getUsersBooks', { id: userId }]);
+  const books = trpc.useQuery(['user.getUserBooks', { id: userId }]);
 
   const selectedBook = useSelector(selectSelectedBook);
+
+  const [openCreateBook, setOpenCreateBook] = useState(false);
+
+  const handleOpenBookModal = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+
+    setOpenCreateBook(true);
+  };
 
   const gridContainer = {
     display: 'grid',
@@ -29,9 +48,26 @@ const BooksView: React.FC<IBooksView> = ({ userId }) => {
     gap: theme.other.remSizing.lg,
   };
 
+  const booksToolBar = (
+    <>
+      <CustomButton
+        active
+        label="Add New Book"
+        rightIcon={<IconCirclePlus color={theme.black} />}
+        onClick={handleOpenBookModal}
+      />
+      <CreateBookModal
+        userId={userId}
+        modalState={openCreateBook}
+        closeModal={() => setOpenCreateBook(false)}
+        fetchBooks={() => books.refetch()}
+      />
+    </>
+  );
+
   return books.data && books.data.length !== 0 ? (
     <div style={gridContainer}>
-      <ComponentShelf title="My Books">
+      <ComponentShelf title="My Books" toolbar={booksToolBar}>
         <ScrollArea style={{ minWidth: '200px' }}>
           <div className={classes.gridList}>
             {books.data.map((book: any) => (

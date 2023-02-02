@@ -74,6 +74,8 @@ export const booksRouter = createRouter()
       description: z.string(),
     }),
     async resolve({ input, ctx }) {
+      if (input.userId === '') return;
+
       const book = await ctx.prisma.book.create({
         data: {
           title: input.title,
@@ -88,6 +90,8 @@ export const booksRouter = createRouter()
           user: true,
         },
       });
+      console.log('Input: ', input);
+      console.log('Book: ', book);
 
       if (!book)
         throw new TRPCError({

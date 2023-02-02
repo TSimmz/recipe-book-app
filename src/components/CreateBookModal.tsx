@@ -22,17 +22,21 @@ interface ICreateBookModal extends React.PropsWithChildren<any> {
   userId: string;
   modalState: boolean;
   closeModal: () => void;
+  fetchBooks: () => void;
 }
 
 const CreateBookModal: React.FC<ICreateBookModal> = ({
   userId,
   modalState,
   closeModal,
+  fetchBooks,
 }) => {
   const theme = useMantineTheme();
 
   const createBook = trpc.useMutation(['book.createBook'], {
-    onSuccess: () => {},
+    onSuccess: () => {
+      fetchBooks();
+    },
   });
 
   // Form set up
