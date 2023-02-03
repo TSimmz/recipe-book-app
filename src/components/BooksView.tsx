@@ -71,7 +71,7 @@ const BooksView: React.FC<IBooksView> = ({ userId }) => {
         <ScrollArea style={{ minWidth: '200px' }}>
           <div className={classes.gridList}>
             {books.data.map((book: any) => (
-              <BookCard key={book.id} bookId={book.id} title={book.title} />
+              <BookCard key={book.id} bookData={book} />
             ))}
           </div>
         </ScrollArea>

@@ -42,7 +42,7 @@ const DeleteBookModal: React.FC<IDeleteBookModal> = ({
 
   const [deleteBookTitleText, setDeleteBookTitleText] = useState('');
 
-  const deleteBook = trpc.useMutation(['recipebook.deleteBook'], {
+  const deleteBook = trpc.useMutation(['book.deleteBook'], {
     onSuccess: () => {},
   });
 

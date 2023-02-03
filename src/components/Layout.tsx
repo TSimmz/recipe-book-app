@@ -14,6 +14,11 @@ const Layout: React.FC<ILayout> = ({ navbar, header, footer, children }) => {
         main: {
           paddingRight: `calc(var(--mantine-aside-width, 0px) + ${theme.spacing.xl}px)`,
           background: theme.colors.dark[7],
+          maxWidth: '80%',
+          margin: '0 auto',
+          [theme.fn.largerThan('xl')]: {
+            maxWidth: '60%',
+          },
         },
       }}
       header={header}
@@ -21,7 +26,7 @@ const Layout: React.FC<ILayout> = ({ navbar, header, footer, children }) => {
       navbarOffsetBreakpoint="sm"
       footer={footer}
     >
-      {children}
+      <div>{children}</div>
     </AppShell>
   );
 };
