@@ -1,29 +1,47 @@
+import { useState } from 'react';
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { trpc } from '@/utils/trpc';
-import { Layout, Metadata, CustomHeader, CustomNavbar } from '@/components';
-import { Highlight, Text, useMantineTheme } from '@mantine/core';
+import {
+  Layout,
+  Metadata,
+  CustomHeader,
+  CustomNavbar,
+  DisplayRecipe,
+  EditRecipe,
+} from '@/components';
 
 const Recipe: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
+  const recipeId = id as string;
 
-  const theme = useMantineTheme();
+  const [isEditRecipe, setIsEditRecipe] = useState(false);
 
   const { data: session } = trpc.useQuery(['auth.getSession']);
 
-  return !session ? (
-    <div>Please sign in to view this page</div>
-  ) : (
+  const recipe = trpc.useQuery(['recipe.getRecipeById', { id: recipeId }]);
+
+  return recipe.status === 'success' && recipe.data ? (
     <Layout
       header={<CustomHeader session={session} />}
-      navbar={<CustomNavbar userId={session.id as string} />}
+      navbar={false ? <CustomNavbar userId={session?.id as string} /> : <></>}
       footer={<></>}
     >
       <Metadata title="My Pantry" />
-      <div>RECIPE ID: {id}</div>
+      {!isEditRecipe ? (
+        <DisplayRecipe
+          recipeData={recipe.data}
+          setIsEditRecipe={setIsEditRecipe}
+        />
+      ) : (
+        <EditRecipe
+          recipeData={recipe.data}
+          setEditRecipeActive={setIsEditRecipe}
+        />
+      )}
     </Layout>
-  );
+  ) : null;
 };
 
 export default Recipe;

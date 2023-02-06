@@ -35,17 +35,6 @@ const useStyles = createStyles((theme) => ({
     paddingRight: theme.spacing.md,
     margin: 0,
   },
-  form: {
-    '& .mantine-TextInput-label, .mantine-Textarea-label, .mantine-NumberInput-label':
-      {
-        marginBottom: theme.spacing.xs,
-      },
-
-    '& .mantine-TextInput-required, .mantine-Textarea-required, .mantine-NumberInput-required':
-      {
-        color: theme.colors.orange[3],
-      },
-  },
 
   stack: {
     paddingRight: theme.spacing.md,
@@ -89,16 +78,12 @@ const editRecipeSchema = z.object({
 });
 
 interface IEditRecipe extends React.PropsWithChildren<any> {
-  recipeId: string;
   recipeData: any;
-  editRecipeActive: boolean;
   setEditRecipeActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const EditRecipe: React.FC<IEditRecipe> = ({
-  recipeId,
   recipeData,
-  editRecipeActive,
   setEditRecipeActive,
 }) => {
   const { classes } = useStyles();
@@ -231,7 +216,7 @@ const EditRecipe: React.FC<IEditRecipe> = ({
   const handleSaveClick = (values: typeof editForm.values) => {
     if (editForm.isDirty()) {
       editRecipeMutation.mutate({
-        id: recipeId,
+        id: recipeData.id,
         title: values.title,
         description: values.description,
         prepTime: values.prepTime,
@@ -262,10 +247,7 @@ const EditRecipe: React.FC<IEditRecipe> = ({
           alt="Recipe"
         />
       </Card.Section>
-      <form
-        className={classes.form}
-        onSubmit={editForm.onSubmit(handleSaveClick)}
-      >
+      <form onSubmit={editForm.onSubmit(handleSaveClick)}>
         <Group
           grow
           position="apart"

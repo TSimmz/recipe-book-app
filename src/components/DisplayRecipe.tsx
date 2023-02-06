@@ -1,6 +1,4 @@
-import { trpc } from '@/utils/trpc';
 import {
-  Container,
   Title,
   Card,
   Group,
@@ -10,20 +8,13 @@ import {
   useMantineTheme,
   Divider,
   ScrollArea,
-  Loader,
   Stack,
   createStyles,
 } from '@mantine/core';
 import { randomId } from '@mantine/hooks';
 import { CustomButton } from '@/components';
 import { IconUser } from '@tabler/icons';
-import { useSelector } from 'react-redux';
 import { useAppDispatch } from '@/features/store';
-import {
-  clearActiveRecipe,
-  selectActiveRecipe,
-  selectActiveBook,
-} from '@/features/dashboard/dashboardSlice';
 
 const useStyles = createStyles((theme) => ({
   cardContainer: {
@@ -42,33 +33,27 @@ const useStyles = createStyles((theme) => ({
 }));
 
 interface IDisplayRecipe extends React.PropsWithChildren<any> {
-  editRecipeActive: boolean;
-  setEditRecipeActive: React.Dispatch<React.SetStateAction<boolean>>;
+  recipeData: any;
+  setIsEditRecipe: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DisplayRecipe: React.FC<IDisplayRecipe> = ({
-  editRecipeActive,
-  setEditRecipeActive,
+  recipeData,
+  setIsEditRecipe,
 }) => {
-  const dispatch = useAppDispatch();
-  const activeBook = useSelector(selectActiveBook);
-  const activeRecipe = useSelector(selectActiveRecipe);
-
-  const recipe = trpc.useQuery(['recipe.getRecipeById', { id: activeRecipe }]);
-
   const { classes } = useStyles();
   const theme = useMantineTheme();
 
   let servingSizeField = [];
-  if (typeof recipe.data?.numberOfServings === 'number') {
-    for (let i = 0; i < recipe.data?.numberOfServings; ++i) {
+  if (typeof recipeData.numberOfServings === 'number') {
+    for (let i = 0; i < recipeData.numberOfServings; ++i) {
       servingSizeField.push(
         <IconUser key={randomId()} size={16} style={{ margin: 0 }} />,
       );
     }
   }
 
-  const ingredients = recipe.data?.ingredients.map((ingredient) => (
+  const ingredients = recipeData.ingredients.map((ingredient: any) => (
     <Group key={ingredient.key} mb={theme.spacing.xs}>
       <Text mr={-10}>{ingredient.value}</Text>
       <Text>{ingredient.unit}</Text>
@@ -76,7 +61,7 @@ const DisplayRecipe: React.FC<IDisplayRecipe> = ({
     </Group>
   ));
 
-  const steps = recipe.data?.steps.map((step, index) => (
+  const steps = recipeData.steps.map((step: any, index: number) => (
     <div
       key={step.key}
       style={{
@@ -92,26 +77,7 @@ const DisplayRecipe: React.FC<IDisplayRecipe> = ({
     </div>
   ));
 
-  const handleBackClick = (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
-    event.preventDefault();
-    return dispatch(clearActiveRecipe());
-  };
-
-  if (recipe.status === 'loading') {
-    return (
-      <Container w={'100%'} mx={theme.spacing.xl} py={theme.spacing.lg}>
-        <Loader color={theme.colors.appOrange[5]} size="lg" />
-      </Container>
-    );
-  }
-
-  // if (recipe.status === 'error') {
-
-  // }
-
-  return recipe.status === 'success' && recipe.data ? (
+  return (
     <Card p={theme.spacing.xl} className={classes.cardContainer}>
       <Card.Section>
         <Image
@@ -122,17 +88,14 @@ const DisplayRecipe: React.FC<IDisplayRecipe> = ({
       </Card.Section>
       <Group position="apart" mt={theme.spacing.md} mb={theme.spacing.sm}>
         <Title fz={32} c={theme.white}>
-          {recipe.data.title}
+          {recipeData.title}
         </Title>
         <Group>
           <CustomButton
             label="Edit Recipe"
             active
-            onClick={() => setEditRecipeActive(true)}
+            onClick={() => setIsEditRecipe(true)}
           />
-          {activeBook !== '' ? (
-            <CustomButton label="Back" onClick={handleBackClick} />
-          ) : null}
         </Group>
       </Group>
 
@@ -150,24 +113,20 @@ const DisplayRecipe: React.FC<IDisplayRecipe> = ({
             <Text size={14} fs="italic" mr={32}>
               {' '}
               {`Prep Time: ${
-                recipe.data.prepTime.hours
-                  ? `${recipe.data.prepTime.hours}h`
-                  : ''
+                recipeData.prepTime.hours ? `${recipeData.prepTime.hours}h` : ''
               } ${
-                recipe.data.prepTime.minutes
-                  ? `${recipe.data.prepTime.minutes}m`
+                recipeData.prepTime.minutes
+                  ? `${recipeData.prepTime.minutes}m`
                   : ''
               }`}
             </Text>
             <Text size={14} fs="italic" mr={32}>
               {' '}
               {`Cook Time: ${
-                recipe.data.cookTime.hours
-                  ? `${recipe.data.cookTime.hours}h`
-                  : ''
+                recipeData.cookTime.hours ? `${recipeData.cookTime.hours}h` : ''
               } ${
-                recipe.data.cookTime.minutes
-                  ? `${recipe.data.cookTime.minutes}m`
+                recipeData.cookTime.minutes
+                  ? `${recipeData.cookTime.minutes}m`
                   : ''
               }`}
             </Text>
@@ -183,7 +142,7 @@ const DisplayRecipe: React.FC<IDisplayRecipe> = ({
             <Text size={24} mb={theme.spacing.xs} td="underline">
               Description
             </Text>
-            <Text italic>{recipe.data.description}</Text>
+            <Text italic>{recipeData.description}</Text>
           </Stack>
 
           <Stack mb={theme.spacing.xl} style={{ gap: theme.spacing.xs }}>
@@ -201,7 +160,7 @@ const DisplayRecipe: React.FC<IDisplayRecipe> = ({
         </div>
       </ScrollArea.Autosize>
     </Card>
-  ) : null;
+  );
 };
 
 export default DisplayRecipe;
